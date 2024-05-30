@@ -4,14 +4,14 @@
         <h6 class="font-weight-bold">گزارش</h6>
     </div>
     <div class="box_cat_parent">
-        <div class="box_cat">
+        <div class="box_cat" onclick="page('r','_myDebt')">
             <div class="box d-flex mt-2">
                 <div class="box_icon"><?php echo $my_debt; ?></div>
                 <div class="box_num text-danger">12,200,000</div>
             </div>
             <div class="box_title">بدهی من</div>
         </div>
-        <div class="box_cat">
+        <div class="box_cat" onclick="page('r','_myReq')">
             <div class="box d-flex mt-2">
                 <div class="box_icon"><?php echo $my_request; ?></div>
                 <div class="box_num text-success">12,200,000</div>
@@ -32,7 +32,7 @@
         <h6 class="font-weight-bold">دوره ها</h6>
     </div>
     <div class="box_cat_parent">
-        <div class="box_cat">
+        <div class="box_cat" onclick="page('r','_activeCourse')">
             <div class="box d-flex mt-2">
                 <div class="box_icon"><?php echo $active_course; ?></div>
                 <div class="box_num text-danger">3</div>
