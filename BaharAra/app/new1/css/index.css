@@ -1,0 +1,328 @@
+@font-face {
+    font-family: "iransans";
+    src: url("../font/IRANSansWeb(FaNum).ttf");
+}
+
+*,
+::after,
+::before {
+    outline: none;
+    margin: 0;
+    padding: 0;
+    font-family: "iransans";
+}
+
+.bg {
+    background-image: url("../img/bgg.png");
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+#logo {
+    width: 146px;
+    /* margin: 15% auto 20% auto; */
+}
+
+.btn {
+    width: 100%;
+    height: 50px;
+}
+
+.btn-over {
+    margin-bottom: 0.5rem;
+}
+
+.btn-half {
+    width: 49%;
+    margin-bottom: 0.5rem;
+}
+
+.login {
+    margin: 0rem auto;
+    width: 90%;
+    text-align: right;
+}
+
+.footer {
+    position: absolute;
+    text-align: center;
+    bottom: 0;
+    left: 5vw;
+}
+
+.footer p {
+    font-size: 12pt;
+}
+
+label {
+    color: #ffc107;
+}
+
+.login input {
+    margin-bottom: 1rem;
+}
+
+.header {
+    background-color: #525254;
+    height: 3rem;
+    color: #f9f9f9;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+}
+
+#headTitle {
+    width: fit-content;
+    padding: 0.98rem 0 0 0;
+    margin: 0 auto;
+    color: #fff;
+    user-select: none;
+    font-size: 0.9rem;
+}
+
+.img_logo {
+    width: 3rem;
+    padding: 0.4rem;
+    float: right;
+    height: inherit;
+    text-align: center;
+}
+
+.img_logo svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0rem;
+    margin: 0.4rem;
+    cursor: pointer;
+}
+
+.img_logo img {
+    width: inherit;
+}
+
+.menulist {
+    background: #efefef;
+    height: 91.4vh;
+    width: 80%;
+    position: absolute;
+    top: 3rem;
+    right: -25rem;
+}
+
+.items {
+    /* background: #525254; */
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 0rem;
+    margin-top: 3rem;
+}
+
+.page {
+    background: #525254;
+    margin-bottom: 2rem;
+}
+
+.top_part {
+    background: #FFC107;
+    height: 8rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
+.person_logo {
+    height: 4.5rem;
+    width: 4rem;
+    margin-right: 1rem;
+}
+
+.person_logo img {
+    height: 4.5rem;
+    border-radius: 50%;
+    width: 4rem;
+}
+
+.person_info {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    border-left: 1px dashed #fff;
+    padding-left: 1rem;
+    width: -webkit-fill-available;
+    user-select: none;
+}
+
+.person_name, .person_tel {
+    margin-right: 1rem;
+    color: #FAFAFA;
+}
+
+.person_rule {
+    width: -webkit-fill-available;
+    padding-top: 1rem;
+    color: #FAFAFA;
+    margin-right: 2rem;
+    user-select: none;
+    padding-right: 1rem;
+}
+
+.person_rule svg {
+    margin-right: -1rem;
+}
+
+.open_bar {
+    display: none;
+}
+
+.target_progress {
+    direction: ltr;
+    padding-top: 1rem;
+}
+
+.notif {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 2rem;
+    padding: 0.1rem;
+}
+
+.notif span {
+    cursor: default;
+}
+
+.notif svg {
+    cursor: pointer;
+}
+
+span.bg-danger {
+    border-radius: 50%;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0.4rem;
+    top: -0.6rem;
+    right: -1.8rem;
+}
+
+.notif svg {
+    margin-left: 2.3rem;
+}
+
+.message {
+    top: -0.6rem !important;
+    right: 1.8rem !important;
+}
+
+.score {
+    padding-top: 1rem;
+    width: -webkit-fill-available;
+    text-align: center;
+}
+
+.score svg {
+    width: 3rem;
+    height: 3rem;
+}
+
+.hide {
+    display: none;
+}
+
+.item_icon {
+    width: 4rem;
+    height: 4rem;
+    background: #fff;
+    border-radius: 50%;
+    color: #000;
+    text-align: center;
+    box-shadow: 1px 1px 11px 3px #a5a1a1;
+    margin: 0 auto;
+}
+
+.item_icon svg {
+    width: 2rem;
+    height: inherit;
+    padding-top: 0.1rem;
+}
+
+.item {
+    padding: 1rem;
+    cursor: pointer;
+    margin-bottom: 0.2rem;
+}
+
+.item:hover {
+    background-color: rgb(255 255 255 / 10%);
+    border-radius: 6%;
+}
+
+.item_title {
+    text-align: center;
+    padding-top: 0.5rem;
+    user-select: none;
+    margin: 0 auto;
+}
+
+legend {
+    font-size: 0.9rem;
+    width: fit-content;
+
+}
+
+fieldset {
+    min-width: 0;
+    padding: 0;
+    border-image: initial;
+    border-radius: 1rem;
+    box-shadow: 0px 0px 8px 0px rgb(255 255 255 / 25%);
+    padding-bottom: 1rem;
+    margin-bottom: 0.7rem;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    height: 10rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+html {
+    background: #525254;
+}
+
+svg:hover {
+    color: rgb(255 0 0 / 70%);
+}
+
+.return_home {
+    width: fit-content;
+    position: absolute;
+    left: 2rem;
+    top: 0.7rem;
+    display: none;
+}
+
+
+@media only screen and (max-width: 480px) {}
+
+@media only screen and (min-width: 481px) and (max-width: 768px) {}
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {}
+
+@media only screen and (min-width: 1025px) and (max-width: 1200px) {}
+
+@media only screen and (min-width: 1201px) {}

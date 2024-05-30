@@ -1,0 +1,295 @@
+@font-face {
+  font-family: "iransans";
+  src: url("../font/iransans.ttf");
+}
+
+html,
+body,
+ul,
+ol,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  font-family: "iransans";
+} /*# sourceMappingURL=main.css.map */
+
+body {
+  direction: rtl;
+}
+
+/* Start of sms */
+
+.full_width {
+  width: -webkit-fill-available;
+}
+
+.border_info {
+  border: 2px solid #85c5fe;
+}
+
+.btn_grad {
+  background: rgb(1, 167, 234);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(1, 167, 234, 1) 0%,
+    rgba(20, 115, 189, 1) 50%,
+    rgba(1, 167, 234, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(1, 167, 234, 1) 0%,
+    rgba(20, 115, 189, 1) 50%,
+    rgba(1, 167, 234, 1) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(1, 167, 234, 1) 0%,
+    rgba(20, 115, 189, 1) 50%,
+    rgba(1, 167, 234, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#01a7ea",endColorstr="#01a7ea",GradientType=1);
+}
+
+.btn_grad:hover {
+  box-shadow: none;
+}
+
+.btn_shadow {
+  box-shadow: 0px 3px 3px 0px #00000069;
+}
+
+button {
+  cursor: pointer;
+}
+
+.rounded_7 {
+  border-radius: 7px !important;
+}
+
+form#sms {
+  width: fit-content;
+}
+
+form#sms > input {
+  width: 2.5rem;
+  margin: 0 0.5rem 0 0;
+}
+
+/* End of sms */
+
+/* Start of main_body */
+.header {
+  height: 3rem;
+  background-color: #1473bd;
+  font-family: "iransans";
+  color: #fff;
+}
+
+h1 {
+  font-size: 1rem;
+}
+
+h6 {
+  font-size: 0.75rem;
+}
+
+.px-3 {
+  padding-top: 1rem;
+}
+
+.group_name {
+  font-family: "iransans";
+  color: #1d5da9;
+  border: 1px solid #1473bd;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  text-align: right;
+  padding: 0.3rem;
+}
+
+.empty {
+  min-height: 1rem;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0.5rem;
+  color: #1d5da9;
+  font-size: 0.8rem;
+}
+
+.box_cat_parent {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.box_cat {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.box {
+  background-color: #ebf6ff;
+  border: 1px solid rgba(20, 115, 189, 0.31);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.14);
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 0.62rem;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.box svg {
+  width: 22px;
+  height: 22px;
+}
+
+.box_title {
+  font-size: 0.7rem;
+  color: #1d5da9;
+}
+
+.cat {
+  margin: 0 0.5rem 1rem 0.5rem;
+}
+
+.rapid_access {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(20, 115, 189, 0.44);
+}
+
+.rapid_access1{
+  position: fixed;
+  bottom: 0;
+  width: 90vw;
+}
+
+.item_ {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+.item_circle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2rem;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.item_icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.item_title {
+  font-size: 0.6rem;
+  color: #1d5da9;
+}
+
+/* End of main_body */
+
+/* Start of colors */
+.bg_purple {
+  background-color: #673ab7;
+}
+
+.bg_green {
+  background-color: #82cf01;
+}
+
+.bg_gray {
+  background-color: #48696e;
+}
+
+.bg_orange {
+  background-color: #fd9900;
+}
+
+.bg_blue {
+  background-color: #01a7ea;
+}
+
+/* End of colors */
+
+/* Start of myDebt */
+.my_card {
+  margin: 0 auto 0.6rem auto;
+  border-radius: 0.4rem;
+  position: relative;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.card table td {
+  border-top: none;
+  text-align: right;
+  padding: 0.3rem;
+  font-size: 0.8rem;
+  color: #1d5da9;
+}
+
+td.td_title{
+  direction: ltr;
+}
+
+td.td_title::after {
+  content: " « ";
+}
+
+.mande {
+  font-size: 0.93rem;
+}
+
+.pay_btn {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+  background-color: #82CF01;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.pay_btn_icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}

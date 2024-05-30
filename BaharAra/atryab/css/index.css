@@ -1,0 +1,404 @@
+@font-face {
+    font-family: "iransans";
+    src: url("../../webapp/font/IRANSansWeb(FaNum).ttf");
+}
+
+@font-face {
+    font-family: "Yekan Bakh FaNum";
+    src: url("../fonts/YEKANBAKHFANUM-LIGHT.TTF");
+}
+
+@font-face {
+    font-family: "yekan_bold";
+    src: url("../fonts/YEKANBAKHFANUM-BOLD.TTF");
+}
+
+@font-face {
+    font-family: "peyda_bold";
+    src: url("../fonts/PEYDA-EXTRABOLD.TTF");
+}
+
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+}
+
+.main img {
+    width: 8rem;
+    border-radius: 0.3rem;
+    box-shadow: 0 0 3px #000;
+    cursor: pointer;
+}
+
+.hide {
+    display: none;
+}
+
+.vasat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    margin-top: 5vh;
+}
+
+.btn-start {
+    width: 15rem;
+    position: absolute;
+    top: 19rem;
+    left: 17rem;
+    background-color: #131313;
+    color: #fff;
+    font-family: Yekan Bakh FaNum;
+    font-weight: bold;
+}
+
+.btn-start1 {
+    width: 15rem;
+    background-color: #131313;
+    color: #fff;
+    font-family: Yekan Bakh FaNum;
+    font-weight: bold;
+}
+
+.btn-start:hover {
+    background-color: #131313bf;
+}
+
+.lvl-1, .lvl-2, .lvl-3, .lvl-4, .lvl-5, .lvl-6, .lvl-7, .lvl-8, .lvl-9, .lvl-10, .lvl-11, .lvl-12 {
+    display: none;
+    padding: 1rem;
+    font-family: iransans;
+    text-align: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 90%;
+    margin: 5rem auto 0;
+}
+
+.result {
+    padding: 1rem;
+    font-family: iransans;
+    text-align: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.lvl-2 {
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.lvl-2 span {
+    margin-bottom: 2rem;
+}
+
+.lvl-2 img {
+    cursor: pointer;
+    width: 6rem;
+    border: 1px solid silver;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 1px 1px 7px silver;
+}
+
+.lvl-3 {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.lvl-12 {
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.q_r1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+.q_r1 input[type=radio] {
+    width: 2rem;
+    height: 2rem;
+    margin-top: -0.1rem;
+    cursor: pointer;
+}
+
+.q_r1 label {
+    margin-right: 2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    text-align: right;
+}
+
+textarea {
+    width: 15rem;
+}
+
+.lvl-3 .btn-start1 {
+    margin-top: 1rem;
+}
+
+.start {
+    height: inherit;
+    width: inherit;
+}
+
+#range_num {
+    border-radius: 50%;
+    background: #efefef;
+    width: 5rem;
+    height: 5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: space-around;
+    align-items: center;
+    margin: 1rem auto;
+    border: 1px solid silver;
+    box-shadow: 0px 0px 4px #a9a9a9;
+    font-size: 2rem;
+}
+
+input[type='range'] {
+    overflow: hidden;
+    width: 100%;
+    -webkit-appearance: none;
+    background-color: #b3b3b3;
+    border-radius: 1rem;
+    height: 1rem;
+}
+
+label.form-label {
+    font-family: 'yekan_bold';
+}
+
+.form-check {
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.result {
+    font-family: Yekan Bakh FaNum;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.part_1, .part_2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.5rem;
+    margin: 0 auto 2.5rem auto;
+}
+
+#style_name {
+    font-family: 'yekan_bold';
+    font-size: 1.2rem;
+    background: #000;
+    color: #fff;
+    border-radius: 0.3rem;
+    padding: 0.3rem;
+}
+
+#smell_group_name {
+    font-family: 'yekan_bold';
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.style_smell {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 1rem;
+    overflow: hidden;
+    align-items: stretch;
+}
+
+.story_pic {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0.2rem;
+    align-items: center;
+}
+
+.story_pic a {
+    background: #c3c1c1;
+    color: #000;
+    font-weight: bold;
+}
+
+
+span#style_name {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+span#style_desc {
+    text-align: justify;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+.story_pic img, .package_image img {
+    border-radius: 0.3rem;
+    box-shadow: 0px 0px 4px #7d7d7d;
+    width: 15rem;
+    height: 100%;
+    cursor: default;
+
+}
+
+.part_2 .radif:first-child {
+    width: 100%;
+    background-color: #000;
+    border-radius: 0.3rem;
+}
+
+.btn_black {
+    background-color: #131313;
+    color: #fff;
+}
+
+.radif {
+    padding: 0.3rem;
+    text-align: center;
+}
+
+.package_desc {
+    width: 20rem;
+    text-align: justify;
+    font-weight: normal;
+}
+
+.package_image {
+    border-radius: 0.3rem;
+    width: 23vw;
+    height: 80vh;
+}
+
+.group_info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.3rem;
+}
+
+.radif button {
+    width: 100%;
+}
+
+.item {
+    background: #fbfbfb;
+    padding: 0.3rem;
+    border-radius: 0.3rem;
+    border: 1px dashed silver;
+
+}
+
+.items {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 0.9rem;
+    margin: 1rem 0;
+}
+
+.power_points {
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+.offer_pic img {
+    margin-left: 0.5rem;
+    border-radius: 0.3rem;
+    box-shadow: 0px 0px 4px #7d7d7d;
+    cursor: pointer;
+    margin-bottom: 0.7rem;
+    width: 8.5rem;
+}
+
+.part_3 {
+    margin-bottom: 1rem;
+    height: inherit;
+}
+
+.part_3 .radif {
+    margin-top: 1rem;
+    height: inherit;
+}
+
+.offer_title {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.part_11 {
+    font-size: 0.9rem;
+}
+
+#answer, #uids {
+    display: none;
+}
+
+svg {
+    rotate: 20deg;
+}
+
+.font-bold {
+    font-family: 'yekan_bold';
+}
+
+.orange {
+    border: 4px solid darkorange;
+}
+
+.btn {
+    margin: 0 auto;
+    width: 100%;
+}
+
+span#style_titr {
+    font-family: 'yekan_bold';
+}

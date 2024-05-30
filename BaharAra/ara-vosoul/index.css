@@ -1,0 +1,89 @@
+@font-face { 
+    font-family: 'Titr';
+    src: url('B Titr.ttf');
+}
+@font-face {
+    font-family: 'bnazanin';
+    src: url('bnazanin.ttf');
+}
+body {
+    padding: 0;
+    margin: 0;
+    outline: 0;
+    box-sizing: border-box;
+    direction: rtl;
+    font-family: 'bnazanin';
+}
+
+.logo img {
+    width: 100px;
+}
+
+.logo {
+    text-align: center;
+    margin: 1rem auto;
+}
+
+.login {
+    background: #f2f2f21a;
+    margin: 1rem auto;
+    text-align: center;
+    border-radius: 1rem;
+    box-shadow: 3px 5px 14px silver;
+    padding: 2rem;
+    width: 100%;
+}
+.final {
+    background: #f2f2f21a;
+    margin: 1rem auto;
+    text-align: center;
+    border-radius: 1rem;
+    box-shadow: 3px 5px 14px silver;
+    padding: 2rem;
+    width: 100%;
+    display: none;
+}
+
+.legend {
+    font-size: 6pt;
+}
+
+@media only screen and (min-width:600px) {
+    .login,.final {
+        width: 51%;
+    }
+}
+@media only screen and (min-width:1000px) {
+    .login,.final {
+        width: 35%;
+    }
+}
+
+h5 {
+    text-align: center;
+    font-style: italic;
+
+}
+input[type='tel']{
+    text-align: center;
+    letter-spacing: 6pt;
+    border: none;
+    width: 100%;
+    outline: none;
+    box-shadow: 3px 2px 10px silver;
+    margin: 2rem auto;
+    color: green;
+    font-weight: bold;
+    font-size: 14pt;
+}
+span.subtitle{
+    color: palevioletred;
+    font-size: 14pt;
+}
+span#pay {
+    font-family: 'Titr';
+    font-size: 16pt;
+}
+textarea{
+    height: 170px;
+}
