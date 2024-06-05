@@ -88,6 +88,11 @@ form#sms > input {
   background-color: #1473bd;
   font-family: "iransans";
   color: #fff;
+  position: fixed;
+  width: 100vw;
+  top: 0;
+  right: 0;
+  z-index: 9;
 }
 
 h1 {
@@ -102,6 +107,10 @@ h6 {
   padding-top: 1rem;
 }
 
+.px_05 {
+  padding: 0.5rem !important;
+}
+
 .group_name {
   font-family: "iransans";
   color: #1d5da9;
@@ -110,7 +119,6 @@ h6 {
   border-left: none;
   border-right: none;
   text-align: right;
-  padding: 0.3rem;
 }
 
 .empty {
@@ -121,6 +129,7 @@ h6 {
   padding: 0.5rem;
   color: #1d5da9;
   font-size: 0.8rem;
+  margin-top: 3rem;
 }
 
 .box_cat_parent {
@@ -177,8 +186,14 @@ h6 {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   border-top: 1px solid rgba(20, 115, 189, 0.44);
+  position: fixed;
+  bottom: 0;
+  background: #e9f1f7;
+  width: 100vw;
+  color: #fff;
+  right: 0;
 }
 
 .rapid_access1 {
@@ -219,6 +234,28 @@ h6 {
   color: #1d5da9;
 }
 
+.gray_layer {
+  width: 100vw;
+  height: 100vh;
+  background-color: gray;
+  opacity: 0.4;
+  position: fixed;
+  z-index: 1;
+}
+
+.nav_drawer {
+  width: 50vw;
+  background-color: #fff;
+  height: 100vh;
+  position: fixed;
+  z-index: 2;
+}
+
+.nav_drawer,
+.gray_layer {
+  display: none;
+}
+
 /* End of main_body */
 
 /* Start of colors */
@@ -227,7 +264,11 @@ h6 {
 }
 
 .bg_green {
-  background-color: #82cf01;
+  background-color: #82cf01 !important;
+}
+
+.bg_green_dark {
+  background-color: #4caf50 !important;
 }
 
 .bg_gray {
@@ -242,6 +283,22 @@ h6 {
   background-color: #01a7ea;
 }
 
+.bg_blue_very_dark {
+  background-color: #094661;
+}
+
+.bg_dark_blue {
+  background-color: #1473bd;
+}
+
+.bg_grey {
+  background-color: #f1f1f1;
+  color: #1d5da9;
+}
+
+.box_shadow_none {
+  box-shadow: none !important;
+}
 /* End of colors */
 
 /* Start of myDebt and myReq*/
@@ -249,6 +306,8 @@ h6 {
   margin: 0 auto 0.6rem auto;
   border-radius: 0.4rem;
   position: relative;
+  background-color: rgba(235, 246, 255, 0.5);
+  border: 1px solid rgba(20, 115, 189, 0.31);
 }
 
 .table {
@@ -263,12 +322,20 @@ h6 {
   color: #1d5da9;
 }
 
-td.td_title {
+.td_title {
   direction: ltr;
 }
 
-td.td_title::after {
+.td_title::after {
   content: " « ";
+}
+
+.td_title_::after {
+  content: "";
+}
+
+.td_title_ {
+  direction: ltr;
 }
 
 .mande {
@@ -277,7 +344,7 @@ td.td_title::after {
 
 .pay_btn {
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 4.5rem;
   left: 0.5rem;
   background-color: #82cf01;
   width: 2.6rem;
@@ -298,6 +365,15 @@ td.td_title::after {
 
 .pay_btn {
   cursor: pointer;
+  bottom: 0.5rem;
+}
+
+.pay_btn1 {
+  bottom: 4.5rem !important;
+}
+.pay_btn2 {
+  bottom: -1rem !important;
+  left: 45%;
 }
 
 /* End my Debt and Req */
@@ -311,6 +387,7 @@ td.td_title::after {
   flex-direction: row;
   justify-content: space-between;
   font-size: 0.8rem;
+  gap: 0.1rem;
 }
 
 .transactions,
@@ -340,4 +417,252 @@ td.td_title::after {
   font-size: 0.7rem;
   color: #fff;
   cursor: pointer;
+}
+
+.g_20 {
+  gap: 20%;
+  font-size: 0.85rem !important;
+}
+
+.mb_5 {
+  margin-bottom: 5rem;
+}
+
+.tarikh {
+  direction: ltr;
+}
+
+/* End of active course */
+
+/* Start of user Debt and req */
+.course_Title {
+  width: 5rem;
+}
+
+.tasviye_btn {
+  color: #fff !important;
+  background: #f44336;
+  border-radius: 1rem;
+  cursor: pointer;
+  padding: 0.1rem !important;
+}
+
+.sum {
+  font-size: 0.8rem !important;
+}
+.rounded-2 {
+  border-radius: 2rem;
+  height: 1.6rem;
+}
+
+/* End of user Debt and Req */
+
+/* Start of wallet */
+.wallet_charge {
+  width: 10rem;
+  vertical-align: middle;
+}
+
+.va_middle {
+  vertical-align: middle !important;
+}
+
+.d-rtl {
+  direction: rtl;
+}
+
+.click {
+  cursor: pointer;
+}
+.click:hover {
+  background-color: #7cb342;
+}
+
+.td_title_ span {
+  margin-right: 0.5rem;
+}
+
+/* End of wallet */
+
+/* Start of contacts */
+.contact_btn {
+  bottom: -1.4rem;
+}
+
+.input_group_height {
+  height: 1.8rem;
+}
+
+.user_info {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  box-shadow: 0px 3px 6px rgb(20 115 189 / 33%);
+  font-size: 0.9rem;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+
+.user_info1 {
+  background: #01a7ea;
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  box-shadow: none;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user_tel {
+  border: 1px dotted silver;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  font-size: 0.8rem;
+}
+
+.w-1 {
+  width: 1rem;
+}
+.w-2 {
+  width: 2rem;
+}
+.w-3 {
+  width: 3rem;
+}
+.w-4 {
+  width: 4rem;
+}
+.w-5 {
+  width: 5rem;
+}
+.w-6 {
+  width: 6rem;
+}
+.w-7 {
+  width: 7rem;
+}
+.w-8 {
+  width: 8rem;
+}
+.w-9 {
+  width: 9rem;
+}
+
+.mb_4 {
+  margin-bottom: 4rem !important;
+}
+
+.add_user {
+  bottom: -1.4rem;
+  left: 5rem;
+}
+
+.record {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  background-color: #1473bd;
+  border-top-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+}
+
+.user_img {
+  padding: 0.5rem;
+}
+
+.other_btn {
+  display: flex;
+  gap: 1rem;
+}
+
+a:link,
+a:visited {
+  color: #fff;
+}
+
+.border_none {
+  border: none;
+}
+
+.selected_user,
+.selected_user div {
+  border-radius: 1rem !important;
+  font-size: 0.7rem !important;
+  width: fit-content !important;
+  background: darkcyan !important;
+  display: inline-block !important;
+}
+
+.user_name.td_title_ {
+  direction: rtl;
+}
+
+.user_name svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-left: 0.5rem;
+}
+
+/* End of new course */
+
+/* Start of new transaction */
+.form-check-label span {
+  margin: 0 0.3rem;
+}
+/* End of new transaction */
+
+/* Start of active course */
+
+.user_infos {
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 0.4rem;
+  border-radius: 0.2rem;
+  box-shadow: 0px 3px 6px rgb(20 115 189 / 33%);
+  font-size: 0.9rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-switch .form-check-label {
+  padding-right: 2.5rem;
+  padding-top: 0.2rem;
+}
+
+.form-switch .form-check-input {
+  height: 1rem !important;
+  width: 2rem !important;
+}
+
+/* End of active course */
+
+/* Start of details of active course */
+.cat1 {
+  margin: 0 0.5rem 1rem 0.5rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.6rem;
+}
+/* End of details of active course */
+
+/* ----------------------- Media Queries ----------------------- */
+@media only screen and (min-width: 340px) {
+  .card table td {
+    font-size: 0.8rem;
+  }
 }

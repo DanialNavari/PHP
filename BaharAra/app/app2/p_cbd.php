@@ -119,13 +119,13 @@ if ($line == '5') {
         }
     });
 
-    $('#codem').focusout(function() {
+    /* $('#codem').focusout(function() {
         let checkCodems = checkCodem();
         if (checkCodems == 0) {
             alert('کد ملی نادرست است');
             $('#codem').val("");
         }
-    });
+    }); */
 
     $("#positives").click(function() {
         codem = $('#codem').val();
