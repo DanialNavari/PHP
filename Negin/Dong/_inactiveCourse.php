@@ -35,9 +35,9 @@
                 <td><span class="unit"></span></td>
             </tr>
         </table>
-        <div class="pay_btn">
+        <div class="pay_btn" onclick="page('r','___reportEndCourse')">
             <div class="pay_btn_icon">
-                <?php echo $symbol; ?>
+                <?php echo $check; ?>
             </div>
         </div>
         <div class="share_link bg_blue font-weight-bold g_20">

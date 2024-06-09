@@ -1,4 +1,4 @@
-<div class="row empty"></div>
+<div class="row empty border_none"></div>
 <div class="cat">
     <div class="group_name">
         <h6 class="font-weight-bold">گزارش</h6>

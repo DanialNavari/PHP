@@ -67,52 +67,54 @@
     </div>
 </div>
 
+<!-- selected users -->
 <div class="cat mb-1">
-    <div class="card my_card border_none">
-        <div class="record">
-            <div class="user_img">
-                <img src="image/users/09105005289.jpg" alt="user" class="rounded-circle w-2">
-            </div>
-            <div class="user_info bg_dark_blue text-white user_infos">
-                <div class="user_name td_title_">دانیال نواری</div>
-                <div class="user_name td_title_">
-                    <input type="number" id="" class="form-control text-center rounded-2 w-6" placeholder="مبلغ">
-                </div>
-            </div>
-        </div>
-        <div class="edit_btn">
-            <div class="user_info user_info1 bg_dark_blue text-white">
-                <div class="user_tel"><a href="tel://09105005289" target="_blank">09105005289</a></div>
-                <div class="other_btn">
-                    <div class="edit_btn click"><?php echo $check_box; ?></div>
-                    <div class="del_btn click"><?php echo $del; ?></div>
-                </div>
-            </div>
+    <div class="card my_card border_none selected_user">
+        <div class="user_info bg_dark_blue text-white user-1" onclick="remove_from_course(1)">
+            <div class="user_name td_title_ pr-2 mx-auto">اشکان توکلی</span></div>
         </div>
     </div>
 </div>
 
-<div class="cat mb-1">
-    <div class="card my_card border_none bg_green">
-        <div class="record bg_green">
+<!-- users box -->
+<div class="cat mb-1" onclick="add_user_to_course(2)">
+    <div class="card my_card border_none bg_blue user-2-box">
+        <div class="record user-2-name">
             <div class="user_img">
                 <img src="image/user.png" alt="user" class="rounded-circle w-2">
             </div>
-            <div class="user_info bg_green text-white border_none box_shadow_none user_infos">
-                <div class="user_name td_title_">اشکان توکلی</div>
-                <div class="user_name td_title_">
-                    <input type="number" id="" class="form-control text-center rounded-2 w-6" placeholder="مبلغ" value="256000">
-                </div>
+            <div class="user_info text-white border_none box_shadow_none">
+                <div class="user_name td_title_">دانیال نواری</div>
             </div>
         </div>
         <div class="edit_btn">
-            <div class="user_info user_info1 bg_green_dark text-white">
-                <div class="user_tel"><a href="tel://09150026017" target="_blank">09150026017</a></div>
-                <div class="other_btn">
-                    <div class="edit_btn click"><?php echo $check_box; ?></div>
-                    <div class="del_btn click"><?php echo $del; ?></div>
-                </div>
+            <div class="user_info user_info1 bg_blue text-white user-2-tel">
+                <div class="user_tel"><a href="tel://09105005289" target="_blank">09105005289</a></div>
             </div>
         </div>
     </div>
 </div>
+<div class="cat mb-1" onclick="add_user_to_course(1)">
+    <div class="card my_card border_none bg_green_dark user-1-box">
+        <div class="record bg_green user-1-name">
+            <div class="user_img">
+                <img src="image/user.png" alt="user" class="rounded-circle w-2">
+            </div>
+            <div class="user_info text-white border_none box_shadow_none">
+                <div class="user_name td_title_">اشکان توکلی</div>
+            </div>
+        </div>
+        <div class="edit_btn">
+            <div class="user_info user_info1 bg_green_dark text-white user-1-tel">
+                <div class="user_tel"><a href="tel://09150026017" target="_blank">09150026017</a></div>
+                <!-- <div class="other_btn">
+                    <div class="edit_btn click1 add_user_to_course hide" data-value="user-1" onclick="add_user_to_course(1)" id="add-1"><?php echo $check_box; ?></div>
+                    <div class="del_btn click1" onclick="remove_from_course(1)" id="del-1"><?php echo $del; ?></div>
+                </div> -->
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="cat mb-1 h-1"></div>

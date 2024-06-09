@@ -22,6 +22,14 @@ body {
   direction: rtl;
 }
 
+.hide {
+  display: none;
+}
+
+.w-100 {
+  width: 100%;
+}
+
 /* Start of sms */
 
 .full_width {
@@ -83,7 +91,7 @@ form#sms > input {
 /* End of sms */
 
 /* Start of main_body */
-.header {
+.headers {
   height: 3rem;
   background-color: #1473bd;
   font-family: "iransans";
@@ -93,6 +101,7 @@ form#sms > input {
   top: 0;
   right: 0;
   z-index: 9;
+  box-shadow: 0px 2px 3px 0px silver;
 }
 
 h1 {
@@ -122,14 +131,12 @@ h6 {
 }
 
 .empty {
+  margin: 3rem 0.5rem 0.3rem 0.5rem;
   min-height: 1rem;
-  width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 0.5rem;
+  padding: 0.5rem 0.5rem 0.1rem 0.5rem;
   color: #1d5da9;
   font-size: 0.8rem;
-  margin-top: 3rem;
+  border-bottom: 1px solid rgba(20, 115, 189, 0.44);
 }
 
 .box_cat_parent {
@@ -153,16 +160,20 @@ h6 {
   background-color: #ebf6ff;
   border: 1px solid rgba(20, 115, 189, 0.31);
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.14);
-  width: 5.6rem;
-  height: 5.6rem;
+  width: 4.6rem;
+  height: 4.6rem;
   border-radius: 0.62rem;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   cursor: pointer;
+}
+
+.box:hover {
+  background-color: #c6e4fb;
 }
 
 .box svg {
@@ -187,13 +198,12 @@ h6 {
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
-  border-top: 1px solid rgba(20, 115, 189, 0.44);
   position: fixed;
   bottom: 0;
-  background: #e9f1f7;
+  background: #fff;
   width: 100vw;
-  color: #fff;
   right: 0;
+  box-shadow: 0px -1px 3px 0px silver;
 }
 
 .rapid_access1 {
@@ -208,15 +218,14 @@ h6 {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
   cursor: pointer;
+  border-radius: 0.3rem;
 }
 
 .item_circle {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 2rem;
-  color: #fff;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -225,13 +234,15 @@ h6 {
 }
 
 .item_icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
 }
 
 .item_title {
-  font-size: 0.6rem;
-  color: #1d5da9;
+  font-size: 0.7rem;
+  color: #212529;
+  display: none;
+  font-weight: bold;
 }
 
 .gray_layer {
@@ -257,49 +268,6 @@ h6 {
 }
 
 /* End of main_body */
-
-/* Start of colors */
-.bg_purple {
-  background-color: #673ab7;
-}
-
-.bg_green {
-  background-color: #82cf01 !important;
-}
-
-.bg_green_dark {
-  background-color: #4caf50 !important;
-}
-
-.bg_gray {
-  background-color: #48696e;
-}
-
-.bg_orange {
-  background-color: #fd9900;
-}
-
-.bg_blue {
-  background-color: #01a7ea;
-}
-
-.bg_blue_very_dark {
-  background-color: #094661;
-}
-
-.bg_dark_blue {
-  background-color: #1473bd;
-}
-
-.bg_grey {
-  background-color: #f1f1f1;
-  color: #1d5da9;
-}
-
-.box_shadow_none {
-  box-shadow: none !important;
-}
-/* End of colors */
 
 /* Start of myDebt and myReq*/
 .my_card {
@@ -416,7 +384,6 @@ h6 {
   padding: 0.3rem;
   font-size: 0.7rem;
   color: #fff;
-  cursor: pointer;
 }
 
 .g_20 {
@@ -432,6 +399,11 @@ h6 {
   direction: ltr;
 }
 
+.pay_btn3 {
+  bottom: -1rem !important;
+  left: 1rem;
+}
+
 /* End of active course */
 
 /* Start of user Debt and req */
@@ -441,7 +413,7 @@ h6 {
 
 .tasviye_btn {
   color: #fff !important;
-  background: #f44336;
+  background: #7cb342;
   border-radius: 1rem;
   cursor: pointer;
   padding: 0.1rem !important;
@@ -474,6 +446,11 @@ h6 {
 .click {
   cursor: pointer;
 }
+
+.click1 {
+  cursor: pointer;
+}
+
 .click:hover {
   background-color: #7cb342;
 }
@@ -504,6 +481,7 @@ h6 {
   font-size: 0.9rem;
   justify-content: flex-end;
   gap: 0.8rem;
+  margin: 0.2rem 0 0.2rem 0.4rem;
 }
 
 .user_info1 {
@@ -556,6 +534,10 @@ h6 {
   width: 9rem;
 }
 
+.w-30 {
+  width: 30%;
+}
+
 .mb_4 {
   margin-bottom: 4rem !important;
 }
@@ -588,10 +570,19 @@ h6 {
 a:link,
 a:visited {
   color: #fff;
+  text-decoration: none;
 }
 
 .border_none {
   border: none;
+}
+
+.selected_user {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .selected_user,
@@ -599,8 +590,10 @@ a:visited {
   border-radius: 1rem !important;
   font-size: 0.7rem !important;
   width: fit-content !important;
+}
+
+.selected_user div {
   background: darkcyan !important;
-  display: inline-block !important;
 }
 
 .user_name.td_title_ {
@@ -658,11 +651,189 @@ a:visited {
   justify-content: flex-start;
   gap: 0.6rem;
 }
+
+.transactions:hover,
+.payments:hover {
+  background: #8bc34a;
+}
+
+.bedehkar {
+  background: #d81b60 !important;
+  color: #fff !important;
+}
+
+.talabkar {
+  background: #8bc34a !important;
+  color: #fff !important;
+}
+
+.h-1 {
+  height: 0.5rem;
+}
+
 /* End of details of active course */
 
+/* Start of colors */
+:root {
+  --purple: #673ab7;
+  --green: #82cf01;
+  --green-dark: #4caf50;
+  --gray: #48696e;
+  --orange: #fd9900;
+  --blue: #01a7ea;
+
+  --menu-hover: #673ab71a;
+}
+
+.bg_hover {
+  background-color: var(--menu-hover);
+}
+
+.bg_purple {
+  background-color: var(--purple) !important;
+}
+
+.text_purple {
+  color: var(--purple) !important;
+}
+
+.bg_green {
+  background-color: var(--green) !important;
+}
+
+.text_green {
+  color: var(--green) !important;
+}
+
+.bg_green_dark {
+  background-color: var(--green-dark) !important;
+}
+
+.text_green_dark {
+  color: var(--green-dark) !important;
+}
+
+.bg_gray {
+  background-color: var(--gray);
+}
+
+.text_gray {
+  color: var(--gray);
+}
+
+.bg_orange {
+  background-color: var(--orange);
+}
+
+.text_orange {
+  color: var(--orange);
+}
+
+.bg_blue {
+  background-color: var(--blue);
+}
+
+.text_blue {
+  color: var(--blue);
+}
+
+.bg_blue_very_dark {
+  background-color: #094661;
+}
+
+.text_blue_very_dark {
+  color: #094661;
+}
+
+.bg_dark_blue {
+  background-color: #1473bd;
+}
+
+.text_dark_blue {
+  color: #1473bd;
+}
+
+.bg_blue_nice {
+  background-color: #ebf6ff;
+}
+
+.text_blue_nice {
+  color: #ebf6ff;
+}
+
+.bg_grey {
+  background-color: #f1f1f1;
+  color: #1d5da9;
+}
+
+.bg_talab {
+  background-color: #dcedc8;
+}
+
+.bg_bedehi {
+  background-color: #fce4ec;
+}
+
+.box_shadow_none {
+  box-shadow: none !important;
+}
+
+/* End of colors */
+
+/* Start of payments */
+.icon svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: #094661;
+}
+
+.floatingActionButton {
+  position: fixed;
+  bottom: 5rem;
+  left: 2rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.add_payments td {
+  padding: 0.2rem;
+}
+
+.add_payments {
+  z-index: 999;
+  position: absolute;
+  background: #fff;
+  top: 30%;
+  left: 0%;
+  padding: 0.4rem;
+}
+/* End of payments */
+
 /* ----------------------- Media Queries ----------------------- */
-@media only screen and (min-width: 340px) {
+@media screen and (min-width: 340px) {
   .card table td {
     font-size: 0.8rem;
+  }
+}
+
+@media screen and (min-width:376px) {
+  .add_payments {
+    z-index: 999;
+    position: absolute;
+    background: #fff;
+    top: 30%;
+    left: 6%;
+    padding: 0.4rem;
+  }
+}
+
+@media screen and (min-width:426px) {
+  .add_payments {
+    z-index: 999;
+    position: absolute;
+    background: #fff;
+    top: 30%;
+    left: 30%;
+    padding: 0.4rem;
   }
 }

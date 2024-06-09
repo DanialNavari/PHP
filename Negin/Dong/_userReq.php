@@ -8,8 +8,8 @@
             </tr>
             <tr>
                 <td class="td_title td_title_">نام افراد</td>
-                <td class="td_title_ text-center">سهم از بدهی</td>
-                <td class="td_title_ text-center">طلب <span>(ريال)</span></td>
+                <td class="td_title_ text-center">سهم</td>
+                <td class="td_title_ text-center">طلب (ريال)</td>
                 <td class="td_title_ text-center">تسویه</td>
             </tr>
             <tr class="bg_grey">

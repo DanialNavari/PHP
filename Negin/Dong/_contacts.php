@@ -48,9 +48,6 @@
             <tr class="white">
                 <td class="td_title_ font-weight-bold text-white">
                     <div class="input-group">
-                        <div class="input-group-prepend input_group_height">
-                            <button class="input-group-text btn btn-secondary" id="addon-wrapping"><?php echo $search; ?></button>
-                        </div>
                         <input type="text" class="input_group_height text-right form-control sum" placeholder="نام مخاطب را جستجو کنید" aria-label="Username" aria-describedby="addon-wrapping">
                     </div>
                 </td>
