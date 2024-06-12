@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="css/main.css" />
     <title><?php echo $page_title; ?></title>
+    <?php include_once('symbol.php'); ?>
 </head>
 
 <body>

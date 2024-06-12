@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="nav_drawer"><?php require_once('_nav.php'); ?></div>
         <div class="gray_layer"></div>
         <div class="headers text-right pr-3">

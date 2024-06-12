@@ -9,7 +9,7 @@
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
                 <td class="font-weight-bold text-center" id="courseName">دوره جدید</td>
-                <td class="font-weight-bold text-center click" onclick="changeCourseName()"><?php echo $edit; ?></td>
+                <td class="font-weight-bold text-center click" onclick="course()"><?php echo $edit; ?></td>
             </tr>
             <tr>
                 <td class="td_title">تعداد افراد</td>
@@ -108,51 +108,75 @@
 <!-- selected users -->
 <div class="cat mb-1">
     <div class="card my_card border_none selected_user">
-        <div class="user_info bg_dark_blue text-white user-1" onclick="remove_from_course(1)">
-            <div class="user_name td_title_ pr-2 mx-auto">اشکان توکلی</span></div>
-        </div>
+
     </div>
 </div>
 
 <!-- users box -->
 <div class="cat mb-1" onclick="add_user_to_course(2)">
-    <div class="card my_card border_none bg_blue user-2-box">
+    <div class="card my_card bg_blue user-2-box">
         <div class="record user-2-name">
-            <div class="user_img">
-                <img src="image/user.png" alt="user" class="rounded-circle w-2">
+            <div class="user_info text-white border_none box_shadow_none">
+                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                <div class="star">
+                    <span>دانیال نواری</span>
+                    <i><?php echo star(1, 1); ?></i>
+                </div>
             </div>
             <div class="user_info text-white border_none box_shadow_none">
-                <div class="user_name td_title_">دانیال نواری</div>
-            </div>
-        </div>
-        <div class="edit_btn">
-            <div class="user_info user_info1 bg_blue text-white user-2-tel">
-                <div class="user_tel"><a href="tel://09105005289" target="_blank">09105005289</a></div>
+                <a href="tel://09105005289" target="_blank">09105005289</a>
             </div>
         </div>
     </div>
 </div>
+
 <div class="cat mb-1" onclick="add_user_to_course(1)">
-    <div class="card my_card border_none bg_green_dark user-1-box">
-        <div class="record bg_green user-1-name">
-            <div class="user_img">
-                <img src="image/user.png" alt="user" class="rounded-circle w-2">
+    <div class="card my_card bg_blue user-1-box">
+        <div class="record user-1-name">
+            <div class="user_info text-white border_none box_shadow_none">
+                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                <div class="star">
+                    <span>اشکان توکلی</span>
+                    <i><?php echo star(0, 0); ?></i>
+                </div>
             </div>
             <div class="user_info text-white border_none box_shadow_none">
-                <div class="user_name td_title_">اشکان توکلی</div>
+                <a href="tel://09150026017" target="_blank">09150026017</a>
             </div>
         </div>
-        <div class="edit_btn">
-            <div class="user_info user_info1 bg_green_dark text-white user-1-tel">
-                <div class="user_tel"><a href="tel://09150026017" target="_blank">09150026017</a></div>
-                <!-- <div class="other_btn">
-                    <div class="edit_btn click1 add_user_to_course hide" data-value="user-1" onclick="add_user_to_course(1)" id="add-1"><?php echo $check_box; ?></div>
-                    <div class="del_btn click1" onclick="remove_from_course(1)" id="del-1"><?php echo $del; ?></div>
-                </div> -->
-            </div>
-        </div>
-        
     </div>
+</div>
+
+<div class="add_fee hide">
+    <table class="border_none mx-auto">
+        <tr class="font-weight-bold">
+            <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
+            <td>
+                <input class="form-select sum font-weight-bold" type="number" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="add_course hide">
+    <table class="border_none mx-auto">
+        <tr class="font-weight-bold">
+            <td class="sum pl-3 w-30">نام دوره</td>
+            <td>
+                <input class="form-control sum font-weight-bold" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
+            </td>
+        </tr>
+    </table>
 </div>
 
 <div class="cat mb-1 h-1"></div>

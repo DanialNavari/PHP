@@ -10,7 +10,7 @@
         </div>
         <div class="item_title">خانه</div>
     </div>
-    <div class="item_" onclick="page('r','_wallet','wallet')" id="wallet">
+    <div class="item_" id="wallet">
         <div class="item_circle">
             <div class="item_icon"><?php echo $wallet; ?></div>
         </div>

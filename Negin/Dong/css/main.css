@@ -84,8 +84,41 @@ form#sms {
 }
 
 form#sms > input {
-  width: 2.5rem;
-  margin: 0 0.5rem 0 0;
+  width: 15%;
+  margin: 0 auto;
+}
+
+.alertBox {
+  position: fixed;
+  bottom: 0;
+  width: 90%;
+}
+
+.alertBox {
+  display: none;
+}
+
+.alert span {
+  margin-right: 0.2rem;
+}
+
+#hourGlass {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  direction: ltr;
+}
+
+#hourGlass svg {
+  width: fit-content;
+  padding: 0;
+  margin: 0;
+}
+
+#hourGlass span {
+  width: fit-content;
 }
 
 /* End of sms */
@@ -197,7 +230,7 @@ h6 {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   position: fixed;
   bottom: 0;
   background: #fff;
@@ -220,6 +253,7 @@ h6 {
   justify-content: center;
   cursor: pointer;
   border-radius: 0.3rem;
+  width: 3rem;
 }
 
 .item_circle {
@@ -234,12 +268,12 @@ h6 {
 }
 
 .item_icon svg {
-  width: 1rem;
-  height: 1rem;
+  width: 2rem;
+  height: 1.5rem;
 }
 
 .item_title {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #212529;
   display: none;
   font-weight: bold;
@@ -271,7 +305,7 @@ h6 {
 
 /* Start of myDebt and myReq*/
 .my_card {
-  margin: 0 auto 0.6rem auto;
+  margin: 0 auto 0.4rem auto;
   border-radius: 0.4rem;
   position: relative;
   background-color: rgba(235, 246, 255, 0.5);
@@ -380,10 +414,22 @@ h6 {
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   padding: 0.3rem;
   font-size: 0.7rem;
   color: #fff;
+}
+
+.end_course {
+  background-color: #000;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  width: 100%;
+}
+
+.end_course .btn {
+  font-size: 0.8rem;
+  padding: 0.3rem;
 }
 
 .g_20 {
@@ -422,6 +468,10 @@ h6 {
 .sum {
   font-size: 0.8rem !important;
 }
+
+.sum1 {
+  font-size: 0.75rem !important;
+}
 .rounded-2 {
   border-radius: 2rem;
   height: 1.6rem;
@@ -441,6 +491,9 @@ h6 {
 
 .d-rtl {
   direction: rtl;
+}
+.d-ltr {
+  direction: ltr;
 }
 
 .click {
@@ -475,13 +528,17 @@ h6 {
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  padding: 0.4rem;
+  padding: 0.2rem;
   border-radius: 0.2rem;
   box-shadow: 0px 3px 6px rgb(20 115 189 / 33%);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   justify-content: flex-end;
-  gap: 0.8rem;
+  gap: 0.5rem;
   margin: 0.2rem 0 0.2rem 0.4rem;
+}
+
+.pt_0-5 {
+  padding-top: 0.5rem;
 }
 
 .user_info1 {
@@ -508,6 +565,9 @@ h6 {
 
 .w-1 {
   width: 1rem;
+}
+.w-1-5 {
+  width: 1.5rem;
 }
 .w-2 {
   width: 2rem;
@@ -551,15 +611,15 @@ h6 {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: stretch;
+  justify-content: space-between;
+  align-items: center;
   background-color: #1473bd;
   border-top-right-radius: 0.5rem;
   border-top-left-radius: 0.5rem;
 }
 
 .user_img {
-  padding: 0.5rem;
+  padding: 0.1rem;
 }
 
 .other_btn {
@@ -606,11 +666,43 @@ a:visited {
   margin-left: 0.5rem;
 }
 
+.star {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+svg.bi.bi-star-fill,
+svg.bi.bi-star-half {
+  color: gold;
+  margin-left: 0.2rem;
+}
+
+.tools {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+}
+
 /* End of new course */
 
 /* Start of new transaction */
 .form-check-label span {
   margin: 0 0.3rem;
+}
+
+.h-1-8 {
+  height: 1.8rem;
+}
+
+input[radio] {
+  width: 1rem;
+  height: 1rem;
 }
 /* End of new transaction */
 
@@ -652,11 +744,6 @@ a:visited {
   gap: 0.6rem;
 }
 
-.transactions:hover,
-.payments:hover {
-  background: #8bc34a;
-}
-
 .bedehkar {
   background: #d81b60 !important;
   color: #fff !important;
@@ -687,6 +774,8 @@ a:visited {
 
 .bg_hover {
   background-color: var(--menu-hover);
+  border-bottom: 2px solid #673ab763;
+  border-radius: 0;
 }
 
 .bg_purple {
@@ -799,13 +888,20 @@ a:visited {
   padding: 0.2rem;
 }
 
-.add_payments {
+.fs-0-75 {
+  font-size: 0.75rem !important;
+}
+
+.add_payments,
+.add_course,
+.add_fee {
   z-index: 999;
   position: absolute;
   background: #fff;
   top: 30%;
   left: 0%;
   padding: 0.4rem;
+  width: 100%;
 }
 /* End of payments */
 
@@ -816,18 +912,19 @@ a:visited {
   }
 }
 
-@media screen and (min-width:376px) {
+@media screen and (max-width: 320px) {
   .add_payments {
-    z-index: 999;
-    position: absolute;
-    background: #fff;
-    top: 30%;
-    left: 6%;
-    padding: 0.4rem;
+    left: 0%;
   }
 }
 
-@media screen and (min-width:426px) {
+@media screen and (min-width: 321px) and (max-width: 375px) {
+  .add_payments {
+    left: 6%;
+  }
+}
+
+@media screen and (min-width: 426px) {
   .add_payments {
     z-index: 999;
     position: absolute;

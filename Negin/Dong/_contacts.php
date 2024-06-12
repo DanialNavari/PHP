@@ -57,42 +57,46 @@
 </div>
 
 <div class="cat mb-1">
-    <div class="card my_card border_none">
-        <div class="record">
-            <div class="user_img">
-                <img src="image/users/09105005289.jpg" alt="user" class="rounded-circle w-2">
+    <div class="card my_card bg_blue user-1-box">
+        <div class="record user-1-name">
+            <div class="user_info text-white border_none box_shadow_none">
+                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                <div class="star">
+                    <span>دانیال نواری</span>
+                    <a href="tel://09105005289" target="_blank">09105005289</a>
+                </div>
             </div>
-            <div class="user_info bg_dark_blue text-white">
-                <div class="user_name td_title_">دانیال نواری</div>
-            </div>
-        </div>
-        <div class="edit_btn">
-            <div class="user_info user_info1 bg_dark_blue text-white">
-                <div class="user_tel"><a href="tel://09105005289" target="_blank">09105005289</a></div>
-                <div class="other_btn">
-                    <div class="edit_btn click"><?php echo $edit; ?></div>
-                    <div class="del_btn click"><?php echo $del; ?></div>
+            <div class="user_info text-white border_none box_shadow_none">
+                <div class="star">
+                    <div class="tools">
+                        <i class="d-ltr"><?php echo star(1, 1); ?></i>
+                    </div>
+                    <div class="tools">
+                        <i><?php echo $del; ?></i> <i><?php echo $edit; ?></i>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <div class="cat mb-1">
-    <div class="card my_card border_none">
-        <div class="record">
-            <div class="user_img">
-                <img src="image/user.png" alt="user" class="rounded-circle w-2">
+    <div class="card my_card bg_blue user-1-box">
+        <div class="record user-1-name">
+            <div class="user_info text-white border_none box_shadow_none">
+                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                <div class="star">
+                    <span>دانیال نواری</span>
+                    <a href="tel://09105005289" target="_blank">09105005289</a>
+                </div>
             </div>
-            <div class="user_info bg_dark_blue text-white">
-                <div class="user_name td_title_">اشکان توکلی</div>
-            </div>
-        </div>
-        <div class="edit_btn">
-            <div class="user_info user_info1 bg_dark_blue text-white">
-                <div class="user_tel"><a href="tel://09150026017" target="_blank">09150026017</a></div>
-                <div class="other_btn">
-                    <div class="edit_btn click"><?php echo $edit; ?></div>
-                    <div class="del_btn click"><?php echo $del; ?></div>
+            <div class="user_info text-white border_none box_shadow_none">
+                <div class="star">
+                    <div class="tools">
+                        <i class="d-ltr"><?php echo star(0, 0); ?></i>
+                    </div>
+                    <div class="tools">
+                        <i><?php echo $del; ?></i> <i><?php echo $edit; ?></i>
+                    </div>
                 </div>
             </div>
         </div>

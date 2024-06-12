@@ -11,7 +11,7 @@
             </tr>
         </table>
 
-        <table class="table">
+        <table class="table" onclick="payment(1)">
             <tr class="bg-white font-weight-bold">
                 <td class="text-primary text-center">اشکان توکلی</td>
                 <td class="text-primary text-center">دانیال نواری</td>
@@ -26,12 +26,6 @@
             </tr>
         </table>
 
-    </div>
-</div>
-
-<div class="floatingActionButton click1">
-    <div class="icon">
-        <?php echo $plus; ?>
     </div>
 </div>
 
@@ -75,4 +69,10 @@
             </td>
         </tr>
     </table>
+</div>
+
+<div class="floatingActionButton click1">
+    <div class="icon">
+        <?php echo $plus; ?>
+    </div>
 </div>

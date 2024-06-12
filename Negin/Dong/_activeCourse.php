@@ -18,10 +18,6 @@
                 <td class="font-weight-bold"><?php echo $edit; ?></td>
             </tr>
             <tr>
-                <td class="td_title tarikh">واحد پول</td>
-                <td class="font-weight-bold" colspan="2">ريال</td>
-            </tr>
-            <tr>
                 <td class="td_title">میانگین هزینه هر نفر</td>
                 <td class="font-weight-bold" colspan="2">2,000,000 <span class="unit">ريال</span></td>
             </tr>
@@ -35,11 +31,6 @@
             </tr>
 
         </table>
-        <div class="pay_btn pay_btn3 click" onclick="page('r','__activeCourse')">
-            <div class="pay_btn_icon">
-                <?php echo $check; ?>
-            </div>
-        </div>
         <div class="share_link bg_blue font-weight-bold g_20">
             <div class="inline_title td_title text-white">کل هزینه</div>
             <div class="inline_title hazine">5,000,000<span class="unit"> ريال</span></div>
@@ -61,9 +52,22 @@
         <div class="share_link bg_blue_very_dark font-weight-bold">
             <div class="inline_title">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                    <label class="form-check-label" for="flexSwitchCheckChecked">دوره پیش فرض</label>
+                    <input class="form-check-input" type="checkbox" role="switch" id="defaultCourse" checked>
+                    <label class="form-check-label" for="defaultCourse">دوره پیش فرض</label>
                 </div>
+            </div>
+            <div class="inline_title">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="disabledCourse">
+                    <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
+                </div>
+            </div>
+        </div>
+        <div class="proofs">
+            <div class="end_course transactions font-weight-bold">
+                <button class="btn btn-primary w-100 click1" ><?php echo $end_course; ?> اتمام دوره</button>
+                <button class="btn btn-warning w-100 click1"><?php echo $share; ?> لینک دوره</button>
+                <button class="btn btn-danger w-100 click1 fs-0-75"><?php echo $end_course; ?> حذف دوره</button>
             </div>
         </div>
     </div>
