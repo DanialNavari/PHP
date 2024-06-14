@@ -5,7 +5,7 @@
 
 <div class="cat">
     <div class="card my_card">
-        <table class="table table-hover">
+        <table class="table">
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
                 <td class="font-weight-bold text-center" id="courseName">دوره جدید</td>
@@ -32,7 +32,7 @@
             </tr>
             <tr class="hide w-100">
                 <td colspan="3">
-                    <button class="btn btn-success btn-sm w-100" id="savedate">ثبت تاریخ</button>
+                    <button class="btn btn-success btn-sm w-100" id="savedate">تغییر تاریخ</button>
                 </td>
             </tr>
             <tr>
@@ -68,17 +68,17 @@
                 <td class="td_title_ font-weight-bold text-white">
                     <div class="form-row">
                         <div class="col">
-                            <input type="text" class="input_group_height text-right form-control sum" placeholder="نام مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
+                            <input type="text" id="newContactName" class="input_group_height text-right form-control sum" placeholder="نام مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
                         </div>
                         <div class="col">
-                            <input type="tel" class="input_group_height text-right form-control sum" placeholder="شماره مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
+                            <input type="tel" id="newContactTel" class="input_group_height text-right form-control sum" placeholder="شماره مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
                         </div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td class="td_title_ font-weight-bold text-white">
-                    <button class="btn btn-success w-100 sum">اضافه کردن مخاطب</button>
+                    <button class="btn btn-success w-100 sum" onclick="addNewContact()">اضافه کردن مخاطب</button>
                 </td>
             </tr>
         </table>
@@ -97,7 +97,7 @@
             <tr class="white">
                 <td class="td_title_ font-weight-bold text-white">
                     <div class="input-group">
-                        <input type="text" class="input_group_height text-right form-control sum" placeholder="نام مخاطب را جستجو کنید" aria-label="Username" aria-describedby="addon-wrapping">
+                        <input type="text" class="input_group_height text-right form-control sum search_box" placeholder="نام مخاطب یا شماره موبایل را جستجو کنید" aria-label="Username" aria-describedby="addon-wrapping" onkeyup="searchContact()">
                     </div>
                 </td>
             </tr>
@@ -113,7 +113,7 @@
 </div>
 
 <!-- users box -->
-<div class="cat mb-1" onclick="add_user_to_course(2)">
+<div class="cat mb-1 contactBox" onclick="add_user_to_course(2)" data="دانیال نواری 09105005289">
     <div class="card my_card bg_blue user-2-box">
         <div class="record user-2-name">
             <div class="user_info text-white border_none box_shadow_none">
@@ -130,7 +130,7 @@
     </div>
 </div>
 
-<div class="cat mb-1" onclick="add_user_to_course(1)">
+<div class="cat mb-1 contactBox" onclick="add_user_to_course(1)" data="اشکان توکلی 09150026017">
     <div class="card my_card bg_blue user-1-box">
         <div class="record user-1-name">
             <div class="user_info text-white border_none box_shadow_none">
@@ -152,12 +152,12 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
             <td>
-                <input class="form-select sum font-weight-bold" type="number" />
+                <input class="form-control sum font-weight-bold" type="number" id="feeLimit" />
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
+                <button class="btn btn-success btn-sm w-100 save" id="saveCourseFee" onclick="change_value('feeLimit', 'moneyLimit')">تغییر محدودیت مالی</button>
             </td>
         </tr>
     </table>
@@ -168,19 +168,18 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">نام دوره</td>
             <td>
-                <input class="form-control sum font-weight-bold" />
+                <input class="form-control sum font-weight-bold" id="newCourseName" />
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
+                <button class="btn btn-success btn-sm w-100 save" id="saveCourseName" onclick="change_value('newCourseName', 'courseName')">تغییر نام دوره</button>
             </td>
         </tr>
     </table>
 </div>
 
 <div class="cat mb-1 h-1"></div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="static/js/lib/persian-date.min.js"></script>

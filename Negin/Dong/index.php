@@ -13,4 +13,6 @@ if ($security == true) {
     }
 
     require_once("main_bottom.php");
+} else {
+    echo '<script>window.location.assign("login.php")</script>';
 }

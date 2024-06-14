@@ -46,8 +46,22 @@
 }
 ?>
 <input type="hidden" id="path_name" value="<?php echo $h; ?>">
-<?php include_once('javascript.php'); ?>
+<input type="hidden" id="prev_page" value="
+<?php if (isset($_SERVER['HTTP_REFERER'])) {
+    echo $_SERVER['HTTP_REFERER'];
+} else {
+    echo '';
+} ?>">
 
+<div class="alertBox">
+    <div class="alert alert-danger alert-dismissible fade show sum1" role="alert">
+        <?php echo $alert; ?>
+        <span></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+<?php include_once('javascript.php'); ?>
 
 </body>
 

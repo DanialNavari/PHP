@@ -16,7 +16,3 @@ $rec = $tel;
     "$rec",  // recipient
     $patternVariables,  // pattern values
 ); */
-
-if (true) {
-    setcookie('verify', $vcode, 60, "/");
-}

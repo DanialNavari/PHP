@@ -10,7 +10,7 @@ require_once('symbol.php');
         <h6 class="mt-2 text-primary">دنگ و دونگ</h6>
         <div class="row mt-5"></div>
         <div class="row mt-5"></div>
-        <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="شماره موبایل: 09123456789" id="tel" />
+        <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="09123456789" id="tel" />
         <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow" onclick="login()">ورود به برنامه</button>
     </div>
     <div class="alertBox">

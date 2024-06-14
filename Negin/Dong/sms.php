@@ -1,12 +1,14 @@
 <?php
 $page_title = 'دنگ و دونگ';
-require_once('header.php');
 if (isset($_COOKIE['temp_tel'])) {
     $tel = $_COOKIE['temp_tel'];
     require_once('sendSMS.php');
+    setcookie("verify", $vcode, time() + 100, "/");
 } else {
     echo '<script>window.location.assign("./login.php")</script>';
 }
+require_once('header.php');
+echo $vcode;
 ?>
 
 <div class="container">
@@ -28,6 +30,13 @@ if (isset($_COOKIE['temp_tel'])) {
         <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow" onclick="check_code()">تایید کد</button>
     </div>
 
+    <div class="alertBox">
+        <div class="alert alert-danger alert-dismissible fade show sum1" role="alert">
+            <?php echo $alert; ?>
+            <span></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
 </div>
 <?php require_once('footer.php'); ?>
 <script>

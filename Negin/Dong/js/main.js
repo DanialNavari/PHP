@@ -174,6 +174,7 @@ function navigate(page) {
 function Toast(message) {
     $('.alertBox .alert span').text(message);
     $('.alertBox').fadeIn(300);
+    $('.rapid_access div').hide();
     hide_After_time(3000);
 }
 
@@ -205,6 +206,8 @@ $('.btn-close').click(function () {
 function hide_After_time(time) {
     const hide_After_time = setTimeout(function () {
         $('.alertBox').fadeOut('slow');
+        $('.rapid_access div').fadeIn('slow');
+        $('input').css('border', '1px solid #ced4da');
     }, time);
 }
 
@@ -223,11 +226,17 @@ function check_code() {
         url: "server.php",
         data: 'verify=' + user_code,
         success: function (response) {
-            if (response == true) {
+            if (response == 1) {
                 clearInterval(cd);
                 navigate('.');
-            } else {
-                Toast('خطا 102 - کد وارد شده نادرست می باشد');
+            } else if (response == 0) {
+                Toast("خطا 102 - کد وارد شده نادرست می باشد");
+                $('#c1').val("");
+                $('#c2').val("");
+                $('#c3').val("");
+                $('#c4').val("");
+                $('#c5').val("");
+                $('#c6').val("");
             }
         }
     });
@@ -265,6 +274,59 @@ function next_place(event, id) {
         }
     } else {
         $('#c' + (id - 1)).focus();
+    }
+}
+
+function change_value(input_id, text_id) {
+    var newData = $('#' + input_id).val();
+    if (newData.length > 0) {
+        $('#' + text_id).text(newData);
+        $('.gray_layer').click();
+        $('#newCourseName').val("");
+    } else {
+        $('.gray_layer').click();
+    }
+}
+
+function addNewContact() {
+    var contact_name = $('#newContactName').val();
+    var contact_tel = $('#newContactTel').val();
+    if (contact_name.length > 0) {
+        $.ajax({
+            data: 'add_contact=ok&contact_name=' + contact_name + '&contact_tel=' + contact_tel,
+            url: 'server.php',
+            type: 'POST',
+            success: function (response) {
+                if (response == true) {
+
+                } else {
+                    Toast('خطای 103 - ثبت مخاطب جدید ناموفق بود');
+                    alert_border('newContactTel');
+                    alert_border('newContactName');
+                }
+            }
+        });
+    } else {
+        Toast('خطای 104- نام مخاطب را وارد کنید');
+        alert_border('newContactName');
+    }
+}
+
+function alert_border(element_id) {
+    $('#' + element_id).css('border', '1px solid #E91E63');
+}
+
+function bormal_border(element_id) {
+    $('#' + element_id).css('border', '1px solid #ced4da;');
+}
+
+function searchContact() {
+    var search = $('.search_box').val();
+    if (search == '') {
+        $(".contactBox").show();
+    } else {
+        $(".contactBox").hide();
+        $(".contactBox").filter("[data*='" + search + "']").show();
     }
 }
 

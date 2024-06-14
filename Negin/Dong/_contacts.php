@@ -4,12 +4,12 @@
         <table class="table">
             <tr class="">
                 <td class="td_title_ va_middle w-4">نام کاربر</td>
-                <td class="font-weight-bold text-white"><input type="text" class="form-control rounded-2 text-center text-primary" tabindex="1"></td>
+                <td class="font-weight-bold text-white"><input type="text" class="form-control rounded-2 text-center text-primary" tabindex="1" id="newContactName"></td>
                 <td class="font-weight-bold"></td>
             </tr>
             <tr class="">
                 <td class="td_title_ va_middle w-4">موبایل</td>
-                <td class="font-weight-bold text-white"><input type="tel" class="form-control rounded-2 text-center text-primary" pattern="[0-9]{11}" tabindex="3"></td>
+                <td class="font-weight-bold text-white"><input type="tel" class="form-control rounded-2 text-center text-primary" pattern="[0-9]{11}" tabindex="3" id="newContactTel"></td>
                 <td class="font-weight-bold"></td>
             </tr>
             <tr>

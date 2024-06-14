@@ -91,7 +91,8 @@ form#sms > input {
 .alertBox {
   position: fixed;
   bottom: 0;
-  width: 90%;
+  width: 99%;
+  z-index: 99;
 }
 
 .alertBox {
@@ -135,6 +136,19 @@ form#sms > input {
   right: 0;
   z-index: 9;
   box-shadow: 0px 2px 3px 0px silver;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+#tel {
+  letter-spacing: 0.7rem;
+}
+
+.alert {
+  display: flex;
 }
 
 h1 {
@@ -236,6 +250,7 @@ h6 {
   background: #fff;
   width: 100vw;
   right: 0;
+  min-height: 71px;
   box-shadow: 0px -1px 3px 0px silver;
 }
 
@@ -411,7 +426,7 @@ h6 {
 .share_link {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
   gap: 0.4rem;
@@ -689,6 +704,10 @@ svg.bi.bi-star-half {
   gap: 1rem;
 }
 
+.save {
+  margin: 0.3rem auto;
+}
+
 /* End of new course */
 
 /* Start of new transaction */
@@ -905,6 +924,13 @@ input[radio] {
 }
 /* End of payments */
 
+/* Request course */
+.request_course input,
+.request_course textarea {
+  font-size: 0.9rem;
+  line-height: 1;
+  color: #00796b;
+}
 /* ----------------------- Media Queries ----------------------- */
 @media screen and (min-width: 340px) {
   .card table td {
