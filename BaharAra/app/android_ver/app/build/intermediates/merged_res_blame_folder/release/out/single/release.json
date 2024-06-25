@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "com.baharara.app-merged_res-5:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.baharara.app-main-6:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.baharara.app-main-6:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.baharara.app-main-6:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/layout_activity_main.xml.flat",
+        "source": "com.baharara.app-main-6:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.baharara.app-main-6:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/xml_data_extraction_rules.xml.flat",
+        "source": "com.baharara.app-main-6:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/xml_backup_rules.xml.flat",
+        "source": "com.baharara.app-main-6:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.baharara.app-main-6:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.baharara.app-main-6:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.baharara.app-merged_res-5:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "com.baharara.app-main-6:/drawable-v24/ic_launcher_foreground.xml"
+    }
+]

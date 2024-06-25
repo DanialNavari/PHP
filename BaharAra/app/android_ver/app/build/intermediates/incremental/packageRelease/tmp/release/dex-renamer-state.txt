@@ -1,0 +1,4 @@
+#Mon Nov 06 15:22:37 GMT+03:30 2023
+base.0=D\:\\xampp\\htdocs\\baharAra\\Baharara\\app\\android_ver\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

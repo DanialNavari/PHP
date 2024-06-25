@@ -1,0 +1,3 @@
+com.baharara.app.test
+style WhiteBackgroundDialogTheme
+style WhiteBackgroundTheme
