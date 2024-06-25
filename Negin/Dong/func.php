@@ -396,12 +396,12 @@ function active_course($tel)
         }
 
         if ($c_member == null || $c_member <= 0) {
-        $average_cost = 0;
+            $average_cost = 0;
         } else {
             $average_cost = round($sum_all_trans / $c_member, 0);
         }
         $remain_cost = round($sum_all_trans - $sum_all_pay, 0);
-        
+
         echo '
     <div class="card my_card">
         <table class="table">
