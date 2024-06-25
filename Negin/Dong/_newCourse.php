@@ -13,13 +13,13 @@
             </tr>
             <tr>
                 <td class="td_title">تعداد افراد</td>
-                <td class="font-weight-bold text-center" id="course_count">1</td>
+                <td class="font-weight-bold text-center" id="course_count">0</td>
                 <td class="font-weight-bold text-center"></td>
             </tr>
             <tr>
                 <td class="td_title tarikh">تاریخ شروع</td>
                 <td class="font-weight-bold text-center">
-                    <span id="start_from_fa">1403/03/01</span>
+                    <span id="start_from_fa">****/**/**</span>
                 </td>
                 <td class="text-center click" onclick="setDate()"><?php echo $edit; ?></td>
             </tr>
@@ -38,13 +38,14 @@
             <tr>
                 <td class="td_title pl-0">محدودیت مالی</td>
                 <td class="font-weight-bold text-center">
-                    <span id="moneyLimit">11,500,000</span> <span class="unit">ريال</span>
+                    <span id="moneyLimit">0</span> <span class="unit">ريال</span>
+                    <span id="moneyLimit1" class="hide">0</span>
                 </td>
                 <td class="text-center click" onclick="moneyLimit()"><?php echo $edit; ?></td>
             </tr>
         </table>
         <div class="mb-5"></div>
-        <div class="pay_btn pay_btn2">
+        <div class="pay_btn pay_btn2" onclick="saveNewCourse()">
             <div class="pay_btn_icon">
                 <?php echo $check; ?>
             </div>
@@ -78,7 +79,7 @@
             </tr>
             <tr>
                 <td class="td_title_ font-weight-bold text-white">
-                    <button class="btn btn-success w-100 sum" onclick="addNewContact()">اضافه کردن مخاطب</button>
+                    <button class="btn btn-success w-100 sum" id="btn_add_new_contact" onclick="addNewContact()">اضافه کردن مخاطب</button>
                 </td>
             </tr>
         </table>
@@ -113,38 +114,9 @@
 </div>
 
 <!-- users box -->
-<div class="cat mb-1 contactBox" onclick="add_user_to_course(2)" data="دانیال نواری 09105005289">
-    <div class="card my_card bg_blue user-2-box">
-        <div class="record user-2-name">
-            <div class="user_info text-white border_none box_shadow_none">
-                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
-                <div class="star">
-                    <span>دانیال نواری</span>
-                    <i><?php echo star(1, 1); ?></i>
-                </div>
-            </div>
-            <div class="user_info text-white border_none box_shadow_none">
-                <a href="tel://09105005289" target="_blank">09105005289</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="cat mb-1 contactBox" onclick="add_user_to_course(1)" data="اشکان توکلی 09150026017">
-    <div class="card my_card bg_blue user-1-box">
-        <div class="record user-1-name">
-            <div class="user_info text-white border_none box_shadow_none">
-                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
-                <div class="star">
-                    <span>اشکان توکلی</span>
-                    <i><?php echo star(0, 0); ?></i>
-                </div>
-            </div>
-            <div class="user_info text-white border_none box_shadow_none">
-                <a href="tel://09150026017" target="_blank">09150026017</a>
-            </div>
-        </div>
-    </div>
+<div class="users_box">
+    <?php $contact_maker = $_COOKIE['uid'];
+    echo give_contacts_list($contact_maker); ?>
 </div>
 
 <div class="add_fee hide">

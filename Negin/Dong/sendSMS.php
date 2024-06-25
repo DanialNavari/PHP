@@ -1,5 +1,4 @@
 <?php
-
 require 'ippanel/vendor/autoload.php';
 $apiKey = "WIsqaEu45JFhybtmDhwJqAlySO2DDanRt7F10rdo_5E=";
 $client = new \IPPanel\Client($apiKey);
@@ -16,3 +15,4 @@ $rec = $tel;
     "$rec",  // recipient
     $patternVariables,  // pattern values
 ); */
+

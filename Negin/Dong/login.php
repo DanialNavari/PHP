@@ -8,8 +8,8 @@ require_once('symbol.php');
     <div class="text-center mt-5 full_width px-2">
         <img src="image/logo.png" alt="logo" class="rounded" />
         <h6 class="mt-2 text-primary">دنگ و دونگ</h6>
-        <div class="row mt-5"></div>
-        <div class="row mt-5"></div>
+        <div class="row mt-4"></div>
+        <div class="row mt-4"></div>
         <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="09123456789" id="tel" />
         <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow" onclick="login()">ورود به برنامه</button>
     </div>

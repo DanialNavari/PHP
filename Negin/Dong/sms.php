@@ -2,23 +2,29 @@
 $page_title = 'دنگ و دونگ';
 if (isset($_COOKIE['temp_tel'])) {
     $tel = $_COOKIE['temp_tel'];
-    require_once('sendSMS.php');
-    setcookie("verify", $vcode, time() + 100, "/");
+    if (isset($_COOKIE['verify'])) {
+        $pos = $_COOKIE['verify'];
+    } else {
+        require_once('sendSMS.php');
+        $pos = $vcode;
+        setcookie('verify', $vcode, time() + 60, "/");
+    }
 } else {
     echo '<script>window.location.assign("./login.php")</script>';
 }
+
 require_once('header.php');
-echo $vcode;
+echo $pos;
 ?>
 
 <div class="container">
     <div class="text-center mt-5 full_width px-2">
         <img src="image/logo.png" alt="logo" class="rounded" />
         <h6 class="mt-2 text-primary">دنگ و دونگ</h6>
-        <div class="row mt-5" id="hourGlass">
+        <div class="row mt-4" id="hourGlass">
             <?php echo $hourGlass; ?> <span id="remain_time">60</span>
         </div>
-        <div class="row mt-5"></div>
+        <div class="row mt-4"></div>
         <form action="#" class="form-inline mx-auto" id="sms">
             <input type="number" class="form-control text-center border_info rounded-lg" maxlength="1" pattern="[0-9]" value="" id="c1" tabindex="6" onkeyup="next_place(event,1)" />
             <input type="number" class="form-control text-center border_info rounded-lg" maxlength="1" pattern="[0-9]" value="" id="c2" tabindex="5" onkeyup="next_place(event,2)" />

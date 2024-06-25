@@ -1,7 +1,7 @@
 let cd;
-function page(type, route, name = null) {
+function page(type, route, name = null, id = null) {
     if (type == 'r') {
-        window.location.assign('./?route=' + route + '&h=' + name);
+        window.location.assign('./?route=' + route + '&h=' + name + '&id=' + id);
     } else if (type == 'd') {
         window.location.assign(route + '/?h=' + name);
     }
@@ -74,9 +74,9 @@ function moneyLimit() {
 function setDate() {
     $('#set_tarikh').show('slow');
     $(".range-from-example").show('slow');
-    $('.w-100').show();
     $('.month-grid-box .header').hide();
     $('.header').css('display', 'inline-block');
+    $('.w-100').show();
 }
 
 $('#savedate').click(function () {
@@ -107,7 +107,9 @@ $('#savedate').click(function () {
     $('.month-grid-box .header').hide();
     $('#set_tarikh').hide('slow');
     $(".range-from-example").hide('slow');
-    $('.w-100').hide();
+    $('.end_course .w-100').show();
+    $('#btn_add_new_contact').show();
+    $('.savedate_tr').hide();
 });
 
 function remove_from_course(id) {
@@ -140,7 +142,7 @@ function add_user_to_course(id) {
         $('.' + user_box).removeClass('bg_blue');
         $('.' + user_box).addClass('bg_green_dark');
         let user_name = $('.' + user_esm + ' .user_info .star span').text();
-        added_btn = '<div class="user_info bg_dark_blue text-white ' + user_id + '" onclick="remove_from_course(' + id + ')"><div class="user_name td_title_ pr-2 mx-auto">' + user_name + '</span></div></div>';
+        added_btn = '<div class="user_info bg_dark_blue text-white ' + user_id + '" data="' + id + '" onclick="remove_from_course(' + id + ')"><div class="user_name td_title_ px_02 mx-auto">' + user_name + '</span></div></div>';
         $('.selected_user').append(added_btn);
         $('#course_count').text(course_count);
     }
@@ -159,11 +161,13 @@ function payment(pay_id = 0) {
 function moneyLimit() {
     $('.gray_layer').show();
     $('.add_fee').fadeIn();
+    $('#saveCourseFee').fadeIn();
 }
 
 function course() {
     $('.gray_layer').show();
     $('.add_course').fadeIn();
+    $('#saveCourseName').show();
 }
 
 /* Start programming */
@@ -171,8 +175,38 @@ function navigate(page) {
     window.location.assign(page);
 }
 
-function Toast(message) {
-    $('.alertBox .alert span').text(message);
+function Toast(error_id) {
+    message = {
+        e101: "پاسخی از سرور دریافت نشد",
+        e102: "کد وارد شده نادرست می باشد",
+        e103: "مخاطب جدید ثبت نشد",
+        e104: "نام مخاطب را وارد کنید",
+        e105: "مخاطب تکراری است",
+        e106: "شماره تلفن را به صورت صحیح وارد کنید",
+    };
+
+    switch (error_id) {
+        case 101:
+            err = 'خطای ' + error_id + ': ' + message.e101;
+            break;
+        case 102:
+            err = 'خطای ' + error_id + ': ' + message.e102;
+            break;
+        case 103:
+            err = 'خطای ' + error_id + ': ' + message.e103;
+            break;
+        case 104:
+            err = 'خطای ' + error_id + ': ' + message.e104;
+            break;
+        case 105:
+            err = 'خطای ' + error_id + ': ' + message.e105;
+            break;
+        case 106:
+            err = 'خطای ' + error_id + ': ' + message.e106
+            break;
+    }
+
+    $('.alertBox .alert span').text(err);
     $('.alertBox').fadeIn(300);
     $('.rapid_access div').hide();
     hide_After_time(3000);
@@ -190,17 +224,18 @@ function login() {
                 if (response == true) {
                     navigate('sms.php');
                 } else {
-                    Toast('خطا 101');
+                    Toast(101);
                 }
             }
         });
     } else {
-        Toast('شماره تلفن را به صورت صحیح وارد کنید');
+        Toast(106);
     }
 }
 
 $('.btn-close').click(function () {
     $('.alertBox').fadeOut('slow');
+    hide_After_time(1);
 });
 
 function hide_After_time(time) {
@@ -230,7 +265,7 @@ function check_code() {
                 clearInterval(cd);
                 navigate('.');
             } else if (response == 0) {
-                Toast("خطا 102 - کد وارد شده نادرست می باشد");
+                Toast(102);
                 $('#c1').val("");
                 $('#c2').val("");
                 $('#c3').val("");
@@ -280,7 +315,20 @@ function next_place(event, id) {
 function change_value(input_id, text_id) {
     var newData = $('#' + input_id).val();
     if (newData.length > 0) {
-        $('#' + text_id).text(newData);
+        if (text_id == 'moneyLimit') {
+            fee = $('#feeLimit').val();
+            $.ajax({
+                data: 'sep=' + fee,
+                url: 'server.php',
+                type: 'POST',
+                success: function (response) {
+                    $('#moneyLimit1').text(fee);
+                    $('#moneyLimit').text(response);
+                }
+            });
+        } else {
+            $('#' + text_id).text(newData);
+        }
         $('.gray_layer').click();
         $('#newCourseName').val("");
     } else {
@@ -288,27 +336,47 @@ function change_value(input_id, text_id) {
     }
 }
 
-function addNewContact() {
-    var contact_name = $('#newContactName').val();
-    var contact_tel = $('#newContactTel').val();
-    if (contact_name.length > 0) {
-        $.ajax({
-            data: 'add_contact=ok&contact_name=' + contact_name + '&contact_tel=' + contact_tel,
-            url: 'server.php',
-            type: 'POST',
-            success: function (response) {
-                if (response == true) {
+class Contact {
+    constructor(type) {
+        switch (type) {
+            case 'add':
+                this.add();
+        }
+    }
 
-                } else {
-                    Toast('خطای 103 - ثبت مخاطب جدید ناموفق بود');
-                    alert_border('newContactTel');
-                    alert_border('newContactName');
+    add() {
+        var contact_name = $('#newContactName').val();
+        var contact_tel = $('#newContactTel').val();
+        if (contact_name.length > 0) {
+            $.ajax({
+                data: 'add_contact=ok&contact_name=' + contact_name + '&contact_tel=' + contact_tel,
+                url: 'server.php',
+                type: 'POST',
+                success: function (response) {
+                    if (response > 1) {
+                        $.ajax({
+                            data: 'Object_contact=1&contact_tel=' + contact_tel + '&contact_name=' + contact_name,
+                            url: 'server.php',
+                            type: 'POST',
+                            success: function (response) {
+                                $('.users_box').append(response);
+                            }
+                        });
+                    } else if (response == 1) {
+                        Toast(105);
+                        alert_border('newContactTel');
+                        alert_border('newContactName');
+                    } else if (response == 0) {
+                        Toast(103);
+                        alert_border('newContactTel');
+                        alert_border('newContactName');
+                    }
                 }
-            }
-        });
-    } else {
-        Toast('خطای 104- نام مخاطب را وارد کنید');
-        alert_border('newContactName');
+            });
+        } else {
+            Toast(104);
+            alert_border('newContactName');
+        }
     }
 }
 
@@ -330,3 +398,30 @@ function searchContact() {
     }
 }
 
+function addNewContact() {
+    cont = new Contact('add');
+}
+
+function saveNewCourse() {
+    $('#savedate').click();
+    var course_name = $('#courseName').text();
+    var course_start = $('#start_from_fa').text();
+    var money_limit = $('#moneyLimit1').text();
+    var member_list = '';
+    var members = $('.selected_user div').length / 2;
+    for (i = 0; i < members; i++) {
+        j = i + 1;
+        member_list += $('.selected_user div:nth-child(' + j + ')').attr('data') + ',';
+    }
+    $.ajax({
+        data: 'new_course=1&course_name=' + course_name + '&course_start=' + course_start + '&money_limit=' + money_limit + '&members=' + member_list,
+        type: 'POST',
+        url: 'server.php',
+        success: function (response) {
+            if (response > 0) {
+                alert('دوره جدید با موفقیت ایجاد شد');
+                window.location.assign('./?route=_activeCourse&h=null');
+            }
+        }
+    });
+}

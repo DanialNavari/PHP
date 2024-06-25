@@ -166,15 +166,43 @@ h6 {
 .px_05 {
   padding: 0.5rem !important;
 }
+.px_02 {
+  padding: 0.2rem !important;
+}
+.px_1 {
+  padding: 1rem !important;
+}
 
 .group_name {
   font-family: "iransans";
   color: #1d5da9;
-  border: 1px solid #1473bd;
+  border: 2px solid #1473bd;
   border-top: none;
   border-left: none;
   border-right: none;
   text-align: right;
+}
+
+.group_name h6 {
+  background: rgb(245, 250, 255);
+  background: -moz-linear-gradient(
+    270deg,
+    rgb(175 215 255 / 40%) 0%,
+    rgb(255 255 255) 100%
+  );
+  background: -webkit-linear-gradient(
+    270deg,
+    rgb(175 215 255 / 40%) 0%,
+    rgb(255 255 255) 100%
+  );
+  background: linear-gradient(
+    270deg,
+    rgb(175 215 255 / 40%) 0%,
+    rgb(255 255 255) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f5faff",endColorstr="#fefefe",GradientType=1);
+  padding: 0.3rem;
+  border-radius: 0.3rem;
 }
 
 .empty {
@@ -631,6 +659,7 @@ h6 {
   background-color: #1473bd;
   border-top-right-radius: 0.5rem;
   border-top-left-radius: 0.5rem;
+  height: 2.7rem;
 }
 
 .user_img {
@@ -663,7 +692,7 @@ a:visited {
 .selected_user,
 .selected_user div {
   border-radius: 1rem !important;
-  font-size: 0.7rem !important;
+  font-size: 0.9rem !important;
   width: fit-content !important;
 }
 
@@ -897,7 +926,7 @@ input[radio] {
 
 .floatingActionButton {
   position: fixed;
-  bottom: 5rem;
+  bottom: 6rem;
   left: 2rem;
   width: 2rem;
   height: 2rem;
