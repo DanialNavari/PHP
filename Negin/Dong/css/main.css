@@ -962,6 +962,20 @@ input[radio] {
   line-height: 1;
   color: #00796b;
 }
+
+.force_hide {
+  display: none !important;
+}
+
+.sum_all_cost {
+  border-top: 2px solid rgb(20 115 189 / 20%);
+  border-bottom: 2px solid rgb(20 115 189 / 20%);
+  background: #ebf6ff;
+}
+.sum_all_cost td{
+  color: #000 !important;
+  font-weight: bold;
+}
 /* ----------------------- Media Queries ----------------------- */
 @media screen and (min-width: 340px) {
   .card table td {

@@ -377,6 +377,39 @@ function active_course($tel)
         $c_money_limit = $r['course_money_limit'];
         $c_default = $r['course_default'];
         $c_disabled = $r['course_disabled'];
+
+        if ($c_disabled == null) {
+            $tpr = '<div class="proofs tpr">
+            <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\')">
+                <div class="inline_icon">' . $GLOBALS["list"] . '</div>
+                <div class="inline_title">تراکنش ها</div>
+            </div>
+            <div class="payments font-weight-bold" onclick="page(\'r\',\'__payments\')">
+                <div class="inline_icon">' . $GLOBALS["money"] . '</div>
+                <div class="inline_title">پرداخت ها</div>
+            </div>
+            <div class="payments font-weight-bold" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">
+                <div class="inline_icon">' . $GLOBALS["list"] . '</div>
+                <div class="inline_title">گزارش</div>
+            </div>
+        </div>';
+        } else {
+            $tpr = '<div class="proofs tpr force_hide">
+            <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\')">
+                <div class="inline_icon">' . $GLOBALS["list"] . '</div>
+                <div class="inline_title">تراکنش ها</div>
+            </div>
+            <div class="payments font-weight-bold" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">
+                <div class="inline_icon">' . $GLOBALS["money"] . '</div>
+                <div class="inline_title">پرداخت ها</div>
+            </div>
+            <div class="payments font-weight-bold" onclick="page(\'r\',\'___report\')">
+                <div class="inline_icon">' . $GLOBALS["list"] . '</div>
+                <div class="inline_title">گزارش</div>
+            </div>
+        </div>';
+        }
+
         $c_money_unit = $r['course_money_unit'];
 
         $z = SELECT_trans($c_id);
@@ -386,21 +419,6 @@ function active_course($tel)
             $v = mysqli_fetch_assoc($z);
             $sum_all_trans += $v['trans_fee'];
         }
-
-        $a = SELECT_pay($c_id);
-        $b = mysqli_num_rows($a);
-        $sum_all_pay = 0;
-        for ($j = 0; $j < $b; $j++) {
-            $d = mysqli_fetch_assoc($a);
-            $sum_all_pay += $d['pay_fee'];
-        }
-
-        if ($c_member == null || $c_member <= 0) {
-            $average_cost = 0;
-        } else {
-            $average_cost = round($sum_all_trans / $c_member, 0);
-        }
-        $remain_cost = round($sum_all_trans - $sum_all_pay, 0);
 
         echo '
     <div class="card my_card">
@@ -447,20 +465,7 @@ function active_course($tel)
             <div class="inline_title td_title_ text-white d-rtl">کل هزینه :</div>
             <div class="inline_title hazine"><span id="sum_of_all_cost">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
         </div>
-        <div class="proofs">
-            <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\')">
-                <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                <div class="inline_title">تراکنش ها</div>
-            </div>
-            <div class="payments font-weight-bold" onclick="page(\'r\',\'__payments\')">
-                <div class="inline_icon">' . $GLOBALS["money"] . '</div>
-                <div class="inline_title">پرداخت ها</div>
-            </div>
-            <div class="payments font-weight-bold" onclick="page(\'r\',\'___report\')">
-                <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                <div class="inline_title">گزارش</div>
-            </div>
-        </div>
+        ' . $tpr . '
         <div class="share_link bg_blue_very_dark font-weight-bold">
             <div class="inline_title">
                 <div class="form-check form-switch">
@@ -475,10 +480,10 @@ function active_course($tel)
                 </div>
             </div>
         </div>
-        <div class="proofs">
+        <div class="proofs fld">
             <div class="end_course transactions font-weight-bold">
                 <button class="btn btn-primary w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_course"] . ' اتمام دوره</button>
-                <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: مسافرت جنوب\n 🔸 تاریخ شروع: 1403/04/01 \n 🔸 مدیر گروه : ** اشکان توکلی ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=1"> ' . $GLOBALS["share"] . ' لینک دوره</a>
+                <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: مسافرت جنوب\n 🔸 تاریخ شروع: 1403/04/01 \n 🔸 مدیر گروه : ** اشکان توکلی ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
                 <button class="btn btn-danger w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
             </div>
         </div>
@@ -490,5 +495,201 @@ function active_course($tel)
 function UPDATE_course($field, $value, $course_id)
 {
     db();
-    Query("UPDATE `course` SET `$field` = '$value' WHERE `course_id` = '$course_id'");
+    if ($value == NULL || $value == 'NULL' || $value == null) {
+        Query("UPDATE `course` SET `$field` = null WHERE `course_id` = '$course_id'");
+    } else {
+        Query("UPDATE `course` SET `$field` = '$value' WHERE `course_id` = '$course_id'");
+    }
+}
+
+function request_course($id)
+{
+    db();
+    $res = Query("SELECT * FROM `course` WHERE `course_id` =  '$id' AND `course_disabled` IS NULL AND `course_finish` IS NULL");
+    $n = mysqli_num_rows($res);
+    if ($n > 0) {
+        $r = mysqli_fetch_assoc($res);
+        $w = SELECT_user($r["course_manager"]);
+        $course_number = explode(',', $r["course_member"]);
+        $course_cap = $r["course_cap"];
+        $member_count = count($course_number) - 1;
+
+        if ($member_count == NULL || $member_count == '') {
+            $member_count = 0 . ' نفر';
+        }
+
+        if ($course_cap == NULL || $member_count == '') {
+            $course_cap = 'بدون محدودیت';
+        }
+
+        echo '<div class="card my_card">
+        <table class="table">
+            <tr>
+                <td class="td_title">: نام دوره</td>
+                <td class="font-weight-bold">' . $r["course_name"] . '</td>
+                <td class="hide"><span id="course_id"></span></td>
+            </tr>
+            <tr>
+                <td class="td_title">: تاریخ شروع</td>
+                <td class="font-weight-bold">' . $r["course_start_date"] . '</td>
+            </tr>
+            <tr>
+                <td class="td_title">: محدودیت مالی</td>
+                <td class="font-weight-bold">' . sep3($r["course_money_limit"]) . ' <span class="unit">' . $r["course_money_unit"] . '</span></td>
+            </tr>
+            <tr>
+                <td class="td_title">: ظرفیت دوره</td>
+                <td class="font-weight-bold">' . $course_cap . ' </td>
+            </tr>
+            <tr>
+                <td class="td_title">: تعداد افراد دوره</td>
+                <td class="font-weight-bold">' . $member_count . ' </td>
+            </tr>
+            <tr>
+                <td class="td_title">: مدیر دوره</td>
+                <td class="font-weight-bold">' . $w["users_name"] . '</td>
+            </tr>
+        </table>
+
+    </div>
+        <div class="card my_card request_course">
+        <table class="table">
+            <tr>
+                <td class="td_title va_middle">: نام</td>
+                <td><input type="text" class="form-control w-9 h-2"></td>
+            </tr>
+            <tr>
+                <td class="td_title va_middle">: نام خانوادگی</td>
+                <td><input type="text" class="form-control w-9 h-2"></td>
+            </tr>
+            <tr>
+                <td class="td_title va_middle">: تلفن</td>
+                <td><input type="tel" class="form-control w-9 h-2"></td>
+            </tr>
+            <tr>
+                <td class="td_title va_middle">: توضیحات</td>
+                <td><textarea class="form-control w-9 h-2"></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-success w-100 sum">ثبت نام</button>
+                </td>
+            </tr>
+        </table>
+    </div>';
+    } else {
+        echo '';
+    }
+}
+
+function people_cost($uid)
+{
+    db();
+    $res = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '%$uid%'");
+    return $res;
+}
+
+function final_report($id)
+{
+    db();
+    $trans_list = [];
+    $r = SELECT_course_id($id);
+    $c_name = $r['course_name'];
+    $c_member_count = count(explode(',', $r['course_member'])) - 1;
+    $c_member = explode(',', $r['course_member']);
+    $c_start_date = $r['course_start_date'];
+    $course_money_unit = $r['course_money_unit'];
+
+    $z = SELECT_trans($id);
+    $trans_num = mysqli_num_rows($z);
+    $sum_all_trans = 0;
+    for ($i = 0; $i < $trans_num; $i++) {
+        $v = mysqli_fetch_assoc($z);
+        $sum_all_trans += $v['trans_fee'];
+        $trans_ = explode(',', $v['trans_person']);
+        $trans_c = count($trans_) - 1;
+        for ($o = 0; $o < $trans_c; $o++) {
+            $trans_p = explode(':', $trans_[$o]);
+            $trans_p_uid = $trans_p[0];
+            $trans_p_cost = $trans_p[1];
+            if (isset($trans_list[$trans_p_uid])) {
+                $trans_list[$trans_p_uid] += $trans_p_cost;
+            } else {
+                $trans_list[$trans_p_uid] =  $trans_p_cost;
+            }
+        }
+    }
+
+    $a = SELECT_pay($id);
+    $payment_num = mysqli_num_rows($a);
+    $sum_all_pay = 0;
+    for ($j = 0; $j < $payment_num; $j++) {
+        $d = mysqli_fetch_assoc($a);
+        $sum_all_pay += $d['pay_fee'];
+    }
+
+    if ($c_member_count == null || $c_member_count <= 0) {
+        $average_cost = 0;
+    } else {
+        $average_cost = round($sum_all_trans / $c_member_count, 0);
+    }
+
+    echo '    
+    <div class="card my_card">
+        <table class="table">
+            <tr class="bg_dark_blue">
+                <td class="td_title font-weight-bold text-white" colspan="1">نام دوره</td>
+                <td class="td_title_ text-white" colspan="3"><span>' . $c_name . '</span><span>(' . $c_start_date . ')</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تعداد افراد دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . $c_member_count . ' <span class="unit">نفر</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تعداد تراکنش</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . $trans_num . ' <span class="unit">مورد</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">واریزی افراد دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl text-success" colspan="3">' . sep3($sum_all_pay) . ' <span class="unit">' . $course_money_unit . '</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">مانده بدهی افراد دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl text-danger" colspan="3">' . sep3($sum_all_trans - $sum_all_pay) . ' <span class="unit">' . $course_money_unit . '</span></td>
+            </tr>
+            <tr class="bg_grey sum_all_cost">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle " colspan="2">جمع کل هزینه دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($sum_all_trans) . ' <span class="unit">' . $course_money_unit . '</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">میانگین هزینه هر نفر</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($sum_all_trans / $c_member_count) . ' <span class="unit">' . $course_money_unit . '</span></td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="card my_card">
+        <table class="table">
+            <tr class="bg_dark_blue">
+                <td class="td_title_ font-weight-bold  text-white va_middle text-center">نام</td>
+                <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">خرج کرد (' . $course_money_unit . ')</td>
+                <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">سهم (' . $course_money_unit . ')</td>
+                <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">وضعیت</td>
+            </tr>';
+    for ($j = 0; $j < $c_member_count; $j++) {
+        $person_info = SELECT_user_by_id($c_member[$j]);
+        $person_name = $person_info['contact_name'];
+
+        echo '<tr class="bg_grey">
+                <td class="td_title text-primary">' . $person_name . '</td>
+                <td class="td_title_ text-primary text-center">3,000,000</td>
+                <td class="td_title_ text-primary text-center">5,000,000</td>
+                <td class="td_title_ text-primary text-center bedehkar">بدهکار</td>
+            </tr>
+            <tr class="bg_blue_nice">
+                <td class="td_title_ text-primary text-left" colspan="4">3,000,000</td>
+            </tr>';
+    }
+    echo '</table>
+    </div>';
 }

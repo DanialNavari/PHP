@@ -37,5 +37,4 @@ if (isset($_POST['login'])) {
     $key = $_POST['key'];
     $value = $_POST['value'];
     UPDATE_course($key, $value, $update_course);
-    return 1;
 }

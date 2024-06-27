@@ -442,7 +442,7 @@ function update_course(course_id, key, value) {
         data: 'update_course=' + course_id + '&key=' + key + '&value=' + value,
         type: 'POST',
         success: function (response) {
-            return 0;
+            return 1;
         }
     });
 }
@@ -456,10 +456,11 @@ function chageSwitch(switch_name, course_id) {
                 update_course(course_id, 'course_default', 'NULL');
                 break;
             case 'disabledCourse':
+                $('.tpr').removeClass('force_hide');
                 update_course(course_id, 'course_disabled', 'NULL');
                 break;
         }
-        $('#' + switch_name + course_id).attr('data-type', 'null');
+        $('#' + switch_name + course_id).attr('data-type', 'NULL');
         $('#' + switch_name + course_id).removeAttr('checked');
     } else {
         switch (items) {
@@ -467,11 +468,13 @@ function chageSwitch(switch_name, course_id) {
                 update_course(course_id, 'course_default', 'checked');
                 break;
             case 'disabledCourse':
+                $('.tpr').addClass('.force_hide');
                 update_course(course_id, 'course_disabled', 'checked');
                 break;
         }
         $('#' + switch_name + course_id).attr('data-type', 'checked');
         $('#' + switch_name + course_id).attr('checked', 'checked');
+
     }
 }
 
