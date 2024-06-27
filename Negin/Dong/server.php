@@ -30,6 +30,12 @@ if (isset($_POST['login'])) {
     $date = date("Y-m-d H:i:s");
     $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
     echo $res;
-}else if (isset($_POST['sep'])){
+} else if (isset($_POST['sep'])) {
     echo sep3($_POST['sep']);
+} else if (isset($_POST['update_course'])) {
+    $update_course = $_POST['update_course'];
+    $key = $_POST['key'];
+    $value = $_POST['value'];
+    UPDATE_course($key, $value, $update_course);
+    return 1;
 }

@@ -4,13 +4,25 @@
         <table class="table">
             <tr class="bg_dark_blue">
                 <td class="td_title font-weight-bold text-white" colspan="1">نام دوره</td>
-                <td class="td_title_ text-white text-" colspan="3"><span>مسافرت جنوب</span><span>(1403/03/01)</span></td>
+                <td class="td_title_ text-white" colspan="3"><span>مسافرت جنوب</span><span>(1403/03/01)</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تعداد تراکنش</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">2 <span class="unit">مورد</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">واریزی افراد دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">5,000,000 <span class="unit">ريال</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">مانده بدهی افراد دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">15,000,000 <span class="unit">ريال</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">میانگین هزینه هر نفر</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">20,000,000 <span class="unit">ريال</span></td>
             </tr>
             <tr class="bg_dark_blue">
-                <td class="td_title font-weight-bold text-white" colspan="1">خرج کرد</td>
-                <td class="td_title_ text-white d-rtl" colspan="3"><span>15,000,000 </span><span class="unit">ريال</span></td>
-            </tr>
-            <tr class="bg_blue">
                 <td class="td_title_ font-weight-bold  text-white va_middle text-center">نام</td>
                 <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">خرج کرد (ريال)</td>
                 <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">سهم (ريال)</td>

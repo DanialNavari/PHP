@@ -183,6 +183,7 @@ function Toast(error_id) {
         e104: "نام مخاطب را وارد کنید",
         e105: "مخاطب تکراری است",
         e106: "شماره تلفن را به صورت صحیح وارد کنید",
+        e107: "محدودیت مالی نباید کمتر از هزینه کل باشد",
     };
 
     switch (error_id) {
@@ -203,6 +204,9 @@ function Toast(error_id) {
             break;
         case 106:
             err = 'خطای ' + error_id + ': ' + message.e106
+            break;
+        case 107:
+            err = 'خطای ' + error_id + ': ' + message.e107
             break;
     }
 
@@ -317,15 +321,21 @@ function change_value(input_id, text_id) {
     if (newData.length > 0) {
         if (text_id == 'moneyLimit') {
             fee = $('#feeLimit').val();
-            $.ajax({
-                data: 'sep=' + fee,
-                url: 'server.php',
-                type: 'POST',
-                success: function (response) {
-                    $('#moneyLimit1').text(fee);
-                    $('#moneyLimit').text(response);
-                }
-            });
+            hazine = $('#sum_of_all_cost').text();
+            if (hazine > fee) {
+                Toast(107);
+                $('#feeLimit').val("");
+            } else {
+                $.ajax({
+                    data: 'sep=' + fee,
+                    url: 'server.php',
+                    type: 'POST',
+                    success: function (response) {
+                        $('#moneyLimit1').text(fee);
+                        $('#moneyLimit').text(response);
+                    }
+                });
+            }
         } else {
             $('#' + text_id).text(newData);
         }
@@ -424,4 +434,81 @@ function saveNewCourse() {
             }
         }
     });
+}
+
+function update_course(course_id, key, value) {
+    $.ajax({
+        url: 'server.php',
+        data: 'update_course=' + course_id + '&key=' + key + '&value=' + value,
+        type: 'POST',
+        success: function (response) {
+            return 0;
+        }
+    });
+}
+
+function chageSwitch(switch_name, course_id) {
+    items = switch_name.split(course_id)[0];
+    s_name = $('#' + switch_name + course_id).attr('data-type');
+    if (s_name == 'checked') {
+        switch (items) {
+            case 'defaultCourse':
+                update_course(course_id, 'course_default', 'NULL');
+                break;
+            case 'disabledCourse':
+                update_course(course_id, 'course_disabled', 'NULL');
+                break;
+        }
+        $('#' + switch_name + course_id).attr('data-type', 'null');
+        $('#' + switch_name + course_id).removeAttr('checked');
+    } else {
+        switch (items) {
+            case 'defaultCourse':
+                update_course(course_id, 'course_default', 'checked');
+                break;
+            case 'disabledCourse':
+                update_course(course_id, 'course_disabled', 'checked');
+                break;
+        }
+        $('#' + switch_name + course_id).attr('data-type', 'checked');
+        $('#' + switch_name + course_id).attr('checked', 'checked');
+    }
+}
+
+function finishCourse(course_id, user_tel, type) {
+    if (type == 'finish') {
+        ans = confirm('آیا می خواهید این دوره را به اتمام برسانید؟');
+    } else if (type == 'del') {
+        ans = confirm('آیا می خواهید این دوره را حذف کنید؟');
+    }
+    if (ans == true) {
+        user_tel = "0" + user_tel;
+        z = new Date();
+        y = String(z).split(" ")[0];
+
+        mah = z.getMonth();
+        rooz = z.getDate();
+        saat = z.getHours();
+        dagh = z.getMinutes();
+        saniye = z.getSeconds();
+
+        if (mah < 10) { mah = '0' + mah; }
+        if (rooz < 10) { rooz = '0' + rooz; }
+        if (saat < 10) { saat = '0' + saat; }
+        if (dagh < 10) { dagh = '0' + dagh; }
+        if (saniye < 10) { saniye = '0' + saniye; }
+
+        my_time = z.getFullYear() + '/' + mah + '/' + rooz + ' ' + saat + ':' + dagh + ':' + saniye + ' ' + y;
+
+        if (type == 'finish') {
+            update_course(course_id, 'course_finish', '1');
+            update_course(course_id, 'course_finish_date', my_time);
+            update_course(course_id, 'course_finish_maker', user_tel);
+        } else if (type == 'del') {
+            update_course(course_id, 'course_del_course', '1');
+            update_course(course_id, 'course_del_date', my_time);
+            update_course(course_id, 'course_del_maker', user_tel);
+        }
+        window.location.reload();
+    }
 }

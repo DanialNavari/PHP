@@ -6,21 +6,38 @@
     <?php active_course($_COOKIE['uid']);?>
 </div>
 
+<div class="add_fee hide">
+    <table class="border_none mx-auto">
+        <tr class="font-weight-bold">
+            <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
+            <td>
+                <input class="form-control sum font-weight-bold" type="number" id="feeLimit" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="btn btn-success btn-sm w-100 save" id="saveCourseFee" onclick="change_value('feeLimit', 'moneyLimit')">تغییر محدودیت مالی</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
 <div class="add_course hide">
     <table class="border_none mx-auto">
         <tr class="font-weight-bold">
             <td class="td_title_ va_middle w-6 sum pl-3 ">نام دوره</td>
             <td>
-                <input class="form-control sum font-weight-bold" />
+                <input class="form-control sum font-weight-bold" id="newCourseName"/>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
+                <button class="btn btn-success btn-sm w-100 save" id="saveCourseName" onclick="change_value('newCourseName', 'courseName')">تغییر نام دوره</button>
             </td>
         </tr>
     </table>
 </div>
+
 
 <div class="cat mb-1 h-1"></div>
 

@@ -329,6 +329,8 @@ h6 {
   opacity: 0.4;
   position: fixed;
   z-index: 1;
+  right: 0;
+  top: 0;
 }
 
 .nav_drawer {

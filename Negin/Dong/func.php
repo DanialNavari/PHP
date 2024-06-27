@@ -441,31 +441,11 @@ function active_course($tel)
                 </td>
                 <td class="text-center click" onclick="moneyLimit()">' . $GLOBALS["edit"] . '</td>
             </tr>
-            <tr>
-                <td class="td_title w-9">میانگین هزینه هر نفر</td>
-                <td class="font-weight-bold text-center">' . sep3($average_cost) . ' <span class="unit">' . $c_money_unit . '</span></td>
-                <td class="font-weight-bold text-center"></td>
-            </tr>
-            <tr>
-                <td class="td_title">تعداد تراکنش</td>
-                <td class="font-weight-bold text-center">' . $x . '</td>
-                <td class="font-weight-bold text-center"></td>
-            </tr>
-            <tr>
-                <td class="td_title">مانده بدهی افراد دوره</td>
-                <td class="font-weight-bold text-center">' . sep3($remain_cost) . ' <span class="unit">' . $c_money_unit . '</span></td>
-                <td class="font-weight-bold text-center"></td>
-            </tr>
-            <tr>
-                <td class="td_title">واریزی افراد دوره</td>
-                <td class="font-weight-bold text-center">' . sep3($sum_all_pay) . ' <span class="unit">' . $c_money_unit . '</span></td>
-                <td class="font-weight-bold text-center"></td>
-            </tr>
 
         </table>
         <div class="share_link bg_blue font-weight-bold g_20">
-            <div class="inline_title td_title_ text-white">کل هزینه </div>
-            <div class="inline_title hazine">' . sep3($sum_all_trans) . ' <span class="unit">' . $c_money_unit . '</span></div>
+            <div class="inline_title td_title_ text-white d-rtl">کل هزینه :</div>
+            <div class="inline_title hazine"><span id="sum_of_all_cost">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
         </div>
         <div class="proofs">
             <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\')">
@@ -484,22 +464,22 @@ function active_course($tel)
         <div class="share_link bg_blue_very_dark font-weight-bold">
             <div class="inline_title">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="defaultCourse" ' . $c_default . '>
+                    <input class="form-check-input" type="checkbox" data-type="' . $c_default . '" role="switch" id="defaultCourse' . $c_id . '" ' . $c_default . ' onchange="chageSwitch(\'defaultCourse\',' . $c_id . ')">
                     <label class="form-check-label" for="defaultCourse">دوره پیش فرض</label>
                 </div>
             </div>
             <div class="inline_title">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="disabledCourse" ' . $c_disabled . '>
+                    <input class="form-check-input" type="checkbox" data-type="' . $c_disabled . '" role="switch" id="disabledCourse' . $c_id . '" ' . $c_disabled . ' onchange="chageSwitch(\'disabledCourse\', ' . $c_id . ')">
                     <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
                 </div>
             </div>
         </div>
         <div class="proofs">
             <div class="end_course transactions font-weight-bold">
-                <button class="btn btn-primary w-100 click1">' . $GLOBALS["end_course"] . ' اتمام دوره</button>
+                <button class="btn btn-primary w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_course"] . ' اتمام دوره</button>
                 <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: مسافرت جنوب\n 🔸 تاریخ شروع: 1403/04/01 \n 🔸 مدیر گروه : ** اشکان توکلی ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=1"> ' . $GLOBALS["share"] . ' لینک دوره</a>
-                <button class="btn btn-danger w-100 click1 fs-0-75">' . $GLOBALS["end_course"] . ' حذف دوره</button>
+                <button class="btn btn-danger w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
             </div>
         </div>
     </div>
