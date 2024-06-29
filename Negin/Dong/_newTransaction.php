@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="static/css/lib/persian-datepicker.min.css" />
 <link rel="stylesheet" href="static/css/main.css" />
 
-<div class="row empty">دوره جدید</div>
+<div class="row empty">ثبت خرید</div>
 
 <div class="cat">
     <div class="card my_card">

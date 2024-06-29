@@ -10,7 +10,7 @@
         </div>
         <div class="item_title">خانه</div>
     </div>
-    <div class="item_" id="wallet">
+    <div class="item_" id="wallet" onclick="page('r','_wallet','wallet')">
         <div class="item_circle">
             <div class="item_icon"><?php echo $wallet; ?></div>
         </div>
@@ -32,7 +32,7 @@
         <div class="item_circle">
             <div class="item_icon"><?php echo $bag_plus; ?></div>
         </div>
-        <div class="item_title">ثبت خرید</div>
+        <div class="item_title">خرید جدید</div>
     </div>
 </div>
 

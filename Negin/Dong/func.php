@@ -81,7 +81,7 @@ function SELECT_course($tel)
     $r = mysqli_fetch_assoc($result);
     $contact_id = $r['contact_id'];
 
-    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_maker` LIKE '%$tel%' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND`course_member` LIKE '%$contact_id%' ORDER BY `course_default` DESC;");
+    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_maker` LIKE '%$tel%' OR `course_finish` IS NULL AND `course_del_course` IS NULL ORDER BY `course_default` DESC;");
     return $result1;
 }
 
@@ -236,6 +236,8 @@ function sep3($number)
 
 function active_transactions($course_id)
 {
+    $cids = SELECT_course_id("$course_id");
+    $money_unit = $cids['course_money_unit'];
     $w = SELECT_trans("$course_id");
     $num = mysqli_num_rows($w);
 
@@ -247,6 +249,7 @@ function active_transactions($course_id)
         $trans_fee = sep3($r['trans_fee']);
         $trans_date = explode(' ', $r['trans_date']);
         $trans_desc = $r['trans_desc'];
+        $trans_person = $r['trans_person'];
 
         $user_buyer_info = SELECT_user_by_id($trans_buyer);
         $buyer_name = $user_buyer_info['contact_name'];
@@ -254,8 +257,17 @@ function active_transactions($course_id)
         $user_recorder_info = SELECT_user_by_id($trans_recorder);
         $recorder_name = $user_recorder_info['contact_name'];
 
+        $zinaf = '';
+        $sep_colon = explode(',', $trans_person);
+        $tedad = count($sep_colon) - 1;
+        for ($k = 0; $k < $tedad; $k++) {
+            $sep_tp = explode(':', $sep_colon[$k]);
+            $user_buyer_info1 = SELECT_user_by_id($sep_tp[0]);
+            $zinaf .= $user_buyer_info1['contact_name'] . '(' . sep3($sep_tp[1]) . ' ' . $money_unit . ' ) ';
+        }
+
         echo '
-    <div class="card my_card">
+    <div class="card my_card" onclick="payment(' . $trans_id . ')">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center">خرید کننده</td>
@@ -263,7 +275,7 @@ function active_transactions($course_id)
                 <td class="text-white text-center">مبلغ(ريال)</td>
                 <td class="text-white text-center">تاریخ</td>
             </tr>
-            <tr class="bg-white font-weight-bold" onclick="payment(' . $trans_id . ')">
+            <tr class="bg-white font-weight-bold">
                 <td class="text-primary text-right">' . $buyer_name . '</td>
                 <td class="text-primary text-right">' . $recorder_name . '</td>
                 <td class="text-primary text-right">' . $trans_fee . '</td>
@@ -271,6 +283,9 @@ function active_transactions($course_id)
             </tr>
             <tr class="bg_blue_nice font-weight-bold">
                 <td class="td_title text_blue_very_dark text-right" colspan="4">' . $trans_desc . '</td>
+            </tr>
+            <tr class="bg_secondary font-weight-bold">
+                <td class="td_title text_blue_very_dark text-right" colspan="4"> ' . $zinaf . '</td>
             </tr>
         </table>
     </div>
@@ -388,9 +403,9 @@ function active_course($tel)
         if ($c_disabled == null) {
             $tpr = '
             <div class="proofs tpr">
-                <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                    <div class="inline_title">تراکنش ها</div>
+                <div class="payments font-weight-bold" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">
+                    <div class="inline_icon">' . $GLOBALS["money"] . '</div>
+                    <div class="inline_title">پرداخت ها</div>
                 </div>
                 <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">
                     <div class="inline_icon">' . $GLOBALS["list"] . '</div>
@@ -398,11 +413,7 @@ function active_course($tel)
                 </div>
             </div>
             <div class="proofs tpr">
-                <div class="payments font-weight-bold" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["money"] . '</div>
-                    <div class="inline_title">پرداخت ها</div>
-                </div>
-                <div class="payments font-weight-bold" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">
+                <div class="w-100 payments font-weight-bold bg-secondary" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">
                     <div class="inline_icon">' . $GLOBALS["list"] . '</div>
                     <div class="inline_title">گزارش</div>
                 </div>
@@ -613,11 +624,25 @@ function people_cost($uid)
     return $res;
 }
 
+function all_variz($course_id, $uid)
+{
+    $sum = 0;
+    $res = Query("SELECT * FROM `payments` WHERE `pay_course` = '$course_id' AND `pay_to` = '$uid'");
+    $n = mysqli_num_rows($res);
+    for ($i = 0; $i < $n; $i++) {
+        $r = mysqli_fetch_assoc($res);
+        $sum += $r['pay_fee'];
+    }
+    return $sum;
+}
+
 function final_report($id)
 {
     db();
     $trans_list = [];
     $trans_list_buyer = [];
+    $pay_all = [];
+
     $r = SELECT_course_id($id);
     $c_name = $r['course_name'];
     $c_member_count = count(explode(',', $r['course_member'])) - 1;
@@ -695,15 +720,9 @@ function final_report($id)
     <div class="card my_card">
         <table class="table">
         <tr class="">
-            <td colspan="5" class="text-center">کلیه مبالغ به ' . $course_money_unit . ' می باشد</td>
+            <td colspan="6" class="text-center">کلیه مبالغ به ' . $course_money_unit . ' می باشد</td>
         </tr>
-            <tr class="bg_dark_blue">
-                <td class="td_title_ font-weight-bold  text-white va_middle text-center">نام</td>
-                <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">سهم</td>
-                <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">خرج کرد</td>
-                <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">واریزی</td>
-                <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle text-center">مانده</td>
-            </tr>';
+            ';
 
     $sum_debt_all_users = 0;
     for ($j = 0; $j < $c_member_count; $j++) {
@@ -721,20 +740,32 @@ function final_report($id)
             $buyer_cost = 0;
         }
 
+
         $spbi = SELECT_pay_by_id($_GET['id'], $c_member[$j]);
         $spbi_num = mysqli_num_rows($spbi);
         $varizi = 0;
-        for ($q = 0; $q < $spbi_num; $q++) {
-            $t = mysqli_fetch_assoc($spbi);
-            $varizi += $t['pay_fee'];
+        if ($spbi_num > 0) {
+            for ($q = 0; $q < $spbi_num; $q++) {
+                $t = mysqli_fetch_assoc($spbi);
+                $varizi += $t['pay_fee'];
+                $from = $t['pay_from'];
+                $to = $t['pay_to'];
+                $pay_fee = $t['pay_fee'];
+
+                if (isset($pay_all[$from][$to])) {
+                    $pay_all[$from][$to] += $pay_fee;
+                } else {
+                    $pay_all[$from][$to] = $pay_fee;
+                }
+            }
         }
 
         $remain_ = $buyer_cost - $p_cost + $varizi;
         if ($remain_ > 0) {
-            $debt_pos = ' (بس)';
+            $debt_pos = '(بستانکار)';
             $debt_pos_en = 'talabkar';
         } else if ($remain_ < 0) {
-            $debt_pos = ' (بد)';
+            $debt_pos = '(بدهکار)';
             $debt_pos_en = 'bedehkar';
             $sum_debt_all_users += $remain_;
         } else if ($remain_ == 0) {
@@ -742,17 +773,28 @@ function final_report($id)
             $debt_pos_en = '';
         }
 
-
         $remain = abs($buyer_cost - $p_cost + $varizi);
+        $daryafti = all_variz($_GET['id'], $c_member[$j]);
 
         echo '
-        <tr class="bg_grey">
-                <td class="td_title text-primary ' . $debt_pos_en . '">' . $person_name . '</td>
+        <tr class="' . $debt_pos_en . '">
+            <td class="td_title_ font-weight-bold text-center d-rtl va_middle ' . $debt_pos_en . ' d-ltr" colspan="6">' . $person_name . ' ' . $debt_pos . '</td>
+        </tr>
+        <tr class="' . $debt_pos_en . '">
+        <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">خرج کرد</td>
+            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">سهم</td>
+            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">واریزی</td>
+            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">دریافتی</td>
+            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">مانده</td>
+        </tr>
+        <tr class="' . $debt_pos_en . '">
+        <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($buyer_cost) . '</td>
                 <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($p_cost) . '</td>
-                <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($buyer_cost) . '</td>
                 <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($varizi) . '</td>
-                <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($remain) .  $debt_pos . '</td>
-        </tr>';
+                <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($daryafti) . '</td>
+                <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($remain - $daryafti)  . '</td>
+        </tr>
+        <tr><td colspan="6" class="empty_tr"></td></tr>';
     }
     echo '</table>
     <input type="text" id="users_sum_debt" value="' . sep3(abs($sum_debt_all_users)) . '" class="hide"/>

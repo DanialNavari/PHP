@@ -42,25 +42,19 @@ body {
 
 .btn_grad {
   background: rgb(1, 167, 234);
-  background: -moz-linear-gradient(
-    90deg,
-    rgba(1, 167, 234, 1) 0%,
-    rgba(20, 115, 189, 1) 50%,
-    rgba(1, 167, 234, 1) 100%
-  );
-  background: -webkit-linear-gradient(
-    90deg,
-    rgba(1, 167, 234, 1) 0%,
-    rgba(20, 115, 189, 1) 50%,
-    rgba(1, 167, 234, 1) 100%
-  );
-  background: linear-gradient(
-    90deg,
-    rgba(1, 167, 234, 1) 0%,
-    rgba(20, 115, 189, 1) 50%,
-    rgba(1, 167, 234, 1) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#01a7ea",endColorstr="#01a7ea",GradientType=1);
+  background: -moz-linear-gradient(90deg,
+      rgba(1, 167, 234, 1) 0%,
+      rgba(20, 115, 189, 1) 50%,
+      rgba(1, 167, 234, 1) 100%);
+  background: -webkit-linear-gradient(90deg,
+      rgba(1, 167, 234, 1) 0%,
+      rgba(20, 115, 189, 1) 50%,
+      rgba(1, 167, 234, 1) 100%);
+  background: linear-gradient(90deg,
+      rgba(1, 167, 234, 1) 0%,
+      rgba(20, 115, 189, 1) 50%,
+      rgba(1, 167, 234, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#01a7ea", endColorstr="#01a7ea", GradientType=1);
 }
 
 .btn_grad:hover {
@@ -83,7 +77,7 @@ form#sms {
   width: fit-content;
 }
 
-form#sms > input {
+form#sms>input {
   width: 15%;
   margin: 0 auto;
 }
@@ -166,9 +160,11 @@ h6 {
 .px_05 {
   padding: 0.5rem !important;
 }
+
 .px_02 {
   padding: 0.2rem !important;
 }
+
 .px_1 {
   padding: 1rem !important;
 }
@@ -185,22 +181,16 @@ h6 {
 
 .group_name h6 {
   background: rgb(245, 250, 255);
-  background: -moz-linear-gradient(
-    270deg,
-    rgb(175 215 255 / 40%) 0%,
-    rgb(255 255 255) 100%
-  );
-  background: -webkit-linear-gradient(
-    270deg,
-    rgb(175 215 255 / 40%) 0%,
-    rgb(255 255 255) 100%
-  );
-  background: linear-gradient(
-    270deg,
-    rgb(175 215 255 / 40%) 0%,
-    rgb(255 255 255) 100%
-  );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f5faff",endColorstr="#fefefe",GradientType=1);
+  background: -moz-linear-gradient(270deg,
+      rgb(175 215 255 / 40%) 0%,
+      rgb(255 255 255) 100%);
+  background: -webkit-linear-gradient(270deg,
+      rgb(175 215 255 / 40%) 0%,
+      rgb(255 255 255) 100%);
+  background: linear-gradient(270deg,
+      rgb(175 215 255 / 40%) 0%,
+      rgb(255 255 255) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f5faff", endColorstr="#fefefe", GradientType=1);
   padding: 0.3rem;
   border-radius: 0.3rem;
 }
@@ -389,6 +379,10 @@ h6 {
   font-size: 0.93rem;
 }
 
+.empty_tr{
+  padding: 0.1rem !important;
+}
+
 .pay_btn {
   position: absolute;
   bottom: 4.5rem;
@@ -418,6 +412,7 @@ h6 {
 .pay_btn1 {
   bottom: 4.5rem !important;
 }
+
 .pay_btn2 {
   bottom: -1rem !important;
   left: 45%;
@@ -518,6 +513,7 @@ h6 {
 .sum1 {
   font-size: 0.75rem !important;
 }
+
 .rounded-2 {
   border-radius: 2rem;
   height: 1.6rem;
@@ -538,6 +534,7 @@ h6 {
 .d-rtl {
   direction: rtl;
 }
+
 .d-ltr {
   direction: ltr;
 }
@@ -612,30 +609,39 @@ h6 {
 .w-1 {
   width: 1rem;
 }
+
 .w-1-5 {
   width: 1.5rem;
 }
+
 .w-2 {
   width: 2rem;
 }
+
 .w-3 {
   width: 3rem;
 }
+
 .w-4 {
   width: 4rem;
 }
+
 .w-5 {
   width: 5rem;
 }
+
 .w-6 {
   width: 6rem;
 }
+
 .w-7 {
   width: 7rem;
 }
+
 .w-8 {
   width: 8rem;
 }
+
 .w-9 {
   width: 9rem;
 }
@@ -755,6 +761,7 @@ input[radio] {
   width: 1rem;
   height: 1rem;
 }
+
 /* End of new transaction */
 
 /* Start of active course */
@@ -796,13 +803,11 @@ input[radio] {
 }
 
 .bedehkar {
-  background: #d81b60 !important;
-  color: #fff !important;
+  background: #ff5a96 !important;
 }
 
 .talabkar {
   background: #8bc34a !important;
-  color: #fff !important;
 }
 
 .h-1 {
@@ -953,7 +958,10 @@ input[radio] {
   left: 0%;
   padding: 0.4rem;
   width: 100%;
+  display: none;
 }
+
+
 /* End of payments */
 
 /* Request course */
@@ -973,9 +981,16 @@ input[radio] {
   border-bottom: 2px solid rgb(20 115 189 / 20%);
   background: #ebf6ff;
 }
-.sum_all_cost td{
+
+.sum_all_cost td {
   color: #000 !important;
   font-weight: bold;
+}
+
+.talabkar,.bedehkar{
+  padding: 0.1rem !important;
+  border-left: 1px dashed #fff;
+  color: #280d0d !important
 }
 /* ----------------------- Media Queries ----------------------- */
 @media screen and (min-width: 340px) {

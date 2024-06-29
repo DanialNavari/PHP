@@ -154,9 +154,9 @@ $('.floatingActionButton').click(function () {
 });
 
 function payment(pay_id = 0) {
-    $('.gray_layer').show();
-    $('.add_payments').fadeIn();
+    window.location.assign('./?route=_newTransaction&h=transaction&id=' + pay_id);
 }
+
 
 function moneyLimit() {
     $('.gray_layer').show();
@@ -370,6 +370,8 @@ class Contact {
                             type: 'POST',
                             success: function (response) {
                                 $('.users_box').append(response);
+                                $('#newContactTel').val("");
+                                $('#newContactName').val("");
                             }
                         });
                     } else if (response == 1) {
@@ -481,11 +483,13 @@ function chageSwitch(switch_name, course_id) {
 }
 
 function finishCourse(course_id, user_tel, type) {
+
     if (type == 'finish') {
         ans = confirm('آیا می خواهید این دوره را به اتمام برسانید؟');
     } else if (type == 'del') {
         ans = confirm('آیا می خواهید این دوره را حذف کنید؟');
     }
+
     if (ans == true) {
         user_tel = "0" + user_tel;
         z = new Date();
@@ -513,7 +517,9 @@ function finishCourse(course_id, user_tel, type) {
             update_course(course_id, 'course_del_course', '1');
             update_course(course_id, 'course_del_date', my_time);
             update_course(course_id, 'course_del_maker', user_tel);
+            update_course(course_id, 'course_default', 'NULL');
         }
+
         window.location.reload();
     }
 }
