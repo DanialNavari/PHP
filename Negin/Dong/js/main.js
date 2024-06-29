@@ -474,8 +474,10 @@ function chageSwitch(switch_name, course_id) {
         }
         $('#' + switch_name + course_id).attr('data-type', 'checked');
         $('#' + switch_name + course_id).attr('checked', 'checked');
-
     }
+    setTimeout(function () {
+        window.location.reload();
+    }, 1000);
 }
 
 function finishCourse(course_id, user_tel, type) {

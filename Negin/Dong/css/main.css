@@ -448,9 +448,10 @@ h6 {
   background-color: #1473bd;
   padding: 0.4rem;
   color: #fff;
-  width: 49.5%;
+  width: 49.8%;
   cursor: pointer;
   font-size: 0.7rem;
+  margin-bottom: 0.1rem;
 }
 
 .share_link {
@@ -466,7 +467,7 @@ h6 {
 }
 
 .end_course {
-  background-color: #000;
+  background-color: #012535;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   width: 100%;
