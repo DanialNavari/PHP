@@ -523,3 +523,4 @@ function finishCourse(course_id, user_tel, type) {
         window.location.reload();
     }
 }
+

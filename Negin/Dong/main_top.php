@@ -18,8 +18,9 @@
         <div class="gray_layer"></div>
         <div class="headers text-right pr-3">
             <div>
-                <i id="h_menu"><?php echo $hamburger_menu; ?></i>
-                <h1 class="px-3 d-inline-block">دنگ و دونگ</h1>
+                <i id="h_menu" class="force_hide"><?php echo $hamburger_menu; ?></i>
+                <img src="image/logo.png" alt="logo" class="rounded w-2" />
+                <h1 class="px-3 d-inline-block ">دنگ و دونگ</h1>
             </div>
             <i id="h_menu" class="pl-3 click1" onclick="navigate('logout.php')"><?php echo $logout; ?></i>
         </div>

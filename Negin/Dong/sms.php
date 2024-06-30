@@ -19,7 +19,7 @@ echo $pos;
 
 <div class="container">
     <div class="text-center mt-5 full_width px-2">
-        <img src="image/logo.png" alt="logo" class="rounded" />
+        <img src="image/logo.png" alt="logo" class="rounded w-4" />
         <h6 class="mt-2 text-primary">دنگ و دونگ</h6>
         <div class="row mt-4" id="hourGlass">
             <?php echo $hourGlass; ?> <span id="remain_time">60</span>

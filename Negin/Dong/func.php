@@ -250,6 +250,7 @@ function active_transactions($course_id)
         $trans_date = explode(' ', $r['trans_date']);
         $trans_desc = $r['trans_desc'];
         $trans_person = $r['trans_person'];
+        $trans_share_type = $r['trans_share_type'];
 
         $user_buyer_info = SELECT_user_by_id($trans_buyer);
         $buyer_name = $user_buyer_info['contact_name'];
@@ -260,6 +261,7 @@ function active_transactions($course_id)
         $zinaf = '';
         $sep_colon = explode(',', $trans_person);
         $tedad = count($sep_colon) - 1;
+
         for ($k = 0; $k < $tedad; $k++) {
             $sep_tp = explode(':', $sep_colon[$k]);
             $user_buyer_info1 = SELECT_user_by_id($sep_tp[0]);
@@ -799,4 +801,211 @@ function final_report($id)
     echo '</table>
     <input type="text" id="users_sum_debt" value="' . sep3(abs($sum_debt_all_users)) . '" class="hide"/>
     </div>';
+}
+
+function share($trans_id)
+{
+    $trans_list1 = [];
+
+    $results = SELECT_trans_details($trans_id);
+    $fetch = mysqli_fetch_assoc($results);
+
+    $trans_persons_share = explode(',', $fetch['trans_person']);
+    $trans_c = count($trans_persons_share) - 1;
+    for ($o = 0; $o < $trans_c; $o++) {
+        $trans_p = explode(':', $trans_persons_share[$o]);
+        $trans_p_uid = $trans_p[0];
+        $trans_p_cost = $trans_p[1];
+
+        $contact_info = SELECT_user_by_id($trans_p_uid);
+        $trans_buyer = $contact_info['contact_name'];
+
+        if (isset($trans_list1[$trans_p_uid]['amount'])) {
+            $trans_list1[$trans_p_uid]['amount'] += $trans_p_cost;
+        } else {
+            $trans_list1[$trans_p_uid]['amount'] =  $trans_p_cost;
+        }
+
+        $trans_list1[$trans_p_uid]['name']  = "$trans_buyer";
+    }
+
+    $trans_persons_share1 = explode(',', $fetch['trans_person_co']);
+    $trans_c1 = count($trans_persons_share1) - 1;
+    for ($o = 0; $o < $trans_c1; $o++) {
+        $trans_p1 = explode(':', $trans_persons_share1[$o]);
+        $trans_p_uid1 = $trans_p1[0];
+        $trans_p_cost1 = $trans_p1[1];
+
+        $contact_info = SELECT_user_by_id($trans_p_uid1);
+        $trans_buyer = $contact_info['contact_name'];
+
+        if (isset($trans_list1[$trans_p_uid1]['co'])) {
+            $trans_list1[$trans_p_uid1]['co'] += $trans_p_cost1;
+        } else {
+            $trans_list1[$trans_p_uid1]['co'] =  $trans_p_cost1;
+        }
+
+        $trans_list1[$trans_p_uid1]['name']  = $trans_buyer;
+    }
+
+    $GLOBALS['trans_list1'] = $trans_list1;
+}
+
+function trans_edit($trans_id)
+{
+    $trans_info = SELECT_trans_details($trans_id);
+    $trans_fetch = mysqli_fetch_assoc($trans_info);
+
+    $course_id = $trans_fetch['trans_course'];
+    $trans_date = $trans_fetch['trans_date'];
+    $trans_buyer_code = $trans_fetch['trans_buyer'];
+    $trans_fee = $trans_fetch['trans_fee'];
+    $trans_share_type = $trans_fetch['trans_share_type'];
+    $trans_desc = $trans_fetch['trans_desc'];
+
+    if ($trans_share_type == 'coefficient') {
+        $check1 = 'checked';
+        $check2 = '';
+    } else {
+        $check1 = '';
+        $check2 = 'checked';
+    }
+
+    $contact_info = SELECT_user_by_id($trans_buyer_code);
+    $trans_buyer = $contact_info['contact_name'];
+
+    $course_info = SELECT_course_id($course_id);
+    $course_name = $course_info['course_name'];
+    $money_unit = $course_info['course_money_unit'];
+
+    echo '
+        <table class="table table-hover">
+            <tr class="">
+                <td class="td_title va_middle w-6">نام دوره</td>
+                <td class="font-weight-bold text-white text-center w-9">
+                    <span class="text-center text-primary">' . $course_name . '</span>
+                </td>
+                <td class="text-center click" onclick="course()">' . $GLOBALS['edit'] . '</td>
+            </tr>
+            <tr>
+                <td class="td_title tarikh">تاریخ تراکنش</td>
+                <td class="font-weight-bold text-center">
+                    <span id="start_from_fa">' . $trans_date . '</span>
+                </td>
+                <td class="text-center click" onclick="setDate()">' . $GLOBALS['edit'] . '</td>
+            </tr>
+            <tr id="set_tarikh" class="hide">
+                <td colspan="3">
+                    <span id="start_from_en" class="hide"></span>
+                    <span id="start_unix" class="hide"></span>
+                    <div class="range-from-example" class="hide"></div>
+                </td>
+            </tr>
+            <tr class="hide w-100">
+                <td colspan="3">
+                    <button class="btn btn-success btn-sm w-100" id="savedate">ثبت تاریخ</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="td_title tarikh">خرید کننده</td>
+                <td class="font-weight-bold text-center">
+                    ' . $trans_buyer . '
+                </td>
+                <td class="text-center click" onclick="payment()">' . $GLOBALS['edit'] . '</td>
+            </tr>
+            <tr>
+                <td class="td_title">مبلغ تراکنش</td>
+                <td class="font-weight-bold text-center">
+                    <span id="moneyLimit">' . sep3($trans_fee) . '</span> <span class="unit">' . $money_unit . '</span>
+                </td>
+                <td class="text-center click" onclick="moneyLimit()">' . $GLOBALS['edit'] . '</td>
+            </tr>
+            <tr>
+                <td class="td_title">سهم افراد</td>
+                <td class="font-weight-bold text-center" colspan="2">
+                    <span>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" ' . $check1 . '>
+                            <label class="form-check-label" for="inlineRadio1"><span>ضریب</span></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" ' . $check2 . '>
+                            <label class="form-check-label" for="inlineRadio2"><span>مبلغ (ريال)</span></label>
+                        </div>
+                    </span>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="td_title va_middle">توضیحات</td>
+                <td class="font-weight-bold text-center" colspan="2">
+                    <textarea class="form-control sum" rows="3">' . $trans_desc . '</textarea>
+                </td>
+            </tr>
+        </table>';
+}
+
+function trans_get_contact_share($trans_id)
+{
+    share($trans_id);
+
+    $res = SELECT_trans_details($trans_id);
+    $fet = mysqli_fetch_assoc($res);
+    $trans_course = $fet['trans_course'];
+    $trans_share_type = $fet['trans_share_type'];
+
+    $course_infos = SELECT_course_id($trans_course);
+    $course_members = explode(',', $course_infos['course_member']);
+    $member_count = count($course_members) - 1;
+    $money_unit = $course_infos['course_money_unit'];
+
+    for ($l = 0; $l < $member_count; $l++) {
+        $user = $course_members[$l];
+
+        if (isset($GLOBALS['trans_list1'][$user]['amount'])) {
+            $amount = $GLOBALS['trans_list1'][$user]['amount'];
+        } else {
+            $amount = 0;
+        }
+
+        if (isset($GLOBALS['trans_list1'][$user]['co'])) {
+            $co = $GLOBALS['trans_list1'][$user]['co'];
+        } else {
+            $co = 0;
+        }
+
+        if (isset($GLOBALS['trans_list1'][$user]["name"])) {
+            $name = $GLOBALS['trans_list1'][$user]["name"];
+        } else {
+            $contact_info = SELECT_user_by_id($user);
+            $name = $contact_info['contact_name'];
+        }
+
+
+        if ($trans_share_type == 'amount') {
+            $star = 'ضریب : ' . $co;
+            $field = $amount;
+        } else {
+            $star = sep3($amount) . ' ' . $money_unit;
+            $field = $co;
+        }
+
+        echo '
+        <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
+            <div class="card my_card bg_blue user-' . $user . '-box">
+                <div class="record user-' . $user . '-name">
+                    <div class="user_info text-white border_none box_shadow_none w-8">
+                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                        <div class="star">
+                            <span>' . $name . '</span>
+                            <i>' . $star . '</i>
+                        </div>
+                    </div>
+                    <div class="user_info text-white border_none box_shadow_none">
+                        <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" onkeyup="sep(' . $user . ')" id="user-' . $user . '">
+                    </div>
+                </div>
+            </div>
+        </div>';
+    }
 }

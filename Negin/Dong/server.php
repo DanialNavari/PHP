@@ -37,4 +37,15 @@ if (isset($_POST['login'])) {
     $key = $_POST['key'];
     $value = $_POST['value'];
     UPDATE_course($key, $value, $update_course);
+} else if (isset($_POST['seps'])) {
+    $x = explode(',', $_POST['seps']);
+    $adad = '';
+    if (count($x) > 0) {
+        for ($z = 0; $z < count($x); $z++) {
+            $adad .= $x[$z];
+        }
+        echo sep3($adad);
+    } else {
+        echo sep3($_POST['seps']);
+    }
 }
