@@ -882,10 +882,10 @@ function trans_edit($trans_id)
         <table class="table table-hover">
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
-                <td class="font-weight-bold text-white text-center w-9">
+                <td class="font-weight-bold text-white text-center w-9" colspan="2">
                     <span class="text-center text-primary">' . $course_name . '</span>
                 </td>
-                <td class="text-center click" onclick="course()">' . $GLOBALS['edit'] . '</td>
+                
             </tr>
             <tr>
                 <td class="td_title tarikh">تاریخ تراکنش</td>
@@ -901,7 +901,7 @@ function trans_edit($trans_id)
                     <div class="range-from-example" class="hide"></div>
                 </td>
             </tr>
-            <tr class="hide w-100">
+            <tr class="hide w-100" id="calendar_">
                 <td colspan="3">
                     <button class="btn btn-success btn-sm w-100" id="savedate">ثبت تاریخ</button>
                 </td>
@@ -933,7 +933,6 @@ function trans_edit($trans_id)
                             <label class="form-check-label" for="inlineRadio2"><span>مبلغ (ريال)</span></label>
                         </div>
                     </span>
-
                 </td>
             </tr>
             <tr>
@@ -945,7 +944,7 @@ function trans_edit($trans_id)
         </table>';
 }
 
-function trans_get_contact_share($trans_id)
+function trans_get_contact_share($trans_id, $pos)
 {
     share($trans_id);
 
@@ -990,22 +989,46 @@ function trans_get_contact_share($trans_id)
             $field = $co;
         }
 
-        echo '
-        <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
-            <div class="card my_card bg_blue user-' . $user . '-box">
-                <div class="record user-' . $user . '-name">
-                    <div class="user_info text-white border_none box_shadow_none w-8">
-                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
-                        <div class="star">
-                            <span>' . $name . '</span>
-                            <i>' . $star . '</i>
+        if ($amount > 0 || $co > 0) {
+            $bg_dark = 'bg_green_dark';
+            $bg_color = 'bg_green';
+        } else {
+            $bg_dark = 'bg_blue';
+            $bg_color = '';
+        }
+
+        if ($pos == "complete") {
+            echo '
+            <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
+                <div class="card my_card ' . $bg_dark . ' user-' . $user . '-box">
+                    <div class="record user-' . $user . '-name ' . $bg_color . '">
+                        <div class="user_info text-white border_none box_shadow_none w-8">
+                            <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                            <div class="star">
+                                <span>' . $name . '</span>
+                                <i>' . $star . '</i>
+                            </div>
+                        </div>
+                        <div class="user_info text-white border_none box_shadow_none">
+                            <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" onkeyup="sep(' . $user . ')" id="user-' . $user . '">
                         </div>
                     </div>
-                    <div class="user_info text-white border_none box_shadow_none">
-                        <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" onkeyup="sep(' . $user . ')" id="user-' . $user . '">
-                    </div>
                 </div>
-            </div>
-        </div>';
+            </div>';
+        } else {
+            if (isset($GLOBALS['trans_list1'][$user]['amount'])) {
+                echo '
+                <div class="user_info bg_dark_blue text-white user-' . $user . '" data="' . $user . '" onclick="remove_from_course(' . $user . ')">
+                    <div class="user_name td_title_ px_02 mx-auto">' . $name . '</div>
+                </div>
+            ';
+            }
+        }
     }
+}
+
+function UPDATE_trans($trans_id, $key, $value)
+{
+    $res = Query("UPDATE `transactions` SET `$key` = '$value' WHERE `trans_id` = '$trans_id'");
+    return 1;
 }

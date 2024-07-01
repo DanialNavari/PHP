@@ -48,4 +48,7 @@ if (isset($_POST['login'])) {
     } else {
         echo sep3($_POST['seps']);
     }
+} else if (isset($_POST['trans_update'])) {
+    $res = UPDATE_trans($_POST['trans_id'], $_POST['trans_key'], $_POST['trans_value']);
+    echo $res;
 }

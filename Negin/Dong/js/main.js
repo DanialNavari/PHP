@@ -110,6 +110,8 @@ $('#savedate').click(function () {
     $('.end_course .w-100').show();
     $('#btn_add_new_contact').show();
     $('.savedate_tr').hide();
+    $('#savedate').hide();
+    $('#calendar_').hide();
 });
 
 function remove_from_course(id) {

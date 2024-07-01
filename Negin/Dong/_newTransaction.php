@@ -20,13 +20,9 @@
         } else {
         }
         ?>
-        <div class="mb-5"></div>
-        <div class="pay_btn pay_btn2">
-            <div class="pay_btn_icon">
-                <?php echo $check; ?>
-            </div>
-        </div>
+        
     </div>
+    <button class="btn btn-success w-100"><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -37,13 +33,13 @@
 
 <!-- selected users -->
 <div class="cat mb-1">
-    <div class="card my_card border_none selected_user">
-
+    <div class="card my_card border_none selected_user" id="selected_user_rounded">
+        <?php trans_get_contact_share($_GET['id'], "share"); ?>
     </div>
 </div>
 
 <!-- users box -->
-<?php trans_get_contact_share($_GET['id']); ?>
+<?php trans_get_contact_share($_GET['id'], "complete"); ?>
 
 <div class="add_payments hide">
     <table class="border_none mx-auto">
@@ -105,8 +101,29 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="static/js/lib/persian-date.min.js"></script>
 <script src="static/js/lib/persian-datepicker.min.js"></script>
+<input type="hidden" value="<?php echo $_GET['id']; ?>" id="trans_id" />
 
 <script>
+    $(':radio').click(function() {
+        radio_btn = $(this).attr('id');
+        trans_id = $('#trans_id').val();
+
+        if (radio_btn == 'inlineRadio1') {
+            trans_value = 'coefficient';
+        } else {
+            trans_value = 'amount';
+        }
+
+        $.ajax({
+            data: 'trans_update=ok&trans_id=' + trans_id + '&trans_key=trans_share_type&trans_value=' + trans_value,
+            url: 'server.php',
+            type: 'POST',
+            success: function(response) {
+                window.location.reload();
+            }
+        });
+    });
+
     function sep(id) {
         fee = $('#user-' + id).val();
         if (fee == '' || fee == null) {
