@@ -20,9 +20,12 @@
         } else {
         }
         ?>
-        
+
     </div>
-    <button class="btn btn-success w-100"><span></span> ذخیره</button>
+    <input type="hidden" id="trans_person" value="">
+    <input type="hidden" id="trans_person_co" value="">
+
+    <button class="btn btn-success w-100" onclick="editTrans()"><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -46,16 +49,14 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">خرید کننده</td>
             <td>
-                <select class="form-select sum font-weight-bold" aria-label="Default select example">
-                    <option value="1">اشکان توکلی</option>
-                    <option value="2">دانیال نواری</option>
-                    <option value="3">علیرضا صالحی</option>
+                <select class="form-select sum font-weight-bold" aria-label="Default select example" id="consumers">
+                    <?php echo get_contact_in_course($_GET['id']); ?>
                 </select>
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
+                <button class="btn btn-success btn-sm w-100" id="savedate2">ثبت</button>
             </td>
         </tr>
     </table>
@@ -85,12 +86,12 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
             <td>
-                <input class="form-control sum font-weight-bold" type="number" />
+                <input class="form-control sum font-weight-bold" type="number" id="trans_cost" />
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
+                <button class="btn btn-success btn-sm w-100" id="savedate1">ثبت</button>
             </td>
         </tr>
     </table>
@@ -104,6 +105,26 @@
 <input type="hidden" value="<?php echo $_GET['id']; ?>" id="trans_id" />
 
 <script>
+    $('#savedate2').click(function() {
+        consumers_code = $('#consumers').val();
+        consumers_name = $('#consumers option:selected').text();
+        $('#buyer').val(consumers_code);
+        $('#consumer_name').text(consumers_name);
+        $('.gray_layer').click();
+    });
+
+    $('#savedate1').click(function() {
+        fee = $('#trans_cost').val();
+        $.ajax({
+            data: "sep=" + fee,
+            url: "server.php",
+            type: "POST",
+            success: function(response) {
+                $('#moneyLimit').text(response);
+            },
+        });
+        $('.gray_layer').click();
+    });
     $(':radio').click(function() {
         radio_btn = $(this).attr('id');
         trans_id = $('#trans_id').val();

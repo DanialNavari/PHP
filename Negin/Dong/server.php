@@ -38,17 +38,50 @@ if (isset($_POST['login'])) {
     $value = $_POST['value'];
     UPDATE_course($key, $value, $update_course);
 } else if (isset($_POST['seps'])) {
-    $x = explode(',', $_POST['seps']);
-    $adad = '';
-    if (count($x) > 0) {
-        for ($z = 0; $z < count($x); $z++) {
-            $adad .= $x[$z];
-        }
-        echo sep3($adad);
-    } else {
-        echo sep3($_POST['seps']);
-    }
+    echo seps3($_POST['seps']);
 } else if (isset($_POST['trans_update'])) {
     $res = UPDATE_trans($_POST['trans_id'], $_POST['trans_key'], $_POST['trans_value']);
     echo $res;
+} else if (isset($_POST['edit_trans'])) {
+
+    $trans_fee = seps4($_POST['moneyLimit']);
+
+    if ($_POST['type'] == 'amount') {
+        $trans_person = explode('.', check_fee($_POST['trans_person']));
+        $trans_p = $trans_person[0];
+        $sum = $trans_person[1];
+
+        if ($sum == $trans_fee) {
+            $contact = SELECT_contact($_COOKIE['uid']);
+            UPDATE_trans($_POST['trans_id'], 'trans_fee', $trans_fee);
+            UPDATE_trans($_POST['trans_id'], 'trans_date', $_POST['start_from_fa']);
+            UPDATE_trans($_POST['trans_id'], 'trans_desc', $_POST['trans_desc']);
+            UPDATE_trans($_POST['trans_id'], 'trans_share_type', $_POST['type']);
+            UPDATE_trans($_POST['trans_id'], 'trans_person', $trans_p);
+            UPDATE_trans($_POST['trans_id'], 'trans_person_co', $_POST['trans_person_co']);
+            UPDATE_trans($_POST['trans_id'], 'trans_buyer', $_POST['buyer']);
+            UPDATE_trans($_POST['trans_id'], 'trans_create', date("Y-m-d H:i:s"));
+            UPDATE_trans($_POST['trans_id'], 'trans_recorder', $contact['contact_id']);
+            echo 1;
+        } else {
+            echo 2;
+        }
+    } else if ($_POST['type'] == 'coefficient') {
+        $contact = SELECT_contact($_COOKIE['uid']);
+        $sahmi = sahm($trans_fee, $_POST['trans_person_co']);
+        UPDATE_trans($_POST['trans_id'], 'trans_fee', $trans_fee);
+        UPDATE_trans($_POST['trans_id'], 'trans_date', $_POST['start_from_fa']);
+        UPDATE_trans($_POST['trans_id'], 'trans_desc', $_POST['trans_desc']);
+        UPDATE_trans($_POST['trans_id'], 'trans_share_type', $_POST['type']);
+        UPDATE_trans($_POST['trans_id'], 'trans_person', $sahmi);
+        UPDATE_trans($_POST['trans_id'], 'trans_person_co', $_POST['trans_person_co']);
+        UPDATE_trans($_POST['trans_id'], 'trans_buyer', $_POST['buyer']);
+        UPDATE_trans($_POST['trans_id'], 'trans_create', date("Y-m-d H:i:s"));
+        UPDATE_trans($_POST['trans_id'], 'trans_recorder', $contact['contact_id']);
+        echo 1;
+    }
+} else if (isset($_POST['pure_num'])) {
+    echo seps4($_POST['pure_num']);
+} else if (isset($_POST['get_contact_in_course'])) {
+    echo get_contact_in_course($_POST['trans_id']);
 }

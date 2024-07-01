@@ -8,3 +8,5 @@ require_once("main_top.php");
         <h3>لطفا با گوشی همراه وارد شوید</h3>
     </div>
 </div>
+
+<?php include_once('javascript.php'); ?>

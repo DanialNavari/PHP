@@ -103,7 +103,7 @@ function SELECT_trans_details($trans_id)
 function SELECT_trans($course_id)
 {
     db();
-    $w = Query("SELECT * FROM `transactions` WHERE `trans_course` = '$course_id'");
+    $w = Query("SELECT * FROM `transactions` WHERE `trans_course` = '$course_id' AND `trans_del` IS NULL");
     return $w;
 }
 
@@ -287,7 +287,7 @@ function active_transactions($course_id)
                 <td class="td_title text_blue_very_dark text-right" colspan="4">' . $trans_desc . '</td>
             </tr>
             <tr class="bg_secondary font-weight-bold">
-                <td class="td_title text_blue_very_dark text-right" colspan="4"> ' . $zinaf . '</td>
+                <td class="td_title_ text_blue_very_dark text-right" colspan="4"> ' . $zinaf . '</td>
             </tr>
         </table>
     </div>
@@ -783,11 +783,11 @@ function final_report($id)
             <td class="td_title_ font-weight-bold text-center d-rtl va_middle ' . $debt_pos_en . ' d-ltr" colspan="6">' . $person_name . ' ' . $debt_pos . '</td>
         </tr>
         <tr class="' . $debt_pos_en . '">
-        <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">خرج کرد</td>
-            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">سهم</td>
-            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">واریزی</td>
-            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">دریافتی</td>
-            <td class="td_title_ font-weight-bold text-center text-white d-rtl va_middle ' . $debt_pos_en . '">مانده</td>
+        <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">خرج کرد</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">سهم</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">واریزی</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">دریافتی</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">مانده</td>
         </tr>
         <tr class="' . $debt_pos_en . '">
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($buyer_cost) . '</td>
@@ -885,7 +885,6 @@ function trans_edit($trans_id)
                 <td class="font-weight-bold text-white text-center w-9" colspan="2">
                     <span class="text-center text-primary">' . $course_name . '</span>
                 </td>
-                
             </tr>
             <tr>
                 <td class="td_title tarikh">تاریخ تراکنش</td>
@@ -908,10 +907,10 @@ function trans_edit($trans_id)
             </tr>
             <tr>
                 <td class="td_title tarikh">خرید کننده</td>
-                <td class="font-weight-bold text-center">
+                <td class="font-weight-bold text-center" id="consumer_name">
                     ' . $trans_buyer . '
                 </td>
-                <td class="text-center click" onclick="payment()">' . $GLOBALS['edit'] . '</td>
+                <td class="text-center click" onclick="buyer()">' . $GLOBALS['edit'] . '</td>
             </tr>
             <tr>
                 <td class="td_title">مبلغ تراکنش</td>
@@ -938,10 +937,10 @@ function trans_edit($trans_id)
             <tr>
                 <td class="td_title va_middle">توضیحات</td>
                 <td class="font-weight-bold text-center" colspan="2">
-                    <textarea class="form-control sum" rows="3">' . $trans_desc . '</textarea>
+                    <textarea class="form-control sum" rows="3" id="trans_desc">' . $trans_desc . '</textarea>
                 </td>
             </tr>
-        </table>';
+        </table><input type="hidden" id="buyer" value="' . $trans_buyer_code . '"/>';
 }
 
 function trans_get_contact_share($trans_id, $pos)
@@ -958,8 +957,11 @@ function trans_get_contact_share($trans_id, $pos)
     $member_count = count($course_members) - 1;
     $money_unit = $course_infos['course_money_unit'];
 
+    $karbaran = '';
+
     for ($l = 0; $l < $member_count; $l++) {
         $user = $course_members[$l];
+        $karbaran .= $user . ',';
 
         if (isset($GLOBALS['trans_list1'][$user]['amount'])) {
             $amount = $GLOBALS['trans_list1'][$user]['amount'];
@@ -982,11 +984,15 @@ function trans_get_contact_share($trans_id, $pos)
 
 
         if ($trans_share_type == 'amount') {
-            $star = 'ضریب : ' . $co;
+            $star =  $co;
             $field = $amount;
+            $star_unit = 'ضریب : ';
+            $sec_unit = '';
         } else {
-            $star = sep3($amount) . ' ' . $money_unit;
+            $star = sep3($amount);
             $field = $co;
+            $star_unit = '';
+            $sec_unit = $money_unit;
         }
 
         if ($amount > 0 || $co > 0) {
@@ -1002,21 +1008,21 @@ function trans_get_contact_share($trans_id, $pos)
             <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
                 <div class="card my_card ' . $bg_dark . ' user-' . $user . '-box">
                     <div class="record user-' . $user . '-name ' . $bg_color . '">
-                        <div class="user_info text-white border_none box_shadow_none w-8">
+                        <div class="user_info text-white border_none box_shadow_none w-12">
                             <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                             <div class="star">
-                                <span>' . $name . '</span>
-                                <i>' . $star . '</i>
+                                <span class="karbar_name">' . $name . '</span>
+                                <span><i>' . $star_unit . '</i> <i id="user_second_unit_' . $user . '">' . $star . '</i> ' . $sec_unit . '</span>
                             </div>
                         </div>
                         <div class="user_info text-white border_none box_shadow_none">
-                            <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" onkeyup="sep(' . $user . ')" id="user-' . $user . '">
+                            <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')">
                         </div>
                     </div>
                 </div>
             </div>';
         } else {
-            if (isset($GLOBALS['trans_list1'][$user]['amount'])) {
+            if (isset($GLOBALS['trans_list1'][$user]['amount']) && $GLOBALS['trans_list1'][$user]['amount'] > 0) {
                 echo '
                 <div class="user_info bg_dark_blue text-white user-' . $user . '" data="' . $user . '" onclick="remove_from_course(' . $user . ')">
                     <div class="user_name td_title_ px_02 mx-auto">' . $name . '</div>
@@ -1025,10 +1031,106 @@ function trans_get_contact_share($trans_id, $pos)
             }
         }
     }
+    echo '<input type="hidden" value="' . $karbaran . '" id="karbaran"/>';
 }
 
 function UPDATE_trans($trans_id, $key, $value)
 {
     $res = Query("UPDATE `transactions` SET `$key` = '$value' WHERE `trans_id` = '$trans_id'");
     return 1;
+}
+
+function seps3($adad1)
+{
+    $adad = '';
+    $x = explode(',', $adad1);
+    if (count($x) > 0) {
+        for ($z = 0; $z < count($x); $z++) {
+            $adad .= $x[$z];
+        }
+        return sep3($adad);
+    } else {
+        return sep3($adad1);
+    }
+}
+
+function seps4($adad1)
+{
+    $adad = '';
+    $x = explode(',', $adad1);
+    if (count($x) > 0) {
+        for ($z = 0; $z < count($x); $z++) {
+            $adad .= $x[$z];
+        }
+        return $adad;
+    } else {
+        return $adad;
+    }
+}
+
+function check_fee($string)
+{
+    $final_string = '';
+    $x = explode('-', $string);
+    $x_count = count($x) - 1;
+    $sum = 0;
+
+    for ($i = 0; $i < $x_count; $i++) {
+        $y = explode(':', $x[$i]);
+        $y_1 = $y[0];
+        $y_2 = seps4($y[1]);
+        $final_string .= $y_1 . ':' . $y_2 . ',';
+        $sum += $y_2;
+    }
+
+    return $final_string . '.' . $sum;
+}
+
+function get_contact_in_course($trans_id)
+{
+    $people = '';
+    $res = SELECT_trans_details($trans_id);
+    $fetch = mysqli_fetch_assoc($res);
+    $course_id = $fetch['trans_course'];
+
+    $course_info = SELECT_course_id($course_id);
+    $members = explode(',', $course_info['course_member']);
+
+    for ($i = 0; $i < count($members) - 1; $i++) {
+        $c_id = $members[$i];
+        $rs = Query("SELECT * FROM `contacts` WHERE `contact_id` = '" . $c_id . "'");
+        $fet = mysqli_fetch_assoc($rs);
+        $contact_name = $fet['contact_name'];
+        $people .= '<option value="' . $c_id . '">' . $contact_name . '</option>';
+    }
+    return $people;
+}
+
+function SELECT_contact($tel)
+{
+    $res = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel'");
+    $fetch = mysqli_fetch_assoc($res);
+    return $fetch;
+}
+
+function sahm($trans_fee, $trans_person_co)
+{
+    $x = explode(',', $trans_person_co);
+    $sum = 0;
+    $final_string = '';
+
+    for ($i = 0; $i < count($x) - 1; $i++) {
+        $y = explode(':', $x[$i]);
+        $sum += $y[1];
+    }
+
+    $one_unit = round($trans_fee / $sum, 0);
+
+    for ($i = 0; $i < count($x) - 1; $i++) {
+        $y = explode(':', $x[$i]);
+        $sahm = $y[1] * $one_unit;
+        $final_string .= $y[0] . ':' . $sahm . ',';
+    }
+
+    return $final_string;
 }
