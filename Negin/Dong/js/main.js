@@ -1,7 +1,7 @@
 let cd;
 function page(type, route, name = null, id = null) {
   if (type == "r") {
-    window.location.assign("./?route=" + route + "&h=" + name + "&id=" + id);
+      window.location.assign("./?route=" + route + "&h=" + name + "&id=" + id);
   } else if (type == "d") {
     window.location.assign(route + "/?h=" + name);
   }
@@ -368,6 +368,10 @@ class Contact {
     switch (type) {
       case "add":
         this.add();
+        break;
+      case "add_new_contact_with_star":
+        this.add_new_contact_with_star();
+        break;
     }
   }
 
@@ -397,6 +401,52 @@ class Contact {
                 $(".users_box").append(response);
                 $("#newContactTel").val("");
                 $("#newContactName").val("");
+              },
+            });
+          } else if (response == 1) {
+            Toast(105);
+            alert_border("newContactTel");
+            alert_border("newContactName");
+          } else if (response == 0) {
+            Toast(103);
+            alert_border("newContactTel");
+            alert_border("newContactName");
+          }
+        },
+      });
+    } else {
+      Toast(104);
+      alert_border("newContactName");
+    }
+  }
+
+  add_new_contact_with_star() {
+    var contact_name = $("#newContactName").val();
+    var contact_tel = $("#newContactTel").val();
+    if (contact_name.length > 0) {
+      $.ajax({
+        data:
+          "add_contact=ok&contact_name=" +
+          contact_name +
+          "&contact_tel=" +
+          contact_tel,
+        url: "server.php",
+        type: "POST",
+        success: function (response) {
+          if (response > 1) {
+            $.ajax({
+              data: "Object_contact_2=ok",
+              url: "server.php",
+              type: "POST",
+              success: function (response) {
+                $(".users_box").fadeOut("slow");
+                setTimeout(function () {
+                  $(".users_box").empty();
+                  $(".users_box").append(response);
+                  $("#newContactTel").val("");
+                  $("#newContactName").val("");
+                  $(".users_box").fadeIn("slow");
+                }, 400);
               },
             });
           } else if (response == 1) {
@@ -681,4 +731,12 @@ function checkValue1(id) {
 function buyer() {
   $(".gray_layer").show();
   $(".add_payments").show();
+}
+
+function del_contacts(id) {
+  let del_opt = confirm("آیا می خواهید مخاطب را حذف کنید؟");
+}
+
+function add() {
+  mokhatab = new Contact("add_new_contact_with_star");
 }

@@ -1,6 +1,7 @@
 <?php
 require_once("symbol.php");
 require_once("main_top.php");
+require_once("func.php");
 
 ?>
 <div class="row empty">دعوت به دوره</div>

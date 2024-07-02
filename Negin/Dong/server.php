@@ -84,4 +84,7 @@ if (isset($_POST['login'])) {
     echo seps4($_POST['pure_num']);
 } else if (isset($_POST['get_contact_in_course'])) {
     echo get_contact_in_course($_POST['trans_id']);
+} elseif (isset($_POST['Object_contact_2'])) {
+    $res = contact_list($_COOKIE['uid']);
+    echo $res;
 }

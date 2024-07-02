@@ -7,10 +7,6 @@ function db()
     $db_username = 'root';
     $db_password = '';
     $db_name = 'dong';
-    /*     $db_host = 'localhost';
-    $db_username = 'qndomtoj_dong';
-    $db_password = 'D@nielnv5289';
-    $db_name = 'qndomtoj_Dong'; */
     date_default_timezone_set('Asia/Tehran');
     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
     mysqli_set_charset($GLOBALS['conn'], "utf8");
@@ -74,7 +70,12 @@ function SELECT_user($tel)
 {
     db();
     $result = Query("SELECT * FROM `users` WHERE `users_tel` LIKE '%$tel%'");
-    $r = mysqli_fetch_assoc($result);
+    $num = mysqli_num_rows($result);
+    if ($num > 0) {
+        $r = mysqli_fetch_assoc($result);
+    } else {
+        $r = 0;
+    }
     return $r;
 }
 
@@ -185,7 +186,8 @@ function Object_contact($name, $tel, $maker)
     $contact_id = $r['contact_id'];
 
 
-    return '<div class="cat mb-1 contactBox" onclick="add_user_to_course(' . $contact_id . ')" data="' . $name . ' ' . $tel . '">
+    return '
+    <div class="cat mb-1 contactBox" onclick="add_user_to_course(' . $contact_id . ')" data="' . $name . ' ' . $tel . '">
         <div class="card my_card bg_blue user-' . $contact_id . '-box">
             <div class="record user-' . $contact_id . '-name">
                 <div class="user_info text-white border_none box_shadow_none">
@@ -202,6 +204,7 @@ function Object_contact($name, $tel, $maker)
         </div>
     </div>';
 }
+
 
 function give_contacts_list($contact_maker)
 {
@@ -553,7 +556,6 @@ function UPDATE_course($field, $value, $course_id)
 
 function request_course($id)
 {
-    db();
     $res = Query("SELECT * FROM `course` WHERE `course_id` =  '$id' AND `course_disabled` IS NULL AND `course_finish` IS NULL");
     $n = mysqli_num_rows($res);
     if ($n > 0) {
@@ -1149,7 +1151,7 @@ function sahm($trans_fee, $trans_person_co)
 
 function SELECT_contact_maker($tel)
 {
-    $res = Query("SELECT * FROM `contacts` WHERE `contact_maker` = '$tel'");
+    $res = Query("SELECT * FROM `contacts` WHERE `contact_maker` = '$tel' AND `contact_active`=1 ORDER BY `contact_id` DESC");
     return $res;
 }
 
@@ -1157,21 +1159,28 @@ function contact_list($tel)
 {
     $res = SELECT_contact_maker($tel);
     $num = mysqli_num_rows($res);
+    $cont = '';
     for ($i = 0; $i < $num; $i++) {
         $fetch = mysqli_fetch_assoc($res);
         $c_id = $fetch['contact_id'];
         $c_name = $fetch['contact_name'];
         $c_tel = $fetch['contact_tel'];
+        $ozv_res = SELECT_user($c_tel);
+        if ($ozv_res == 0) {
+            $ozviat = 'color:#fff;';
+        } else {
+            $ozviat = 'color:#ffd700;';
+        }
 
-        echo '
-        <div class="cat mb-2">
+        $cont .= '
+        <div class="cat mb-2 contactBox" data="' . $c_name . ' ' . $c_tel . '">
             <div class="card my_card bg_blue user-' . $c_id . '-box">
                 <div class="record user-' . $c_id . '-name">
                     <div class="user_info text-white border_none box_shadow_none">
                         <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                         <div class="star">
-                            <span>' . $c_name . '</span>
-                            <a href="tel://' . $c_tel . '" target="_blank">' . $c_tel . '</a>
+                            <span style="' . $ozviat . '">' . $c_name . '</span>
+                            <a style="' . $ozviat . '" href="tel://' . $c_tel . '" target="_blank">' . $c_tel . '</a>
                         </div>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none">
@@ -1180,7 +1189,7 @@ function contact_list($tel)
                                 <i class="d-ltr">' . star(0, 0) . '</i>
                             </div>
                             <div class="tools">
-                                <i>' . $GLOBALS['del'] . '</i> <i>' . $GLOBALS['edit'] . '</i>
+                                <i onclick="del_contacts(' . $c_id . ')">' . $GLOBALS['del'] . '</i> <i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>
                             </div>
                         </div>
                     </div>
@@ -1189,4 +1198,5 @@ function contact_list($tel)
         </div>
         ';
     }
+    return $cont;
 }
