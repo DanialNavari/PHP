@@ -36,6 +36,7 @@
     </div>
 </div>
 
+<br/>
 <div class="cat mb-1">
     <div class="group_name">
         <h6 class="font-weight-bold">مخاطبین</h6>
@@ -56,49 +57,5 @@
     </div>
 </div>
 
-<div class="cat mb-1">
-    <div class="card my_card bg_blue user-1-box">
-        <div class="record user-1-name">
-            <div class="user_info text-white border_none box_shadow_none">
-                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
-                <div class="star">
-                    <span>دانیال نواری</span>
-                    <a href="tel://09105005289" target="_blank">09105005289</a>
-                </div>
-            </div>
-            <div class="user_info text-white border_none box_shadow_none">
-                <div class="star">
-                    <div class="tools">
-                        <i class="d-ltr"><?php echo star(1, 1); ?></i>
-                    </div>
-                    <div class="tools">
-                        <i><?php echo $del; ?></i> <i><?php echo $edit; ?></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="cat mb-1">
-    <div class="card my_card bg_blue user-1-box">
-        <div class="record user-1-name">
-            <div class="user_info text-white border_none box_shadow_none">
-                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
-                <div class="star">
-                    <span>دانیال نواری</span>
-                    <a href="tel://09105005289" target="_blank">09105005289</a>
-                </div>
-            </div>
-            <div class="user_info text-white border_none box_shadow_none">
-                <div class="star">
-                    <div class="tools">
-                        <i class="d-ltr"><?php echo star(0, 0); ?></i>
-                    </div>
-                    <div class="tools">
-                        <i><?php echo $del; ?></i> <i><?php echo $edit; ?></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<?php contact_list($_COOKIE['uid']);?>
+<div class="empty_space"></div>

@@ -16,6 +16,18 @@ function db()
     mysqli_set_charset($GLOBALS['conn'], "utf8");
 }
 
+// function db()
+// {
+
+//     $db_host = 'localhost';
+//     $db_username = 'qndomtoj_dong';
+//     $db_password = 'D@nielnv5289';
+//     $db_name = 'qndomtoj_Dong'; 
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
+
 function Query($query)
 {
     db();
@@ -1133,4 +1145,48 @@ function sahm($trans_fee, $trans_person_co)
     }
 
     return $final_string;
+}
+
+function SELECT_contact_maker($tel)
+{
+    $res = Query("SELECT * FROM `contacts` WHERE `contact_maker` = '$tel'");
+    return $res;
+}
+
+function contact_list($tel)
+{
+    $res = SELECT_contact_maker($tel);
+    $num = mysqli_num_rows($res);
+    for ($i = 0; $i < $num; $i++) {
+        $fetch = mysqli_fetch_assoc($res);
+        $c_id = $fetch['contact_id'];
+        $c_name = $fetch['contact_name'];
+        $c_tel = $fetch['contact_tel'];
+
+        echo '
+        <div class="cat mb-2">
+            <div class="card my_card bg_blue user-' . $c_id . '-box">
+                <div class="record user-' . $c_id . '-name">
+                    <div class="user_info text-white border_none box_shadow_none">
+                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                        <div class="star">
+                            <span>' . $c_name . '</span>
+                            <a href="tel://' . $c_tel . '" target="_blank">' . $c_tel . '</a>
+                        </div>
+                    </div>
+                    <div class="user_info text-white border_none box_shadow_none">
+                        <div class="star">
+                            <div class="tools">
+                                <i class="d-ltr">' . star(0, 0) . '</i>
+                            </div>
+                            <div class="tools">
+                                <i>' . $GLOBALS['del'] . '</i> <i>' . $GLOBALS['edit'] . '</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        ';
+    }
 }
