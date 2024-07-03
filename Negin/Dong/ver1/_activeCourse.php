@@ -3,7 +3,7 @@
 
 <div class="row empty">دوره ها > دوره های فعال</div>
 <div class="cat">
-    <?php active_course($_COOKIE['uid']);?>
+    <?php active_course($_COOKIE['uid']); ?>
 </div>
 
 <div class="add_fee hide">
@@ -12,11 +12,29 @@
             <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
             <td>
                 <input class="form-control sum font-weight-bold" type="number" id="feeLimit" />
+                <input class="form-control sum font-weight-bold" type="hidden" id="fee_code" value="" />
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100 save" id="saveCourseFee" onclick="change_value('feeLimit', 'moneyLimit')">تغییر محدودیت مالی</button>
+                <button class="btn btn-success btn-sm w-100 save" id="saveCourseFee" onclick="change_values('feeLimit', 'moneyLimit')">تغییر محدودیت مالی</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="tarikh_table hide">
+    <table class="border_none mx-auto">
+        <tr id="set_tarikh" class="hide">
+            <td colspan="3">
+                <span id="start_from_en" class="hide"></span>
+                <span id="start_unix" class="hide"></span>
+                <div class="range-from-example" class="hide"></div>
+            </td>
+        </tr>
+        <tr class="hide w-100">
+            <td colspan="3">
+                <button class="btn btn-success btn-sm w-100" id="savedate" onclick="saveDates()">تغییر تاریخ</button>
             </td>
         </tr>
     </table>
@@ -27,12 +45,13 @@
         <tr class="font-weight-bold">
             <td class="td_title_ va_middle w-6 sum pl-3 ">نام دوره</td>
             <td>
-                <input class="form-control sum font-weight-bold" id="newCourseName"/>
+                <input class="form-control sum font-weight-bold" id="newCourseName" />
+                <input class="form-control sum font-weight-bold" id="course_code" value="" type="hidden" />
             </td>
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100 save" id="saveCourseName" onclick="change_value('newCourseName', 'courseName')">تغییر نام دوره</button>
+                <button class="btn btn-success btn-sm w-100 save" id="saveCourseName" onclick="change_values('newCourseName', 'courseName')">تغییر نام دوره</button>
             </td>
         </tr>
     </table>

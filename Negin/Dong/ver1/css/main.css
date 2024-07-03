@@ -42,18 +42,24 @@ body {
 
 .btn_grad {
   background: rgb(1, 167, 234);
-  background: -moz-linear-gradient(90deg,
-      rgba(1, 167, 234, 1) 0%,
-      rgba(20, 115, 189, 1) 50%,
-      rgba(1, 167, 234, 1) 100%);
-  background: -webkit-linear-gradient(90deg,
-      rgba(1, 167, 234, 1) 0%,
-      rgba(20, 115, 189, 1) 50%,
-      rgba(1, 167, 234, 1) 100%);
-  background: linear-gradient(90deg,
-      rgba(1, 167, 234, 1) 0%,
-      rgba(20, 115, 189, 1) 50%,
-      rgba(1, 167, 234, 1) 100%);
+  background: -moz-linear-gradient(
+    90deg,
+    rgba(1, 167, 234, 1) 0%,
+    rgba(20, 115, 189, 1) 50%,
+    rgba(1, 167, 234, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    90deg,
+    rgba(1, 167, 234, 1) 0%,
+    rgba(20, 115, 189, 1) 50%,
+    rgba(1, 167, 234, 1) 100%
+  );
+  background: linear-gradient(
+    90deg,
+    rgba(1, 167, 234, 1) 0%,
+    rgba(20, 115, 189, 1) 50%,
+    rgba(1, 167, 234, 1) 100%
+  );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#01a7ea", endColorstr="#01a7ea", GradientType=1);
 }
 
@@ -77,7 +83,7 @@ form#sms {
   width: fit-content;
 }
 
-form#sms>input {
+form#sms > input {
   width: 15%;
   margin: 0 auto;
 }
@@ -181,15 +187,21 @@ h6 {
 
 .group_name h6 {
   background: rgb(245, 250, 255);
-  background: -moz-linear-gradient(270deg,
-      rgb(175 215 255 / 40%) 0%,
-      rgb(255 255 255) 100%);
-  background: -webkit-linear-gradient(270deg,
-      rgb(175 215 255 / 40%) 0%,
-      rgb(255 255 255) 100%);
-  background: linear-gradient(270deg,
-      rgb(175 215 255 / 40%) 0%,
-      rgb(255 255 255) 100%);
+  background: -moz-linear-gradient(
+    270deg,
+    rgb(175 215 255 / 40%) 0%,
+    rgb(255 255 255) 100%
+  );
+  background: -webkit-linear-gradient(
+    270deg,
+    rgb(175 215 255 / 40%) 0%,
+    rgb(255 255 255) 100%
+  );
+  background: linear-gradient(
+    270deg,
+    rgb(175 215 255 / 40%) 0%,
+    rgb(255 255 255) 100%
+  );
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f5faff", endColorstr="#fefefe", GradientType=1);
   padding: 0.3rem;
   border-radius: 0.3rem;
@@ -380,7 +392,7 @@ h6 {
   font-size: 0.93rem;
 }
 
-.empty_tr{
+.empty_tr {
   padding: 0.1rem !important;
 }
 
@@ -499,7 +511,7 @@ h6 {
   width: 5rem;
 }
 
-.w-50{
+.w-50 {
   width: 50% !important;
 }
 
@@ -970,7 +982,6 @@ input[radio] {
   display: none;
 }
 
-
 /* End of payments */
 
 /* Request course */
@@ -996,11 +1007,30 @@ input[radio] {
   font-weight: bold;
 }
 
-.talabkar,.bedehkar{
+.talabkar,
+.bedehkar {
   padding: 0.1rem !important;
   border-left: 1px dashed #fff;
-  color: #280d0d !important
+  color: #280d0d !important;
 }
+
+.acc_debt {
+  background: #ffebf1 !important;
+  border: 1px solid #f9cace !important;
+}
+
+.acc_req {
+  background: #dcefdd !important;
+  border: 1px solid #afe9b2 !important;
+}
+
+.tarikh_table {
+  position: fixed;
+  top: 7rem;
+  z-index: 9;
+  right: 25vw;
+}
+
 /* ----------------------- Media Queries ----------------------- */
 @media screen and (min-width: 340px) {
   .card table td {
@@ -1012,11 +1042,25 @@ input[radio] {
   .add_payments {
     left: 0%;
   }
+
+  .tarikh_table {
+    position: fixed;
+    top: 7rem;
+    z-index: 9;
+    right: 18vw;
+  }
 }
 
 @media screen and (min-width: 321px) and (max-width: 375px) {
   .add_payments {
     left: 6%;
+  }
+
+  .tarikh_table {
+    position: fixed;
+    top: 7rem;
+    z-index: 9;
+    right: 22vw;
   }
 }
 
@@ -1028,5 +1072,12 @@ input[radio] {
     top: 30%;
     left: 30%;
     padding: 0.4rem;
+  }
+
+  .tarikh_table {
+    position: fixed;
+    top: 7rem;
+    z-index: 9;
+    right: 25vw;
   }
 }

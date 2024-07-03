@@ -1,7 +1,9 @@
 let cd;
+let course_code;
+
 function page(type, route, name = null, id = null) {
   if (type == "r") {
-      window.location.assign("./?route=" + route + "&h=" + name + "&id=" + id);
+    window.location.assign("./?route=" + route + "&h=" + name + "&id=" + id);
   } else if (type == "d") {
     window.location.assign(route + "/?h=" + name);
   }
@@ -26,6 +28,7 @@ $(".gray_layer").click(function () {
   $(".add_payments").fadeOut();
   $(".add_course").fadeOut();
   $(".add_fee").fadeOut();
+  $(".tarikh_table").fadeOut();
   nav_drawer = 0;
 });
 
@@ -79,6 +82,17 @@ function setDate() {
   $(".w-100").show();
 }
 
+function setDates(id) {
+  $(".gray_layer").show();
+  $(".tarikh_table").show();
+  $("#set_tarikh").show("slow");
+  $(".range-from-example").show("slow");
+  $(".month-grid-box .header").hide();
+  $(".header").css("display", "inline-block");
+  $(".w-100").show();
+  course_code = id;
+}
+
 $("#savedate").click(function () {
   shamsi = $("td.selected").attr("data-date");
   if (shamsi.length > 0) {
@@ -112,6 +126,7 @@ $("#savedate").click(function () {
   $(".savedate_tr").hide();
   $("#savedate").hide();
   $("#calendar_").hide();
+  $(".gray_layer").hide();
 });
 
 function remove_from_course(id) {
@@ -177,10 +192,24 @@ function moneyLimit() {
   $("#saveCourseFee").fadeIn();
 }
 
+function moneyLimits(id) {
+  $(".gray_layer").show();
+  $(".add_fee").fadeIn();
+  $("#saveCourseFee").fadeIn();
+  $("#fee_code").val(id);
+}
+
 function course() {
   $(".gray_layer").show();
   $(".add_course").fadeIn();
   $("#saveCourseName").show();
+}
+
+function courses(id) {
+  $(".gray_layer").show();
+  $(".add_course").fadeIn();
+  $("#saveCourseName").show();
+  $("#course_code").val(id);
 }
 
 /* Start programming */
@@ -198,6 +227,7 @@ function Toast(error_id) {
     e106: "شماره تلفن را به صورت صحیح وارد کنید",
     e107: "محدودیت مالی نباید کمتر از هزینه کل باشد",
     e108: "جمع سهم افراد با مبلغ تراکنش برابر نمی باشد",
+    e109: "نام دوره را وارد کنید",
   };
 
   switch (error_id) {
@@ -223,7 +253,10 @@ function Toast(error_id) {
       err = "خطای " + error_id + ": " + message.e107;
       break;
     case 108:
-      err = message.e108;
+      err = "خطای " + error_id + ": " + message.e108;
+      break;
+    case 109:
+      err = "خطای " + error_id + ": " + message.e109;
       break;
   }
 
@@ -739,4 +772,112 @@ function del_contacts(id) {
 
 function add() {
   mokhatab = new Contact("add_new_contact_with_star");
+}
+
+function change_values(input_id, text_id) {
+  var newData = $("#" + input_id).val();
+  if (newData.length > 0) {
+    // money limit
+    if (text_id == "moneyLimit") {
+      var course_id = $("#fee_code").val();
+      fee = $("#feeLimit").val();
+      hazine = $("#sum_of_all_cost" + course_id).text();
+      if (hazine > fee) {
+        Toast(107);
+        $("#feeLimit").val("");
+      } else {
+        $.ajax({
+          data:
+            "update_course=" +
+            course_id +
+            "&key=course_money_limit&value=" +
+            fee,
+          url: "server.php",
+          type: "POST",
+          success: function (response) {
+            $.ajax({
+              data: "sep=" + fee,
+              url: "server.php",
+              type: "POST",
+              success: function (response) {
+                $("#moneyLimit" + course_id).text(response);
+              },
+            });
+          },
+        });
+      }
+    } else if (text_id == "courseName") {
+      var course_id = $("#course_code").val();
+      course_new_name = $("#newCourseName").val();
+      if (course_new_name == "") {
+        Toast(109);
+        $("#newCourseName").val("");
+      } else {
+        $.ajax({
+          data:
+            "update_course=" +
+            course_id +
+            "&key=course_name&value=" +
+            course_new_name,
+          url: "server.php",
+          type: "POST",
+          success: function (response) {
+            $("#courseName" + course_id).text(course_new_name);
+          },
+        });
+      }
+    } else {
+      $("#" + text_id).text(newData);
+    }
+    $(".gray_layer").click();
+    $("#newCourseName").val("");
+  } else {
+    $(".gray_layer").click();
+  }
+}
+
+function saveDates() {
+  shamsi = $("td.selected").attr("data-date");
+  if (shamsi.length > 0) {
+    $("#start_from_fa" + course_code).text(shamsi);
+  } else {
+    shamsi = $("td.today").attr("data-date");
+  }
+
+  shamsi_split = shamsi.split(",");
+  let saal, maah, rooz;
+
+  if (shamsi_split[1] < 10) {
+    maah = "0" + shamsi_split[1];
+  } else {
+    maah = shamsi_split[1];
+  }
+
+  if (shamsi_split[2] < 10) {
+    rooz = "0" + shamsi_split[2];
+  } else {
+    rooz = shamsi_split[2];
+  }
+
+  tarikh = shamsi_split[0] + "/" + maah + "/" + rooz;
+
+  $("#start_from_fa" + course_code).text(tarikh);
+
+  $(".month-grid-box .header").hide();
+  $("#set_tarikh").hide("slow");
+  $(".range-from-example").hide("slow");
+  $(".end_course .w-100").show();
+  $("#btn_add_new_contact").show();
+  $(".savedate_tr").hide();
+  $("#savedate").hide();
+  $("#calendar_").hide();
+  $(".gray_layer").hide();
+
+  $.ajax({
+    data:
+      "update_course=" + course_code + "&key=course_start_date&value=" + tarikh,
+    url: "server.php",
+    type: "POST",
+    success: function (response) {},
+  });
 }

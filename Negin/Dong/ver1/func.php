@@ -12,17 +12,6 @@ function db()
     mysqli_set_charset($GLOBALS['conn'], "utf8");
 }
 
-// function db()
-// {
-
-//     $db_host = 'localhost';
-//     $db_username = 'qndomtoj_dong';
-//     $db_password = 'D@nielnv5289';
-//     $db_name = 'qndomtoj_Dong'; 
-//     date_default_timezone_set('Asia/Tehran');
-//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//     mysqli_set_charset($GLOBALS['conn'], "utf8");
-// }
 
 function Query($query)
 {
@@ -47,6 +36,7 @@ function ADD_user($tel)
     $id = mysqli_insert_id($GLOBALS['conn']);
     ADD_log($id, 'New User Login');
 }
+
 function ADD_contact($tel, $name, $maker, $date)
 {
     db();
@@ -474,45 +464,33 @@ function active_course($tel)
         <table class="table">
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
-                <td class="font-weight-bold text-center" id="courseName">' . $c_name . '</td>
-                <td class="font-weight-bold text-center click" onclick="course()">' . $GLOBALS["edit"] . '</td>
+                <td class="font-weight-bold text-center" id="courseName' . $c_id . '">' . $c_name . '</td>
+                <td class="font-weight-bold text-center click" onclick="courses(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
             </tr>
             <tr>
                 <td class="td_title">تعداد افراد</td>
-                <td class="font-weight-bold text-center" id="course_count">' . $c_member . '</td>
-                <td class="font-weight-bold text-center click" onclick="course()">' . $GLOBALS["edit"] . '</td>
+                <td class="font-weight-bold text-center" id="course_count' . $c_id . '">' . $c_member . '</td>
+                <td class="font-weight-bold text-center click" onclick="navigate(\'?route=_newCourse&h=course&id=' . $c_id . '\')">' . $GLOBALS["edit"] . '</td>
             </tr>
             <tr>
                 <td class="td_title tarikh">تاریخ شروع</td>
                 <td class="font-weight-bold text-center">
-                    <span id="start_from_fa">' . $c_start_date . '</span>
+                    <span id="start_from_fa' . $c_id . '">' . $c_start_date . '</span>
                 </td>
-                <td class="text-center click" onclick="setDate()">' . $GLOBALS["edit"] . '</td>
-            </tr>
-            <tr id="set_tarikh" class="hide">
-                <td colspan="3">
-                    <span id="start_from_en" class="hide"></span>
-                    <span id="start_unix" class="hide"></span>
-                    <div class="range-from-example" class="hide"></div>
-                </td>
-            </tr>
-            <tr class="hide w-100 savedate_tr">
-                <td colspan="3">
-                    <button class="btn btn-success btn-sm w-100" id="savedate">ثبت تاریخ</button>
-                </td>
+                <td class="text-center click" onclick="setDates(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
             </tr>
             <tr>
                 <td class="td_title pl-0">محدودیت مالی</td>
                 <td class="font-weight-bold text-center">
-                    <span id="moneyLimit">' . sep3($c_money_limit) . '</span> <span class="unit">' . $c_money_unit . '</span>
+                    <span id="moneyLimit' . $c_id . '">' . sep3($c_money_limit) . '</span> <span class="unit">' . $c_money_unit . '</span>
                 </td>
-                <td class="text-center click" onclick="moneyLimit()">' . $GLOBALS["edit"] . '</td>
+                <td class="text-center click" onclick="moneyLimits(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
             </tr>
 
         </table>
         <div class="share_link font-weight-bold g_20">
             <div class="inline_title td_title_ text-primary d-rtl">کل هزینه :</div>
-            <div class="inline_title hazine text-primary"><span id="sum_of_all_cost">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
+            <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
         </div>
         ' . $tpr . '
         <div class="share_link bg_blue_very_dark font-weight-bold">
@@ -1237,9 +1215,17 @@ function MY_DEBT($tel, $pos)
     }
 
     if ($pos == 'debt') {
-        return ($user_sahm - $user_pay);
+        if (($user_use + $user_pay) > $user_sahm) {
+            return 0;
+        } else {
+            return ($user_use + $user_pay - $user_sahm);
+        }
     } else if ($pos == 'request') {
-        return ($user_use - $user_sahm + $user_pay);
+        if (($user_use + $user_pay) > $user_sahm) {
+            return ($user_use + $user_pay - $user_sahm);
+        } else {
+            return 0;
+        }
     }
 }
 
@@ -1253,7 +1239,7 @@ function active_courses($maker, $pos)
         $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_finish` IS NOT NULL");
         $num = mysqli_num_rows($rs);
         return $num;
-    } elseif ($pos == 'deactive') {
+    } elseif ($pos == 'disabled') {
         $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NOT NULL");
         $num = mysqli_num_rows($rs);
         return $num;
