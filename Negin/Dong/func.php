@@ -1200,3 +1200,62 @@ function contact_list($tel)
     }
     return $cont;
 }
+
+function MY_DEBT($tel, $pos)
+{
+    $user_sahm = 0;
+    $user_pay = 0;
+    $user_use = 0;
+
+    $res = SELECT_contact($tel);
+    $c_id = $res['contact_id'];
+    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $c_id . "%' OR `trans_person` LIKE '%," . $c_id . "%'");
+    $num = mysqli_num_rows($r);
+
+    for ($i = 0; $i < $num; $i++) {
+        $fetch = mysqli_fetch_assoc($r);
+        if ($fetch['trans_buyer'] == $c_id) {
+            $user_use += $fetch['trans_fee'];
+        }
+
+        $trans_person = explode(',', $fetch['trans_person']);
+
+        for ($j = 0; $j < count($trans_person) - 1; $j++) {
+            $trans_detail = explode(':', $trans_person[$j]);
+            $id = $trans_detail[0];
+            if ($c_id == $id) {
+                $user_sahm += $trans_detail[1];
+            }
+        }
+    }
+
+    $p = Query("SELECT * FROM `payments` WHERE `pay_from` = " . $c_id . " AND `pay_del` IS NULL");
+    $nums = mysqli_num_rows($p);
+    for ($l = 0; $l < $nums; $l++) {
+        $fet = mysqli_fetch_assoc($p);
+        $user_pay += $fet['pay_fee'];
+    }
+
+    if ($pos == 'debt') {
+        return ($user_sahm - $user_pay);
+    } else if ($pos == 'request') {
+        return ($user_use - $user_sahm + $user_pay);
+    }
+}
+
+function active_courses($maker, $pos)
+{
+    if ($pos == 'active') {
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NULL");
+        $num = mysqli_num_rows($rs);
+        return $num;
+    } elseif ($pos == 'finished') {
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_finish` IS NOT NULL");
+        $num = mysqli_num_rows($rs);
+        return $num;
+    } elseif ($pos == 'deactive') {
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NOT NULL");
+        $num = mysqli_num_rows($rs);
+        return $num;
+    }
+}
