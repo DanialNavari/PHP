@@ -274,7 +274,7 @@ h6 {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 10vw;
   position: fixed;
   bottom: 0;
   background: #fff;
