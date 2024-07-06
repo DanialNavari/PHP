@@ -33,6 +33,7 @@ $(".gray_layer").click(function () {
 });
 
 let path_name = $("#path_name").val();
+
 switch (path_name) {
   case "home":
     $("#home").addClass("bg_hover");
@@ -127,6 +128,7 @@ $("#savedate").click(function () {
   $("#savedate").hide();
   $("#calendar_").hide();
   $(".gray_layer").hide();
+  $(".after_hide").hide();
 });
 
 function remove_from_course(id) {
@@ -222,12 +224,13 @@ function Toast(error_id) {
     e101: "پاسخی از سرور دریافت نشد",
     e102: "کد وارد شده نادرست می باشد",
     e103: "مخاطب جدید ثبت نشد",
-    e104: "نام مخاطب را وارد کنید",
+    e104: "نام و شماره مخاطب را وارد کنید",
     e105: "مخاطب تکراری است",
     e106: "شماره تلفن را به صورت صحیح وارد کنید",
     e107: "محدودیت مالی نباید کمتر از هزینه کل باشد",
     e108: "جمع سهم افراد با مبلغ تراکنش برابر نمی باشد",
     e109: "نام دوره را وارد کنید",
+    e110: "دسترسی شما به برنامه مسدود شده است",
   };
 
   switch (error_id) {
@@ -258,6 +261,9 @@ function Toast(error_id) {
     case 109:
       err = "خطای " + error_id + ": " + message.e109;
       break;
+    case 110:
+      err = "خطای " + error_id + ": " + message.e110;
+      break;
   }
 
   $(".alertBox .alert span").text(err);
@@ -277,8 +283,8 @@ function login() {
       success: function (response) {
         if (response == true) {
           navigate("sms.php");
-        } else {
-          Toast(101);
+        } else if (response == false) {
+          Toast(110);
         }
       },
     });
@@ -316,8 +322,15 @@ function check_code() {
     data: "verify=" + user_code,
     success: function (response) {
       if (response == 1) {
-        clearInterval(cd);
-        navigate(".");
+        $.ajax({
+          data: "checkExist=ok",
+          url: "server.php",
+          type: "POST",
+          success: function (response) {
+            clearInterval(cd);
+            navigate(".");
+          },
+        });
       } else if (response == 0) {
         Toast(102);
         $("#c1").val("");
@@ -411,7 +424,7 @@ class Contact {
   add() {
     var contact_name = $("#newContactName").val();
     var contact_tel = $("#newContactTel").val();
-    if (contact_name.length > 0) {
+    if (contact_name.length > 0 && contact_tel.length > 0) {
       $.ajax({
         data:
           "add_contact=ok&contact_name=" +
@@ -450,6 +463,7 @@ class Contact {
     } else {
       Toast(104);
       alert_border("newContactName");
+      alert_border("newContactTel");
     }
   }
 
@@ -522,6 +536,7 @@ function searchContact() {
 
 function addNewContact() {
   cont = new Contact("add");
+  window.location.reload();
 }
 
 function saveNewCourse() {
@@ -551,6 +566,28 @@ function saveNewCourse() {
     success: function (response) {
       if (response > 0) {
         alert("دوره جدید با موفقیت ایجاد شد");
+        window.location.assign("./?route=_activeCourse&h=null");
+      }
+    },
+  });
+}
+
+function editNewCourse(id) {
+  $("#savedate").click();
+  var member_list = "";
+  var members = $(".selected_user div").length / 2;
+  for (i = 0; i < members; i++) {
+    j = i + 1;
+    member_list +=
+      $(".selected_user div:nth-child(" + j + ")").attr("data") + ",";
+  }
+  $.ajax({
+    data: "edit_course=" + id + "&members=" + member_list,
+    type: "POST",
+    url: "server.php",
+    success: function (response) {
+      if (response > 0) {
+        alert("دوره جدید با موفقیت ویرایش شد");
         window.location.assign("./?route=_activeCourse&h=null");
       }
     },
@@ -766,8 +803,35 @@ function buyer() {
   $(".add_payments").show();
 }
 
-function del_contacts(id) {
+function del_contacts(tel) {
   let del_opt = confirm("آیا می خواهید مخاطب را حذف کنید؟");
+  if (del_opt == true) {
+    $.ajax({
+      data: "del_contact=ok&tel=" + tel,
+      url: "server.php",
+      type: "POST",
+      success: function (response) {
+        if (response == 1) {
+          // phone = $('#t-' + tel).text();
+          // $(".contactBox")
+          //   .filter("[data*='" + phone + "']")
+          //   .hide('slow');
+          // $(".contactBox")
+          //   .filter("[data*='" + phone + "']")
+          //   .remove();
+          $(".users_box").empty();
+          $.ajax({
+            data: "Object_contact_2=ok",
+            url: "server.php",
+            type: "POST",
+            success: function (response) {
+              $(".users_box").html(response);
+            },
+          });
+        }
+      },
+    });
+  }
 }
 
 function add() {
@@ -880,4 +944,12 @@ function saveDates() {
     type: "POST",
     success: function (response) {},
   });
+}
+
+function edit_contacts(id) {
+  esm = $("#c-" + id).text();
+  tel = $("#t-" + id).text();
+
+  $("#newContactName").val(esm);
+  $("#newContactTel").val(tel);
 }

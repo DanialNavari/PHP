@@ -42,7 +42,7 @@ if (isset($_GET['id'])) {
             </tr>
         </table>
         <div class="mb-5"></div>
-        <div class="pay_btn pay_btn2" onclick="saveNewCourse()">
+        <div class="pay_btn pay_btn2" onclick="editNewCourse(<?php echo $_GET['id'];?>)">
             <div class="pay_btn_icon">
                 <?php echo $check; ?>
             </div>
@@ -106,14 +106,15 @@ if (isset($_GET['id'])) {
 <!-- selected users -->
 <div class="cat mb-1">
     <div class="card my_card border_none selected_user">
-
+        <?php $contact_maker = $_COOKIE['uid'];
+        echo give_contacts_list1($contact_maker, $_GET['id'], 'incomplete'); ?>
     </div>
 </div>
 
 <!-- users box -->
 <div class="users_box">
     <?php $contact_maker = $_COOKIE['uid'];
-    echo give_contacts_list1($contact_maker, $_GET['id']); ?>
+    echo give_contacts_list1($contact_maker, $_GET['id'], 'complete'); ?>
 </div>
 
 

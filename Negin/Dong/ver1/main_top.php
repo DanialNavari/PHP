@@ -9,6 +9,11 @@
     <link href="https://getbootstrap.com/docs/5.1/assets/css/docs.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
+    <link rel="manifest" href="image/site.webmanifest">
+
     <title>دنگ و دونگ</title>
 </head>
 
@@ -20,7 +25,16 @@
             <div>
                 <i id="h_menu" class="force_hide"><?php echo $hamburger_menu; ?></i>
                 <img src="image/logo.png" alt="logo" class="rounded w-2" />
-                <h1 class="px-3 d-inline-block ">دنگ و دونگ</h1>
+                <?php require_once('func.php');
+                if (isset($_COOKIE['uid'])) {
+                    $rs = SELECT_contact($_COOKIE['uid']);
+                    $name = '(' . $rs['contact_name'] . ')';
+                } else {
+                    $name = '';
+                }
+                ?>
+                <h1 class="pt-3 pb-3 pr-3 d-inline-block ">دنگ و دونگ</h1>
+                <h6 class="d_inline"><?php echo $name; ?></h6>
             </div>
             <i id="h_menu" class="pl-3 click1" onclick="navigate('logout.php')"><?php echo $logout; ?></i>
         </div>

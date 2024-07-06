@@ -12,7 +12,6 @@ function db()
     mysqli_set_charset($GLOBALS['conn'], "utf8");
 }
 
-
 function Query($query)
 {
     db();
@@ -84,7 +83,7 @@ function SELECT_course($tel)
     $r = mysqli_fetch_assoc($result);
     $contact_id = $r['contact_id'];
 
-    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_maker` LIKE '%$tel%' OR `course_finish` IS NULL AND `course_del_course` IS NULL ORDER BY `course_default` DESC;");
+    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_maker` = '" . $tel . "' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '" . $contact_id . ",%' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $contact_id . ",%' ORDER BY `course_default` DESC;");
     return $result1;
 }
 
@@ -126,8 +125,19 @@ function SELECT_pay_by_id($course_id, $uid)
 
 function check_login($tel)
 {
-    setcookie("temp_tel", $tel, time() + 100, "/");
-    return true;
+    $res = SELECT_user($tel);
+    if ($res == 0) {
+        setcookie("temp_tel", $tel, time() + 100, "/");
+        return true;
+    } else {
+        $pos = $res['user_pos'];
+        if ($pos == 1) {
+            setcookie("temp_tel", $tel, time() + 100, "/");
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 function check_code($user_code, $real_code)
@@ -151,14 +161,37 @@ function check_code($user_code, $real_code)
 function get_star($tel)
 {
     $vote = 0;
-    $res = Query("SELECT * FROM vote WHERE vote_for_user_id = '$tel' ORDER BY vote_id DESC");
-    $num = mysqli_num_rows($res);
-    for ($i = 0; $i < $num; $i++) {
-        $r = mysqli_fetch_assoc($res);
-        $vote += $r['vote_score'];
+    $votes = 0;
+    if ($tel == '') {
+        $vote = 0;
+    } else {
+        $res = Query("SELECT * FROM `vote` WHERE `vote_for_user_id` = '$tel' ORDER BY `vote_id` DESC");
+        $num = mysqli_num_rows($res);
+        for ($i = 0; $i < $num; $i++) {
+            $r = mysqli_fetch_assoc($res);
+            $votes += $r['vote_score'];
+        }
+
+        if (isset($votes) && $num > 0) {
+            $vote += round($votes / ($num * 10), 0);
+        }
+
+        $rs = SELECT_user($tel);
+        if ($rs != 0) {
+            $vote += 1;
+        }
+
+        // $cs = SELECT_contact($tel);
+        // $cs_id = $cs['contact_id'];
+
+        $cr = SELECT_course($tel);
+        $cr_num = mysqli_num_rows($cr);
+        if ($cr_num > 0) {
+            $vote += 1;
+        }
     }
 
-    return "0,0";
+    return "$vote,0";
 }
 
 function Object_contact($name, $tel, $maker)
@@ -192,19 +225,23 @@ function Object_contact($name, $tel, $maker)
                 <div class="user_info text-white border_none box_shadow_none">
                     <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                     <div class="star">
-                        <span style="' . $pro . '" class="karbar_name">' . $name . '</span>
-                        <i>' . star($star_complete, $star_incomplete) . '</i>
+                        <span style="' . $pro . '" class="karbar_name" id="c-' . $contact_id . '">' . $name . '</span>
+                        <!--<i class="d-ltr">' . star($star_complete, $star_incomplete) . '</i>-->
+                        
                     </div>
                 </div>
                 <div class="user_info text-white border_none box_shadow_none">
-                    <a href="tel://' . $tel . '" target="_blank">' . $tel . '</a>
+                        <i class="d-ltr">' . star($star_complete, $star_incomplete) . '</i>
+                </div>
+                <div class="user_info text-white border_none box_shadow_none">
+                    <a href="tel://' . $tel . '" target="_blank" id="t-' . $contact_id . '">' . $tel . '</a>
                 </div>
             </div>
         </div>
     </div>';
 }
 
-function Object_contact1($name, $tel, $maker, $course_id)
+function Object_contact1($name, $tel, $course_id, $contac_id, $pos)
 {
     if (isset($tel)) {
         $stars = explode(',', get_star($tel));
@@ -215,47 +252,48 @@ function Object_contact1($name, $tel, $maker, $course_id)
         $star_incomplete = 0;
     }
 
-    $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel' AND `contact_name` = '$name' AND `contact_maker` = '$maker'");
-    $r = mysqli_fetch_assoc($result);
-    $contact_id = $r['contact_id'];
-
     $result1 = SELECT_user("$tel");
     if ($result1 == 0) {
         $pro = '';
     } else {
-        $pro = 'color:ffd700;';
+        $pro = 'color:#ffd700;';
+    }
+    $rs = Query("SELECT * FROM `course` WHERE `course_id` = '$course_id' AND `course_member` LIKE '" . $contac_id . ",%' OR `course_id` = '$course_id' AND `course_member` LIKE '%," . $contac_id . ",%'");
+    $rs_num = mysqli_num_rows($rs);
+    if ($rs_num > 0) {
+        $pos_1 = 'bg_green_dark';
+        $pos_2 = 'bg_green';
+    } else {
+        $pos_1 = 'bg_blue';
+        $pos_2 = '';
     }
 
-    $rs = SELECT_course_id($course_id);
-    $members = explode(',', $rs['course_member']);
-    for ($o = 0; $o < count($members); $o++) {
-        if ($contact_id == $members[$o]) {
-            $pos_1 = 'bg_green_dark';
-            $pos_2 = 'bg_green';
-        } else {
-            $pos_1 = 'bg_blue';
-            $pos_2 = '';
-        }
-    }
-
-
-    return '
-    <div class="cat mb-1 contactBox" onclick="add_user_to_course(' . $contact_id . ')" data="' . $name . ' ' . $tel . '">
-        <div class="card my_card ' . $pos_1 . ' user-' . $contact_id . '-box">
-            <div class="record user-' . $contact_id . '-name ' . $pos_2 . '">
-                <div class="user_info text-white border_none box_shadow_none">
-                    <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
-                    <div class="star">
-                        <span style="' . $pro . '" class="karbar_name">' . $name . '</span>
+    if ($pos == 'complete') {
+        return '
+        <div class="cat mb-1 contactBox" onclick="add_user_to_course(' . $contac_id . ')" data="' . $name . ' ' . $tel . '">
+            <div class="card my_card ' . $pos_1 . ' user-' . $contac_id . '-box">
+                <div class="record user-' . $contac_id . '-name ' . $pos_2 . '">
+                    <div class="user_info text-white border_none box_shadow_none">
+                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                        <div class="star">
+                            <span style="' . $pro . '" class="karbar_name">' . $name . '</span>
+                            <a href="tel://' . $tel . '" target="_blank" style="' . $pro . '">' . $tel . '</a>    
+                        </div>
+                    </div>
+                    <div class="user_info text-white border_none box_shadow_none" >
                         <i>' . star($star_complete, $star_incomplete) . '</i>
                     </div>
                 </div>
-                <div class="user_info text-white border_none box_shadow_none">
-                    <a href="tel://' . $tel . '" target="_blank">' . $tel . '</a>
-                </div>
             </div>
-        </div>
-    </div>';
+        </div>';
+    } else {
+        if ($rs_num > 0) {
+            return '
+            <div class="user_info bg_dark_blue text-white user-' . $contac_id . '" data="' . $contac_id . '" onclick="remove_from_course(' . $contac_id . ')">
+                <div class="user_name td_title_ px_02 mx-auto">' . $name . '</div>
+            </div>';
+        }
+    }
 }
 
 
@@ -263,7 +301,7 @@ function give_contacts_list($contact_maker)
 {
     db();
     $contact_list = '';
-    $res = Query("SELECT * FROM `contacts` WHERE `contact_maker` = '$contact_maker' ORDER BY `contact_id` DESC");
+    $res = Query("SELECT * FROM `contacts` WHERE `contact_maker` = '$contact_maker' AND `contact_active` = '1' ORDER BY `contact_id` DESC");
     $num = mysqli_num_rows($res);
     for ($i = 0; $i < $num; $i++) {
         $r = mysqli_fetch_assoc($res);
@@ -274,17 +312,18 @@ function give_contacts_list($contact_maker)
     return $contact_list;
 }
 
-function give_contacts_list1($contact_maker, $course_id)
+function give_contacts_list1($contact_maker, $course_id, $pos)
 {
     db();
     $contact_list = '';
-    $res = Query("SELECT * FROM `contacts` WHERE `contact_maker` = '$contact_maker' ORDER BY `contact_id` DESC");
+    $res = Query("SELECT * FROM `contacts` WHERE `contact_maker` = '$contact_maker' AND `contact_active` = 1 ORDER BY `contact_id` DESC");
     $num = mysqli_num_rows($res);
     for ($i = 0; $i < $num; $i++) {
         $r = mysqli_fetch_assoc($res);
         $contact_name = $r['contact_name'];
         $contact_tel = $r['contact_tel'];
-        $contact_list .= Object_contact1($contact_name, $contact_tel, $contact_maker, $course_id);
+        $contact_id = $r['contact_id'];
+        $contact_list .= Object_contact1($contact_name, $contact_tel, $course_id, $contact_id, $pos);
     }
     return $contact_list;
 }
@@ -695,7 +734,7 @@ function request_course($id)
         </table>
     </div>';
     } else {
-        echo '';
+        echo '<h3>دوره مورد نظر پیدا نشد</h3>';
     }
 }
 
@@ -860,7 +899,7 @@ function final_report($id)
 
         echo '
         <tr class="' . $debt_pos_en . '">
-            <td class="td_title_ font-weight-bold text-center d-rtl va_middle ' . $debt_pos_en . ' d-ltr" colspan="6">' . $person_name . ' ' . $debt_pos . '</td>
+            <td class="td_title_ font-weight-bold text-center d-rtl va_middle d-ltr report_td_header" colspan="6">' . $person_name . ' ' . $debt_pos . '</td>
         </tr>
         <tr class="' . $debt_pos_en . '">
         <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">خرج کرد</td>
@@ -1189,7 +1228,12 @@ function get_contact_in_course($trans_id)
 function SELECT_contact($tel)
 {
     $res = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel'");
-    $fetch = mysqli_fetch_assoc($res);
+    $num = mysqli_num_rows($res);
+    if ($num > 0) {
+        $fetch = mysqli_fetch_assoc($res);
+    } else {
+        $fetch = 0;
+    }
     return $fetch;
 }
 
@@ -1231,11 +1275,24 @@ function contact_list($tel)
         $c_id = $fetch['contact_id'];
         $c_name = $fetch['contact_name'];
         $c_tel = $fetch['contact_tel'];
-        $ozv_res = SELECT_user($c_tel);
-        if ($ozv_res == 0) {
+        if ($c_tel == '' || $c_tel == null) {
             $ozviat = 'color:#fff;';
         } else {
-            $ozviat = 'color:#ffd700;';
+            $ozv_res = SELECT_user($c_tel);
+            if ($ozv_res == 0) {
+                $ozviat = 'color:#fff;';
+            } else {
+                $ozviat = 'color:#ffd700;';
+            }
+        }
+
+        if (isset($tel)) {
+            $stars = explode(',', get_star($c_tel));
+            $star_complete = $stars[0];
+            $star_incomplete = $stars[1];
+        } else {
+            $star_complete = 0;
+            $star_incomplete = 0;
         }
 
         $cont .= '
@@ -1245,14 +1302,17 @@ function contact_list($tel)
                     <div class="user_info text-white border_none box_shadow_none">
                         <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                         <div class="star">
-                            <span style="' . $ozviat . '">' . $c_name . '</span>
-                            <a style="' . $ozviat . '" href="tel://' . $c_tel . '" target="_blank">' . $c_tel . '</a>
+                            <span style="' . $ozviat . '" id="c-' . $c_id . '">' . $c_name . ' </span>
+                            <a style="' . $ozviat . '" href="tel://' . $c_tel . '" target="_blank" id="t-' . $c_id . '">' . $c_tel . '</a>
                         </div>
+                    </div>
+                    <div class="user_info text-white border_none box_shadow_none">
+                        <i class="d-ltr">' . star($star_complete, $star_incomplete) . '</i>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none">
                         <div class="star">
                             <div class="tools">
-                                <i class="d-ltr">' . star(0, 0) . '</i>
+                                
                             </div>
                             <div class="tools">
                                 <i onclick="del_contacts(' . $c_id . ')">' . $GLOBALS['del'] . '</i> <i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>
@@ -1332,4 +1392,10 @@ function active_courses($maker, $pos)
         $num = mysqli_num_rows($rs);
         return $num;
     }
+}
+
+function del_contact($tel)
+{
+    $r = Query("UPDATE `contacts` SET `contact_active` = '0' WHERE `contact_id` = '$tel'");
+    return 1;
 }

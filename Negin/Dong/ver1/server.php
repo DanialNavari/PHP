@@ -13,14 +13,58 @@ if (isset($_POST['login'])) {
     $c_tel = $_POST['contact_tel'];
     $c_maker = $_COOKIE['uid'];
     $c_date = date("Y-m-d H:i:s");
-    $res = ADD_contact($c_tel, $c_name, $c_maker, $c_date);
-    echo $res;
+    $res = SELECT_contact($c_tel);
+    if ($res == 0) {
+        $res = ADD_contact($c_tel, $c_name, $c_maker, $c_date);
+        $resid = 2;
+    } else {
+        $c_id = $res['contact_id'];
+        $c__maker = $res['contact_maker'];
+        if ($c_maker == $c__maker) {
+            Query("UPDATE `contacts` SET `contact_name` = '" . $c_name . "',`contact_active` = '1' WHERE `contact_id` = '$c_id'");
+            $resid = 3;
+        } else {
+            $res = ADD_contact($c_tel, $c_name, $c_maker, $c_date);
+            $resid = 4;
+        }
+    }
+    echo $resid;
 } elseif (isset($_POST['Object_contact'])) {
     $c_tel = $_POST['contact_tel'];
     $c_name = $_POST['contact_name'];
     $c_maker = $_COOKIE['uid'];
     $res = Object_contact($c_name, $c_tel, $c_maker);
     echo $res;
+} elseif (isset($_POST['new_course'])) {
+    $course_name = $_POST['course_name'];
+    $course_start = $_POST['course_start'];
+    $money_limit = $_POST['money_limit'];
+    $members = $_POST['members'];
+    $maker = $_COOKIE['uid'];
+    $date = date("Y-m-d H:i:s");
+    $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
+    echo $res;
+} else if (isset($_POST['sep'])) {
+} elseif (isset($_POST['new_course'])) {
+    $course_name = $_POST['course_name'];
+    $course_start = $_POST['course_start'];
+    $money_limit = $_POST['money_limit'];
+    $members = $_POST['members'];
+    $maker = $_COOKIE['uid'];
+    $date = date("Y-m-d H:i:s");
+    $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
+    echo $res;
+} else if (isset($_POST['sep'])) {
+} elseif (isset($_POST['new_course'])) {
+    $course_name = $_POST['course_name'];
+    $course_start = $_POST['course_start'];
+    $money_limit = $_POST['money_limit'];
+    $members = $_POST['members'];
+    $maker = $_COOKIE['uid'];
+    $date = date("Y-m-d H:i:s");
+    $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
+    echo $res;
+} else if (isset($_POST['sep'])) {
 } elseif (isset($_POST['new_course'])) {
     $course_name = $_POST['course_name'];
     $course_start = $_POST['course_start'];
@@ -87,4 +131,21 @@ if (isset($_POST['login'])) {
 } elseif (isset($_POST['Object_contact_2'])) {
     $res = contact_list($_COOKIE['uid']);
     echo $res;
+} elseif (isset($_POST['checkExist'])) {
+    $tel = $_COOKIE['uid'];
+    $res = SELECT_contact($tel);
+    if ($res == 0) {
+        ADD_contact($tel, 'بدون نام', $_COOKIE['uid'], date("Y-m-d H:i:s"));
+    }
+} else if (isset($_POST['del_contact'])) {
+    $tel = $_POST['tel'];
+    $res = del_contact($tel);
+    echo $res;
+} elseif (isset($_POST['edit_course'])) {
+    $id = $_POST['edit_course'];
+    $members = $_POST['members'];
+    $maker = $_COOKIE['uid'];
+    $date = date("Y-m-d H:i:s");
+    $r = Query("UPDATE `course` SET `course_member` = '$members' WHERE `course_id` = '$id'");
+    echo 1;
 }

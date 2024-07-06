@@ -91,7 +91,7 @@ form#sms > input {
 .alertBox {
   position: fixed;
   bottom: 0;
-  width: 99%;
+  width: 92%;
   z-index: 99;
 }
 
@@ -367,7 +367,7 @@ h6 {
 .card table td {
   border-top: none;
   text-align: right;
-  padding: 0.3rem;
+  padding: 0.2rem;
   font-size: 0.75rem;
   color: #1d5da9;
 }
@@ -711,23 +711,35 @@ a:visited {
   border: none;
 }
 
+.d_inline {
+  display: inline !important;
+}
+
 .selected_user {
   text-align: center;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
+  flex-wrap: wrap;
 }
 
 .selected_user,
 .selected_user div {
-  border-radius: 1rem !important;
+  border-radius: 0.2rem !important;
   font-size: 0.9rem !important;
   width: fit-content !important;
 }
 
 .selected_user div {
   background: darkcyan !important;
+  min-width: 4rem;
+}
+
+.report_td_header {
+  background: #000 !important;
+  color: #fff !important;
 }
 
 .user_name.td_title_ {

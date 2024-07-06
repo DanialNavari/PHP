@@ -30,7 +30,7 @@
                     <div class="range-from-example" class="hide"></div>
                 </td>
             </tr>
-            <tr class="hide w-100">
+            <tr class="hide w-100 after_hide">
                 <td colspan="3">
                     <button class="btn btn-success btn-sm w-100" id="savedate">تغییر تاریخ</button>
                 </td>
@@ -122,7 +122,7 @@
 <div class="add_fee hide">
     <table class="border_none mx-auto">
         <tr class="font-weight-bold">
-            <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
+            <td class="sum pl-3 w-30">محدودیت مالی(ريال)</td>
             <td>
                 <input class="form-control sum font-weight-bold" type="number" id="feeLimit" />
             </td>
