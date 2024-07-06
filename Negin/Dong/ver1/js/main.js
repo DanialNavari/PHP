@@ -185,7 +185,7 @@ $(".floatingActionButton").click(function () {
 });
 
 function payment(pay_id = 0) {
-  window.location.assign("./?route=_newTransaction&h=transaction&id=" + pay_id);
+  window.location.assign("./?route=_editTransaction&h=null&id=" + pay_id);
 }
 
 function moneyLimit() {
@@ -953,3 +953,16 @@ function edit_contacts(id) {
   $("#newContactName").val(esm);
   $("#newContactTel").val(tel);
 }
+
+function select_course() {
+  $(".gray_layer").show();
+  $(".add_course").show();
+}
+
+$("#setCourse").click(function () {
+  let course_value_id = $("#course_name").val();
+  let course_value_text = $("option:selected").text();
+  $("#course_name_show").text(course_value_text);
+  $('.add_course').hide();
+  $(".gray_layer").click();
+});

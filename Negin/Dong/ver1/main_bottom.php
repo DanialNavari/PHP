@@ -28,6 +28,12 @@
         </div>
         <div class="item_title">دوره جدید</div>
     </div>
+    <div class="item_" onclick="page('r','_newPayment','payments')" id="payments">
+        <div class="item_circle">
+            <div class="item_icon"><?php echo $payment; ?></div>
+        </div>
+        <div class="item_title">پرداخت جدید</div>
+    </div>
     <div class="item_" onclick="page('r','_newTransaction','transaction')" id="transaction">
         <div class="item_circle">
             <div class="item_icon"><?php echo $bag_plus; ?></div>

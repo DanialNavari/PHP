@@ -1153,6 +1153,92 @@ function trans_get_contact_share($trans_id, $pos)
     echo '<input type="hidden" value="' . $karbaran . '" id="karbaran"/>';
 }
 
+function trans_get_contact_share1($pos)
+{
+    $trans_course = '';
+    $trans_share_type = 'amount';
+    $course_infos = SELECT_course_id($trans_course);
+    $course_members = explode(',', $course_infos['course_member']);
+    $member_count = count($course_members) - 1;
+    $money_unit = $course_infos['course_money_unit'];
+
+    $karbaran = '';
+
+    for ($l = 0; $l < $member_count; $l++) {
+        $user = $course_members[$l];
+        $karbaran .= $user . ',';
+
+        if (isset($GLOBALS['trans_list1'][$user]['amount'])) {
+            $amount = $GLOBALS['trans_list1'][$user]['amount'];
+        } else {
+            $amount = 0;
+        }
+
+        if (isset($GLOBALS['trans_list1'][$user]['co'])) {
+            $co = $GLOBALS['trans_list1'][$user]['co'];
+        } else {
+            $co = 0;
+        }
+
+        if (isset($GLOBALS['trans_list1'][$user]["name"])) {
+            $name = $GLOBALS['trans_list1'][$user]["name"];
+        } else {
+            $contact_info = SELECT_user_by_id($user);
+            $name = $contact_info['contact_name'];
+        }
+
+
+        if ($trans_share_type == 'amount') {
+            $star =  $co;
+            $field = $amount;
+            $star_unit = 'ضریب : ';
+            $sec_unit = '';
+        } else {
+            $star = sep3($amount);
+            $field = $co;
+            $star_unit = '';
+            $sec_unit = $money_unit;
+        }
+
+        if ($amount > 0 || $co > 0) {
+            $bg_dark = 'bg_green_dark';
+            $bg_color = 'bg_green';
+        } else {
+            $bg_dark = 'bg_blue';
+            $bg_color = '';
+        }
+
+        if ($pos == "complete") {
+            echo '
+            <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
+                <div class="card my_card ' . $bg_dark . ' user-' . $user . '-box">
+                    <div class="record user-' . $user . '-name ' . $bg_color . '">
+                        <div class="user_info text-white border_none box_shadow_none w-12">
+                            <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                            <div class="star">
+                                <span class="karbar_name">' . $name . '</span>
+                                <span><i>' . $star_unit . '</i> <i id="user_second_unit_' . $user . '">' . $star . '</i> ' . $sec_unit . '</span>
+                            </div>
+                        </div>
+                        <div class="user_info text-white border_none box_shadow_none">
+                            <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')">
+                        </div>
+                    </div>
+                </div>
+            </div>';
+        } else {
+            if (isset($GLOBALS['trans_list1'][$user]['amount']) && $GLOBALS['trans_list1'][$user]['amount'] > 0) {
+                echo '
+                <div class="user_info bg_dark_blue text-white user-' . $user . '" data="' . $user . '" onclick="remove_from_course(' . $user . ')">
+                    <div class="user_name td_title_ px_02 mx-auto">' . $name . '</div>
+                </div>
+            ';
+            }
+        }
+    }
+    echo '<input type="hidden" value="' . $karbaran . '" id="karbaran"/>';
+}
+
 function UPDATE_trans($trans_id, $key, $value)
 {
     $res = Query("UPDATE `transactions` SET `$key` = '$value' WHERE `trans_id` = '$trans_id'");

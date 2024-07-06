@@ -2,81 +2,32 @@
 <link rel="stylesheet" href="static/css/main.css" />
 
 <div class="row empty">
-    خرید جدید
+    <?php
+    if (isset($_GET['id']) && $_GET['id'] > 0 && $_GET['id'] != 'null') {
+        echo 'ویرایش خرید';
+    } else {
+        echo 'خرید جدید';
+    }
+    ?>
 </div>
 
 <div class="cat">
     <div class="card my_card">
-        <table class="table table-hover">
-            <tr class="">
-                <td class="td_title va_middle w-6">نام دوره</td>
-                <td class="font-weight-bold text-white text-center w-9">
-                    <span class="text-center text-primary" id="course_name_show">دوره جدید</span>
-                </td>
-                <td class="text-center click" onclick="select_course()"><?php echo $GLOBALS['edit']; ?></td>
-            </tr>
-            <tr>
-                <td class="td_title tarikh">تاریخ تراکنش</td>
-                <td class="font-weight-bold text-center">
-                    <span id="start_from_fa">****/**/**</span>
-                </td>
-                <td class="text-center click" onclick="setDate()"><?php echo $GLOBALS['edit']; ?></td>
-            </tr>
-            <tr id="set_tarikh" class="hide">
-                <td colspan="3">
-                    <span id="start_from_en" class="hide"></span>
-                    <span id="start_unix" class="hide"></span>
-                    <div class="range-from-example" class="hide"></div>
-                </td>
-            </tr>
-            <tr class="hide w-100" id="calendar_">
-                <td colspan="3">
-                    <button class="btn btn-success btn-sm w-100" id="savedate">ثبت تاریخ</button>
-                </td>
-            </tr>
-            <tr>
-                <td class="td_title tarikh">خرید کننده</td>
-                <td class="font-weight-bold text-center" id="consumer_name">
-                    *****
-                </td>
-                <td class="text-center click" onclick="buyer()"><?php echo $GLOBALS['edit']; ?></td>
-            </tr>
-            <tr>
-                <td class="td_title">مبلغ تراکنش</td>
-                <td class="font-weight-bold text-center">
-                    <span id="moneyLimit">0</span> <span class="unit">ريال</span>
-                </td>
-                <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
-            </tr>
-            <tr>
-                <td class="td_title">سهم افراد</td>
-                <td class="font-weight-bold text-center" colspan="2">
-                    <span>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" ' . $check1 . '>
-                            <label class="form-check-label" for="inlineRadio1"><span>ضریب</span></label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" ' . $check2 . '>
-                            <label class="form-check-label" for="inlineRadio2"><span>مبلغ (ريال)</span></label>
-                        </div>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="td_title va_middle">توضیحات</td>
-                <td class="font-weight-bold text-center" colspan="2">
-                    <textarea class="form-control sum" rows="3" id="trans_desc"></textarea>
-                </td>
-            </tr>
-        </table>
-        <input type="hidden" id="buyer" value="' . $trans_buyer_code . '" />
+        <?php
+        if (isset($_GET['id']) && $_GET['id'] > 0 && $_GET['id'] != 'null') {
+            $id = $_GET['id'];
+            trans_edit($id);
+            share($id);
+        } else {
+            $id = '';
+        }
+        ?>
 
     </div>
     <input type="hidden" id="trans_person" value="">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="editTrans()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-success w-100" onclick="editTrans()"><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -88,17 +39,12 @@
 <!-- selected users -->
 <div class="cat mb-1">
     <div class="card my_card border_none selected_user" id="selected_user_rounded">
-        <?php //trans_get_contact_share($id, "share"); 
-        ?>
+        <?php trans_get_contact_share($id, "share"); ?>
     </div>
 </div>
 
 <!-- users box -->
-<div class="contacts">
-    برای نمایش لیست مخاطبین ابتدا دوره را انتخاب کنید
-</div>
-<?php //trans_get_contact_share($id, "complete"); 
-?>
+<?php trans_get_contact_share($id, "complete"); ?>
 
 <div class="add_payments hide">
     <table class="border_none mx-auto">
@@ -106,8 +52,7 @@
             <td class="sum pl-3 w-30">خرید کننده</td>
             <td>
                 <select class="form-select sum font-weight-bold" aria-label="Default select example" id="consumers">
-                    <?php //echo get_contact_in_course($id); 
-                    ?>
+                    <?php echo get_contact_in_course($id); ?>
                 </select>
             </td>
         </tr>
@@ -124,26 +69,15 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">نام دوره</td>
             <td>
-                <select class="form-select sum font-weight-bold" aria-label="Default select example" id="course_name">
-                    <?php
-                    $x = SELECT_course($_COOKIE['uid']);
-                    $n = mysqli_num_rows($x);
-                    for ($i = 0; $i < $n; $i++) {
-                        $fet = mysqli_fetch_assoc($x);
-                        $course_name = $fet['course_name'];
-                        $course_id = $fet['course_id'];
-                        echo '<option value="' . $course_id . '">' . $course_name . '</option>';
-                    }
-                    ?>
+                <select class="form-select sum font-weight-bold" aria-label="Default select example">
+                    <option value="1">سفر شمال</option>
+                    <option value="2" selected>سفر جنوب</option>
                 </select>
             </td>
         </tr>
         <tr>
-            <td class="user_img"></td>
-        </tr>
-        <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100" id="setCourse">ثبت</button>
+                <button class="btn btn-success btn-sm w-100" id="savedate">ثبت</button>
             </td>
         </tr>
     </table>

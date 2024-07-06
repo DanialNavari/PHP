@@ -44,7 +44,6 @@ if (isset($_POST['login'])) {
     $date = date("Y-m-d H:i:s");
     $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
     echo $res;
-} else if (isset($_POST['sep'])) {
 } elseif (isset($_POST['new_course'])) {
     $course_name = $_POST['course_name'];
     $course_start = $_POST['course_start'];
@@ -54,7 +53,6 @@ if (isset($_POST['login'])) {
     $date = date("Y-m-d H:i:s");
     $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
     echo $res;
-} else if (isset($_POST['sep'])) {
 } elseif (isset($_POST['new_course'])) {
     $course_name = $_POST['course_name'];
     $course_start = $_POST['course_start'];
@@ -64,7 +62,6 @@ if (isset($_POST['login'])) {
     $date = date("Y-m-d H:i:s");
     $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
     echo $res;
-} else if (isset($_POST['sep'])) {
 } elseif (isset($_POST['new_course'])) {
     $course_name = $_POST['course_name'];
     $course_start = $_POST['course_start'];
