@@ -8,8 +8,11 @@
         <div class="box_cat">
             <div class="box d-flex mt-2">
                 <div class="box_icon"><?php echo $my_debt; ?></div>
-                <div class="box_num text-danger"><?php $debt =  MY_DEBT($_COOKIE['uid'], 'debt');
-                                                    echo sep3(abs($debt)); ?></div>
+                <div class="box_num text-danger">
+                    <?php $debt =  MY_DEBT($_COOKIE['uid'], 'debt');
+                    echo sep3(abs($debt));
+                    ?>
+                </div>
             </div>
             <div class="box_title">بدهی من</div>
         </div>
@@ -17,18 +20,20 @@
         <div class="box_cat">
             <div class="box d-flex mt-2">
                 <div class="box_icon"><?php echo $my_request; ?></div>
-                <div class="box_num text-success"><?php $req =  MY_DEBT($_COOKIE['uid'], 'request');
+                <div class="box_num text-success"><?php $req =  MY_DEBT($_COOKIE['uid'], 'req');
                                                     echo sep3($req); ?></div>
             </div>
             <div class="box_title">طلب من</div>
         </div>
         <div class="box_cat">
-            <?php $acc = $req + $debt;
+            <?php
+            $acc = $req + $debt;
             if ($acc < 0) {
                 $accs = 'acc_debt';
             } else {
                 $accs = 'acc_req';
-            } ?>
+            }
+            ?>
             <div class="box d-flex mt-2 <?php echo $accs; ?>">
                 <div class="box_icon"><?php echo $my_account; ?></div>
                 <div class="box_num text-dark"><?php echo sep3(abs($acc)); ?></div>
@@ -44,8 +49,15 @@
     <div class="box_cat_parent">
         <div class="box_cat" onclick="page('r','_activeCourse')">
             <div class="box d-flex mt-2">
-                <div class="box_icon"><?php echo $active_course; $uids = $_COOKIE['uid'];?></div>
-                <div class="box_num text-danger"><?php echo active_courses("$uids", 'active'); ?></div>
+                <div class="box_icon">
+                    <?php 
+                    echo $active_course;
+                    $uids = $_COOKIE['uid']; 
+                    ?>
+                </div>
+                <div class="box_num text-danger">
+                    <?php echo active_courses("$uids", 'active'); ?>
+                </div>
             </div>
             <div class="box_title">دوره فعال</div>
         </div>

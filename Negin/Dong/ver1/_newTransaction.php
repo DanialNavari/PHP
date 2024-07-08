@@ -1,5 +1,16 @@
 <link rel="stylesheet" href="static/css/lib/persian-datepicker.min.css" />
 <link rel="stylesheet" href="static/css/main.css" />
+<style>
+    .click {
+        color: #f5faff !important;
+        cursor: pointer;
+    }
+
+    .dore {
+        color: #1d5da9 !important;
+        cursor: pointer;
+    }
+</style>
 
 <div class="row empty">
     خرید جدید
@@ -13,7 +24,7 @@
                 <td class="font-weight-bold text-white text-center w-9">
                     <span class="text-center text-primary" id="course_name_show">دوره جدید</span>
                 </td>
-                <td class="text-center click" onclick="select_course()"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="text-center dore" onclick="select_course()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
             <tr>
                 <td class="td_title tarikh">تاریخ تراکنش</td>
@@ -53,12 +64,12 @@
                 <td class="font-weight-bold text-center" colspan="2">
                     <span>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" ' . $check1 . '>
-                            <label class="form-check-label" for="inlineRadio1"><span>ضریب</span></label>
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="zarib" value="zarib">
+                            <label class="form-check-label" for="zarib"><span>ضریب</span></label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" ' . $check2 . '>
-                            <label class="form-check-label" for="inlineRadio2"><span>مبلغ (ريال)</span></label>
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="mablagh" value="mablagh">
+                            <label class="form-check-label" for="mablagh"><span>مبلغ (ريال)</span></label>
                         </div>
                     </span>
                 </td>
@@ -76,7 +87,7 @@
     <input type="hidden" id="trans_person" value="">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="editTrans()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-success w-100" onclick="addTrans()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -101,12 +112,12 @@
 ?>
 
 <div class="add_payments hide">
-    <table class="border_none mx-auto">
+    <table class="border_none mx-auto w-100">
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">خرید کننده</td>
             <td>
                 <select class="form-select sum font-weight-bold" aria-label="Default select example" id="consumers">
-                    <?php //echo get_contact_in_course($id); 
+                    <?php echo get_contacts_in_course($_COOKIE['selected_course']);
                     ?>
                 </select>
             </td>
@@ -120,7 +131,7 @@
 </div>
 
 <div class="add_course hide">
-    <table class="border_none mx-auto">
+    <table class="border_none mx-auto w-100">
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">نام دوره</td>
             <td>
@@ -154,7 +165,7 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
             <td>
-                <input class="form-control sum font-weight-bold" type="number" id="trans_cost" />
+                <input class="form-control sum font-weight-bold" type="text" id="trans_cost" />
             </td>
         </tr>
         <tr>
@@ -173,50 +184,69 @@
 <input type="hidden" value="<?php echo $_GET['id']; ?>" id="trans_id" />
 
 <script>
+    $('#zarib').hide();
+    $('label').filter("[for='zarib']").hide();
+    $('#mablagh').hide();
+    $('label').filter("[for='mablagh']").hide();
+
     $('#savedate2').click(function() {
         consumers_code = $('#consumers').val();
         consumers_name = $('#consumers option:selected').text();
         $('#buyer').val(consumers_code);
         $('#consumer_name').text(consumers_name);
         $('.gray_layer').click();
+
+        $.ajax({
+            data: "buyer=" + consumers_code,
+            url: "server.php",
+            type: "POST",
+            success: function(response) {},
+        });
     });
 
     $('#savedate1').click(function() {
         fee = $('#trans_cost').val();
-        $.ajax({
-            data: "sep=" + fee,
-            url: "server.php",
-            type: "POST",
-            success: function(response) {
-                $('#moneyLimit').text(response);
-            },
-        });
-        $('.gray_layer').click();
+        if (parseInt(fee) > 0) {
+            $.ajax({
+                data: "seps=" + fee,
+                url: "server.php",
+                type: "POST",
+                success: function(response) {
+                    $('#moneyLimit').text(response);
+                },
+            });
+            $('.gray_layer').click();
+            $('#trans_cost').val('');
+        }else{
+            $('.gray_layer').click();
+        }
     });
+
     $(':radio').click(function() {
         radio_btn = $(this).attr('id');
         trans_id = $('#trans_id').val();
 
-        if (radio_btn == 'inlineRadio1') {
+        if (radio_btn == 'zarib') {
             trans_value = 'coefficient';
         } else {
             trans_value = 'amount';
         }
 
         $.ajax({
-            data: 'trans_update=ok&trans_id=' + trans_id + '&trans_key=trans_share_type&trans_value=' + trans_value,
+            data: 'list_type=' + trans_value,
             url: 'server.php',
             type: 'POST',
             success: function(response) {
-                window.location.reload();
+                $('.contacts').html(response);
+                $(".btn").removeAttr("disabled");
             }
         });
     });
 
     function sep(id) {
-        fee = $('#user-' + id).val();
+        fee = $('#' + id).val();
         if (fee == '' || fee == null) {
-            $('#user-' + id).val(0);
+            $('#' + id).val(0);
         } else {
             setTimeout(function() {
                 $.ajax({
@@ -224,10 +254,10 @@
                     url: 'server.php',
                     type: 'POST',
                     success: function(response) {
-                        $('#user-' + id).val(response);
+                        $('#' + id).val(response);
                     }
                 });
-            }, 200);
+            }, 100);
         }
     }
 

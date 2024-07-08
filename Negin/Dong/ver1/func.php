@@ -1,6 +1,16 @@
 <?php
 require_once('symbol.php');
 
+// function db()
+// {
+//     $db_host = 'localhost';
+//     $db_username = 'qndomtoj_dong';
+//     $db_password = '6Jz&yhG(Ez%y';
+//     $db_name = 'qndomtoj_Dong';
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
 function db()
 {
     $db_host = 'localhost';
@@ -296,7 +306,6 @@ function Object_contact1($name, $tel, $course_id, $contac_id, $pos)
     }
 }
 
-
 function give_contacts_list($contact_maker)
 {
     db();
@@ -360,8 +369,13 @@ function active_transactions($course_id)
 {
     $cids = SELECT_course_id("$course_id");
     $money_unit = $cids['course_money_unit'];
+    $c_manager = $cids['course_manager'];
     $w = SELECT_trans("$course_id");
     $num = mysqli_num_rows($w);
+
+    $z = SELECT_contact($_COOKIE['uid']);
+    $z_id = $z['contact_id'];
+
 
     for ($i = 0; $i < $num; $i++) {
         $r = mysqli_fetch_assoc($w);
@@ -372,10 +386,10 @@ function active_transactions($course_id)
         $trans_date = explode(' ', $r['trans_date']);
         $trans_desc = $r['trans_desc'];
         $trans_person = $r['trans_person'];
-        $trans_share_type = $r['trans_share_type'];
 
         $user_buyer_info = SELECT_user_by_id($trans_buyer);
         $buyer_name = $user_buyer_info['contact_name'];
+        $user_codes = $user_buyer_info['contact_tel'];
 
         $user_recorder_info = SELECT_user_by_id($trans_recorder);
         $recorder_name = $user_recorder_info['contact_name'];
@@ -390,8 +404,19 @@ function active_transactions($course_id)
             $zinaf .= $user_buyer_info1['contact_name'] . '(' . sep3($sep_tp[1]) . ' ' . $money_unit . ' ) ';
         }
 
+        if ($user_codes == $c_manager) {
+            $permit1 = '';
+            $permit2 = '';
+        } elseif ($trans_buyer == $z_id) {
+            $permit1 = '';
+            $permit2 = '';
+        } else {
+            $permit1 = 'force_hide';
+            $permit2 = 'force_hide';
+        }
+
         echo '
-    <div class="card my_card" onclick="payment(' . $trans_id . ')">
+    <div class="card my_card">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center">خرید کننده</td>
@@ -410,6 +435,14 @@ function active_transactions($course_id)
             </tr>
             <tr class="bg_secondary font-weight-bold">
                 <td class="td_title_ text_blue_very_dark text-right" colspan="4"> ' . $zinaf . '</td>
+            </tr>
+            <tr class="bg-default font-weight-bold">
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
+                    <button class="btn btn-warning w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
+                </td>
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+                    <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+                </td>
             </tr>
         </table>
     </div>
@@ -527,6 +560,11 @@ function active_course($tel)
         $rss = SELECT_contact($c_manager);
         $course_manager = $rss['contact_name'];
 
+        if ($c_manager != $tel) {
+            $permit = 'force_hide';
+        } else {
+            $permit = '';
+        }
 
         if ($c_disabled == null) {
             $tpr = '
@@ -586,26 +624,26 @@ function active_course($tel)
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
                 <td class="font-weight-bold text-center" id="courseName' . $c_id . '">' . $c_name . '</td>
-                <td class="font-weight-bold text-center click" onclick="courses(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+                <td class="font-weight-bold text-center click ' . $permit . '" onclick="courses(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
             </tr>
             <tr>
                 <td class="td_title">تعداد افراد</td>
                 <td class="font-weight-bold text-center" id="course_count' . $c_id . '">' . $c_member . '</td>
-                <td class="font-weight-bold text-center click" onclick="navigate(\'?route=_editCC&h=null&id=' . $c_id . '\')">' . $GLOBALS["edit"] . '</td>
+                <td class="font-weight-bold text-center click ' . $permit . '" onclick="navigate(\'?route=_editCC&h=null&id=' . $c_id . '\')">' . $GLOBALS["edit"] . '</td>
             </tr>
             <tr>
                 <td class="td_title tarikh">تاریخ شروع</td>
                 <td class="font-weight-bold text-center">
                     <span id="start_from_fa' . $c_id . '">' . $c_start_date . '</span>
                 </td>
-                <td class="text-center click" onclick="setDates(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+                <td class="text-center click ' . $permit . '" onclick="setDates(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
             </tr>
             <tr>
                 <td class="td_title pl-0">محدودیت مالی</td>
-                <td class="font-weight-bold text-center">
+                <td class="font-weight-bold text-center ">
                     <span id="moneyLimit' . $c_id . '">' . sep3($c_money_limit) . '</span> <span class="unit">' . $c_money_unit . '</span>
                 </td>
-                <td class="text-center click" onclick="moneyLimits(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+                <td class="text-center click ' . $permit . '" onclick="moneyLimits(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
             </tr>
             <tr>
                 <td class="td_title pl-0">مدیر دوره</td>
@@ -620,7 +658,7 @@ function active_course($tel)
             <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
         </div>
         ' . $tpr . '
-        <div class="share_link bg_blue_very_dark font-weight-bold">
+        <div class="share_link bg_blue_very_dark font-weight-bold ' . $permit . '">
             <div class="inline_title">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" data-type="' . $c_default . '" role="switch" id="defaultCourse' . $c_id . '" ' . $c_default . ' onchange="chageSwitch(\'defaultCourse\',' . $c_id . ')">
@@ -634,10 +672,10 @@ function active_course($tel)
                 </div>
             </div>
         </div>
-        <div class="proofs fld">
+        <div class="proofs fld ' . $permit . '">
             <div class="end_course transactions font-weight-bold">
                 <button class="btn btn-primary w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_course"] . ' اتمام دوره</button>
-                <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: مسافرت جنوب\n 🔸 تاریخ شروع: 1403/04/01 \n 🔸 مدیر گروه : ** اشکان توکلی ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
+                <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: $c_name \n 🔸 تاریخ شروع: $c_start_date \n 🔸 مدیر گروه : ** $course_manager  ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
                 <button class="btn btn-danger w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
             </div>
         </div>
@@ -661,11 +699,11 @@ function UPDATE_course($field, $value, $course_id)
 
 function request_course($id)
 {
-    $res = Query("SELECT * FROM `course` WHERE `course_id` =  '$id' AND `course_disabled` IS NULL AND `course_finish` IS NULL");
+    $res = Query("SELECT * FROM `course` WHERE `course_id` =  '$id' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL");
     $n = mysqli_num_rows($res);
     if ($n > 0) {
         $r = mysqli_fetch_assoc($res);
-        $w = SELECT_user($r["course_manager"]);
+        $w = SELECT_contact($r['course_manager']);
         $course_number = explode(',', $r["course_member"]);
         $course_cap = $r["course_cap"];
         $member_count = count($course_number) - 1;
@@ -675,7 +713,7 @@ function request_course($id)
         }
 
         if ($course_cap == NULL || $member_count == '') {
-            $course_cap = 'بدون محدودیت';
+            $course_cap = '∞';
         }
 
         echo '<div class="card my_card">
@@ -698,12 +736,12 @@ function request_course($id)
                 <td class="font-weight-bold">' . $course_cap . ' </td>
             </tr>
             <tr>
-                <td class="td_title">: تعداد افراد دوره</td>
-                <td class="font-weight-bold">' . $member_count . ' </td>
+                <td class="td_title">: تعداد افراد حاضر در دوره</td>
+                <td class="font-weight-bold">' . $member_count . ' نفر</td>
             </tr>
             <tr>
                 <td class="td_title">: مدیر دوره</td>
-                <td class="font-weight-bold">' . $w["users_name"] . '</td>
+                <td class="font-weight-bold">' . $w["contact_name"] . '</td>
             </tr>
         </table>
 
@@ -712,23 +750,23 @@ function request_course($id)
         <table class="table">
             <tr>
                 <td class="td_title va_middle">: نام</td>
-                <td><input type="text" class="form-control w-9 h-2"></td>
+                <td><input type="text" class="form-control w-9 h-2" id="reg_fname"></td>
             </tr>
             <tr>
                 <td class="td_title va_middle">: نام خانوادگی</td>
-                <td><input type="text" class="form-control w-9 h-2"></td>
+                <td><input type="text" class="form-control w-9 h-2" id="reg_lname"></td>
             </tr>
             <tr>
                 <td class="td_title va_middle">: تلفن</td>
-                <td><input type="tel" class="form-control w-9 h-2"></td>
+                <td><input type="tel" class="form-control w-9 h-2" id="reg_tel"></td>
             </tr>
             <tr>
                 <td class="td_title va_middle">: توضیحات</td>
-                <td><textarea class="form-control w-9 h-2"></textarea></td>
+                <td><textarea class="form-control w-9 h-2" id="reg_desc"></textarea></td>
             </tr>
             <tr>
                 <td colspan="2">
-                    <button class="btn btn-success w-100 sum">ثبت نام</button>
+                    <button class="btn btn-success w-100 sum" onclick="course_request_reg(' . $id . ')">ثبت نام</button>
                 </td>
             </tr>
         </table>
@@ -1418,10 +1456,11 @@ function MY_DEBT($tel, $pos)
     $user_sahm = 0;
     $user_pay = 0;
     $user_use = 0;
+    $user_give = 0;
 
     $res = SELECT_contact($tel);
     $c_id = $res['contact_id'];
-    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $c_id . "%' OR `trans_person` LIKE '%," . $c_id . "%'");
+    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $c_id . ":%' OR `trans_person` LIKE '%," . $c_id . ":%'");
     $num = mysqli_num_rows($r);
 
     for ($i = 0; $i < $num; $i++) {
@@ -1441,40 +1480,66 @@ function MY_DEBT($tel, $pos)
         }
     }
 
-    $p = Query("SELECT * FROM `payments` WHERE `pay_from` = " . $c_id . " AND `pay_del` IS NULL");
+    $p = Query("SELECT * FROM `payments` WHERE `pay_from` = '" . $c_id . "' AND `pay_del` IS NULL");
     $nums = mysqli_num_rows($p);
     for ($l = 0; $l < $nums; $l++) {
         $fet = mysqli_fetch_assoc($p);
         $user_pay += $fet['pay_fee'];
     }
 
+    $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $c_id . "' AND `pay_del` IS NULL");
+    $numsa = mysqli_num_rows($pa);
+    for ($la = 0; $la < $numsa; $la++) {
+        $feta = mysqli_fetch_assoc($pa);
+        $user_give += $feta['pay_fee'];
+    }
+
+    $jaam1 = $user_use - $user_sahm;
+    if ($jaam1 > 0) {
+        $jaam = $jaam1 - $user_give;
+    } else {
+        $jaam = $jaam1 + $user_pay;
+    }
+
+    switch ($jaam) {
+        case 0:
+            $debt = 0;
+            $req = 0;
+            break;
+        case $jaam > 0:
+            $debt = 0;
+            $req = $jaam;
+            break;
+        case $jaam < 0:
+            $debt = $jaam;
+            $req = 0;
+            break;
+    }
+
     if ($pos == 'debt') {
-        if (($user_use + $user_pay) > $user_sahm) {
-            return 0;
-        } else {
-            return ($user_use + $user_pay - $user_sahm);
-        }
-    } else if ($pos == 'request') {
-        if (($user_use + $user_pay) > $user_sahm) {
-            return ($user_use + $user_pay - $user_sahm);
-        } else {
-            return 0;
-        }
+        return $debt;
+    } else if ($pos == 'req') {
+        return $req;
     }
 }
 
 function active_courses($maker, $pos)
 {
+    $rs = SELECT_contact($maker);
+    if ($rs != 0) {
+        $c_id = $rs['contact_id'];
+    }
+
     if ($pos == 'active') {
-        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NULL");
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL");
         $num = mysqli_num_rows($rs);
         return $num;
     } elseif ($pos == 'finished') {
-        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_finish` IS NOT NULL");
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NOT NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NOT NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NOT NULL");
         $num = mysqli_num_rows($rs);
         return $num;
     } elseif ($pos == 'disabled') {
-        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NOT NULL");
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NOT NULL AND `course_finish` IS NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NOT NULL AND `course_finish` IS NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NOT NULL AND `course_finish` IS NULL");
         $num = mysqli_num_rows($rs);
         return $num;
     }
@@ -1484,4 +1549,100 @@ function del_contact($tel)
 {
     $r = Query("UPDATE `contacts` SET `contact_active` = '0' WHERE `contact_id` = '$tel'");
     return 1;
+}
+
+function get_contacts_in_course($course_id)
+{
+    $people = '';
+
+    $course_info = SELECT_course_id($course_id);
+    $members = explode(',', $course_info['course_member']);
+
+    for ($i = 0; $i < count($members) - 1; $i++) {
+        $c_id = $members[$i];
+        $rs = Query("SELECT * FROM `contacts` WHERE `contact_id` = '" . $c_id . "'");
+        $fet = mysqli_fetch_assoc($rs);
+        $contact_name = $fet['contact_name'];
+        $people .= '<option value="' . $c_id . '">' . $contact_name . '</option>';
+    }
+    return $people;
+}
+
+function get_contact_box($course_id, $list_type)
+{
+
+    $res = Query("SELECT * FROM `course` WHERE `course_id` = '$course_id'");
+    $num = mysqli_num_rows($res);
+    if ($num > 0) {
+        $box = '';
+        $fet = mysqli_fetch_assoc($res);
+        $member = explode(',', $fet['course_member']);
+        $karbaran = '';
+        for ($i = 0; $i < count($member) - 1; $i++) {
+            $c_id = $member[$i];
+            $user = $c_id;
+            $karbaran .= $user . ',';
+
+            $x = Query("SELECT * FROM `contacts` WHERE `contact_id` = '$c_id' AND `contact_active` = '1'");
+            $fetch = mysqli_fetch_assoc($x);
+            $name = $fetch['contact_name'];
+
+            // if (isset($tel)) {
+            //     $stars = explode(',', get_star($tel));
+            //     $star_complete = $stars[0];
+            //     $star_incomplete = $stars[1];
+            // } else {
+            //     $star_complete = 0;
+            //     $star_incomplete = 0;
+            // }
+
+            if ($list_type == 'amount') {
+                $star_unit = 'مبلغ : ';
+                $sec_unit = '';
+            } else {
+                $star_unit = 'ضریب : ';
+                $sec_unit = '';
+            }
+
+            $star = '';
+
+            $box .= '
+                <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
+                    <div class="card my_card bg_blue user-' . $user . '-box">
+                        <div class="record user-' . $user . '-name">
+                            <div class="user_info text-white border_none box_shadow_none w-12">
+                                <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                                <div class="star">
+                                    <span class="karbar_name">' . $name . '</span>
+                                    <span><i>' . $star_unit . '</i> <i id="user_second_unit_' . $user . '">' . $star . '</i> ' . $sec_unit . '</span>
+                                </div>
+                            </div>
+                            <div class="user_info text-white border_none box_shadow_none">
+                                <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')">
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+        }
+        $box .= '<input type="hidden" value="' . $karbaran . '" id="karbaran">';
+        return $box;
+    } else {
+        return 0;
+    }
+}
+
+function ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran, $karbaran_co, $type, $trans_desc, $recorder)
+{
+    $x = Query("INSERT INTO transactions(trans_buyer) VALUES($buyer)");
+    $y = mysqli_insert_id($GLOBALS['conn']);
+    $zaman = date("Y-m-d H:i:s");
+    UPDATE_trans($y, 'trans_recorder', "$recorder");
+    UPDATE_trans($y, 'trans_share_type', "$type");
+    UPDATE_trans($y, 'trans_fee', "$money_limit");
+    UPDATE_trans($y, 'trans_date', "$trans_date");
+    UPDATE_trans($y, 'trans_desc', "$trans_desc");
+    UPDATE_trans($y, 'trans_course', "$selected_course");
+    UPDATE_trans($y, 'trans_person', "$karbaran");
+    UPDATE_trans($y, 'trans_person_co', "$karbaran_co");
+    UPDATE_trans($y, 'trans_create', "$zaman");
 }

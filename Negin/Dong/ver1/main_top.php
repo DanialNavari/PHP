@@ -28,7 +28,7 @@
                 <?php require_once('func.php');
                 if (isset($_COOKIE['uid'])) {
                     $rs = SELECT_contact($_COOKIE['uid']);
-                    $name = '(' . $rs['contact_name'] . ')';
+                    $name = '(' . trim($rs['contact_name'], " ") . ')';
                 } else {
                     $name = '';
                 }

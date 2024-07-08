@@ -775,7 +775,8 @@ function editTrans() {
       success: function (response) {
         if (response == 1) {
           alert("تراکنش با موفقیت ویرایش شد");
-          window.location.reload();
+          //window.location.reload();
+          history.back();
         } else {
           Toast(108);
         }
@@ -795,6 +796,8 @@ function checkValue1(id) {
   value = $("#user-" + id).val();
   if (value == "") {
     $("#user-" + id).val(0);
+  } else {
+    sep("user-" + id);
   }
 }
 
@@ -961,8 +964,168 @@ function select_course() {
 
 $("#setCourse").click(function () {
   let course_value_id = $("#course_name").val();
-  let course_value_text = $("option:selected").text();
+  let course_value_text = $("#course_name option:selected").text();
   $("#course_name_show").text(course_value_text);
-  $('.add_course').hide();
+  $(".add_course").hide();
   $(".gray_layer").click();
+  $("td.click").addClass("dore");
+  $("#consumer_name").text("****");
+  $(".contacts").empty();
+
+  $.ajax({
+    data: "getContactList=" + course_value_id,
+    url: "server.php",
+    type: "POST",
+    success: function (response) {
+      $("#zarib").show();
+      $("label").filter("[for='zarib']").show();
+      $("#mablagh").show();
+      $("label").filter("[for='mablagh']").show();
+      $("#karbaran").remove();
+      $("#mablagh").click();
+    },
+  });
 });
+
+function addTrans() {
+  let sahm_mablagh = "";
+  let sahm_co = "";
+  let final_pos = false;
+  let share_type = "amount";
+
+  trans_date = $("#start_from_fa").text();
+
+  money_limit = $("#moneyLimit").text();
+  y = money_limit.split(",");
+  sum_ml = 0;
+  for (m = 0; m < y.length; m++) {
+    sum_ml += y[m] + "";
+  }
+
+  money_limit = parseInt(sum_ml);
+
+  trans_desc = $("#trans_desc").val();
+  let karbaran = $("#karbaran").val().split(",");
+
+  let radio_btn = $("input[type='radio']:checked").val();
+
+  sum_karbar = 0;
+  for (i = 0; i < karbaran.length - 1; i++) {
+    karbar_value = $("#user-" + karbaran[i]).val();
+    x = karbar_value.split(",");
+    sum_kar = 0;
+    for (k = 0; k < x.length; k++) {
+      sum_kar += x[k] + "";
+    }
+
+    sum_karbar += parseInt(sum_kar);
+    sum_kar = parseInt(sum_kar);
+
+    if (radio_btn == "zarib") {
+      share_type = "coefficient";
+      sahm_co += karbaran[i] + ":" + sum_kar + ",";
+      sahm_mablagh += karbaran[i] + ":" + "0,";
+    } else if (radio_btn == "mablagh") {
+      share_type = "amount";
+      sahm_mablagh += karbaran[i] + ":" + sum_kar + ",";
+      sahm_co += karbaran[i] + ":" + "0,";
+    }
+  }
+
+  if (radio_btn == "mablagh") {
+    if (money_limit == sum_karbar) {
+      final_pos = true;
+    } else {
+      alert("مجموع سهم افراد با مبلغ تراکنش برابر نمی باشد");
+      final_pos = false;
+    }
+  } else {
+    final_pos = true;
+  }
+
+  if (final_pos == true) {
+    let ans = confirm("آیا می خواهید خرید جدید ثبت کنید؟");
+    if (ans == true) {
+      $.ajax({
+        data:
+          "add_trans=ok&trans_date=" +
+          trans_date +
+          "&money_limit=" +
+          money_limit +
+          "&karbaran=" +
+          sahm_mablagh +
+          "&karbaran_co=" +
+          sahm_co +
+          "&share_type=" +
+          share_type +
+          "&trans_desc" +
+          trans_desc,
+        url: "server.php",
+        type: "POST",
+        success: function (response) {
+          if (response == 1) {
+            alert("خرید جدید با موفقیت ثبت شد");
+            history.back();
+          }
+        },
+      });
+    }
+  }
+}
+
+function del_trans(id) {
+  acc = confirm("آیا می خواهید این تراکنش را حذف کنید؟");
+  if (acc == true) {
+    $.ajax({
+      data: "del_trans=" + id,
+      type: "POST",
+      url: "server.php",
+      success: function (response) {
+        if (response == 1) {
+          alert("تراکنش با موفقیت حذف شد");
+          window.location.reload();
+        }
+      },
+    });
+  }
+}
+
+function course_request_reg(course_id) {
+  acc = confirm("آیا از ارسال درخواست مطمئن هستید؟");
+  if (acc == true) {
+    reg_fname = $("#reg_fname").val();
+    reg_lname = $("#reg_lname").val();
+    reg_tel = $("#reg_tel").val();
+    reg_desc = $("#reg_desc").val();
+    if (
+      reg_fname.length > 3 &&
+      reg_lname.length > 3 &&
+      reg_tel.length > 10 &&
+      reg_desc.length > 3
+    ) {
+      $.ajax({
+        data:
+          "reg_course=" +
+          course_id +
+          "&reg_fname=" +
+          reg_fname +
+          "&reg_lname=" +
+          reg_lname +
+          "&reg_tel=" +
+          reg_tel +
+          "&reg_desc=" +
+          reg_desc,
+        url: "server.php",
+        type: "POST",
+        success: function (response) {
+          //if(response == 1){
+          alert("درخواست شما با موفقیت ارسال شد");
+          window.location.assign("./login.php");
+          //}
+        },
+      });
+    }else{
+      alert("لطفا همه فیلد ها را تکمیل کنید");
+    }
+  }
+}

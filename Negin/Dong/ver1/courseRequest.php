@@ -8,3 +8,5 @@ require_once("func.php");
 <div class="cat">
     <?php echo request_course($_GET['id']); ?>
 </div>
+
+<?php include_once('javascript.php');?>

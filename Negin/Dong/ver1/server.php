@@ -71,19 +71,19 @@ if (isset($_POST['login'])) {
     $date = date("Y-m-d H:i:s");
     $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
     echo $res;
-} else if (isset($_POST['sep'])) {
+} elseif (isset($_POST['sep'])) {
     echo sep3($_POST['sep']);
-} else if (isset($_POST['update_course'])) {
+} elseif (isset($_POST['update_course'])) {
     $update_course = $_POST['update_course'];
     $key = $_POST['key'];
     $value = $_POST['value'];
     UPDATE_course($key, $value, $update_course);
-} else if (isset($_POST['seps'])) {
+} elseif (isset($_POST['seps'])) {
     echo seps3($_POST['seps']);
-} else if (isset($_POST['trans_update'])) {
+} elseif (isset($_POST['trans_update'])) {
     $res = UPDATE_trans($_POST['trans_id'], $_POST['trans_key'], $_POST['trans_value']);
     echo $res;
-} else if (isset($_POST['edit_trans'])) {
+} elseif (isset($_POST['edit_trans'])) {
 
     $trans_fee = seps4($_POST['moneyLimit']);
 
@@ -121,9 +121,9 @@ if (isset($_POST['login'])) {
         UPDATE_trans($_POST['trans_id'], 'trans_recorder', $contact['contact_id']);
         echo 1;
     }
-} else if (isset($_POST['pure_num'])) {
+} elseif (isset($_POST['pure_num'])) {
     echo seps4($_POST['pure_num']);
-} else if (isset($_POST['get_contact_in_course'])) {
+} elseif (isset($_POST['get_contact_in_course'])) {
     echo get_contact_in_course($_POST['trans_id']);
 } elseif (isset($_POST['Object_contact_2'])) {
     $res = contact_list($_COOKIE['uid']);
@@ -134,7 +134,7 @@ if (isset($_POST['login'])) {
     if ($res == 0) {
         ADD_contact($tel, 'بدون نام', $_COOKIE['uid'], date("Y-m-d H:i:s"));
     }
-} else if (isset($_POST['del_contact'])) {
+} elseif (isset($_POST['del_contact'])) {
     $tel = $_POST['tel'];
     $res = del_contact($tel);
     echo $res;
@@ -145,4 +145,37 @@ if (isset($_POST['login'])) {
     $date = date("Y-m-d H:i:s");
     $r = Query("UPDATE `course` SET `course_member` = '$members' WHERE `course_id` = '$id'");
     echo 1;
+} elseif (isset($_POST['getContactList'])) {
+    $getContactList = $_POST['getContactList'];
+    setcookie('selected_course', $_POST['getContactList'], time() + 3600, "/");
+} elseif (isset($_POST['list_type'])) {
+    $selected_course = $_COOKIE['selected_course'];
+    $list_type = $_POST['list_type'];
+    setcookie('list_type', $_POST['list_type'], time() + 3600, "/");
+    echo get_contact_box($selected_course, $list_type);
+} elseif (isset($_POST['buyer'])) {
+    setcookie('buyer', $_POST['buyer'], time() + 3600, "/");
+} elseif (isset($_POST['add_trans'])) {
+    $buyer = $_COOKIE['buyer'];
+    $list_type = $_COOKIE['list_type'];
+    $selected_course = $_COOKIE['selected_course'];
+    $trans_date = $_POST['trans_date'];
+    $money_limit = $_POST['money_limit'];
+    $karbaran = $_POST['karbaran'];
+    $karbaran_co = $_POST['karbaran_co'];
+    $share_type = $_POST['share_type'];
+    $trans_desc = $_POST['trans_desc'];
+    $x = SELECT_contact($_COOKIE['uid']);
+    $recorder = $x['contact_id'];
+    ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran, $karbaran_co, $share_type, $trans_desc, $recorder);
+    echo 1;
+} elseif (isset($_POST['seps4'])) {
+    echo seps4($_POST['seps4']);
+} elseif (isset($_POST['del_trans'])) {
+    $uid = $_COOKIE['uid'];
+    $t_id = $_POST['del_trans'];
+    $zaman = date("Y-m-d,H:i:s");
+    Query("UPDATE `transactions` SET `trans_del`='$uid,$zaman' WHERE `trans_id` = '$t_id'");
+    echo 1;
+} elseif (isset($_POST['reg_course'])) {
 }
