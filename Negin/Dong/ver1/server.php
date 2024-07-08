@@ -168,7 +168,7 @@ if (isset($_POST['login'])) {
     $x = SELECT_contact($_COOKIE['uid']);
     $recorder = $x['contact_id'];
     ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran, $karbaran_co, $share_type, $trans_desc, $recorder);
-    echo 1;
+    echo $selected_course;
 } elseif (isset($_POST['seps4'])) {
     echo seps4($_POST['seps4']);
 } elseif (isset($_POST['del_trans'])) {
@@ -178,4 +178,15 @@ if (isset($_POST['login'])) {
     Query("UPDATE `transactions` SET `trans_del`='$uid,$zaman' WHERE `trans_id` = '$t_id'");
     echo 1;
 } elseif (isset($_POST['reg_course'])) {
+} elseif (isset($_POST['add_new_payment'])) {
+    $buyer = $_COOKIE['buyer'];
+    $selected_course = $_COOKIE['selected_course'];
+    $trans_date = $_POST['trans_date'];
+    $money_limit = $_POST['money_limit'];
+    $karbaran = $_POST['karbaran'];
+    $trans_desc = $_POST['trans_desc'];
+    $x = SELECT_contact($_COOKIE['uid']);
+    $recorder = $x['contact_id'];
+    $x = ADD_new_payments($buyer, $selected_course, "$trans_date", "$money_limit", "$karbaran", "$trans_desc", $recorder);
+    echo $x;
 }

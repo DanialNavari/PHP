@@ -122,7 +122,7 @@ function SELECT_trans($course_id)
 function SELECT_pay($course_id)
 {
     db();
-    $w = Query("SELECT * FROM `payments` WHERE `pay_course` = '$course_id'");
+    $w = Query("SELECT * FROM `payments` WHERE `pay_course` = '$course_id' AND `pay_del` IS NULL");
     return $w;
 }
 
@@ -410,6 +410,9 @@ function active_transactions($course_id)
         } elseif ($trans_buyer == $z_id) {
             $permit1 = '';
             $permit2 = '';
+        } elseif ($_COOKIE['uid'] == $c_manager) {
+            $permit1 = '';
+            $permit2 = '';
         } else {
             $permit1 = 'force_hide';
             $permit2 = 'force_hide';
@@ -442,6 +445,88 @@ function active_transactions($course_id)
                 </td>
                 <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
                     <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    ';
+    }
+}
+
+function active_payments($course_id)
+{
+    $cids = SELECT_course_id("$course_id");
+    $money_unit = $cids['course_money_unit'];
+    $c_manager = $cids['course_manager'];
+    $w = SELECT_pay("$course_id");
+    $num = mysqli_num_rows($w);
+
+    $z = SELECT_contact($_COOKIE['uid']);
+    $z_id = $z['contact_id'];
+
+
+    for ($i = 0; $i < $num; $i++) {
+        $r = mysqli_fetch_assoc($w);
+        $pay_id = $r['pay_id'];
+        $pay_from = $r['pay_from'];
+        $pay_maker = $r['pay_maker'];
+        $pay_to = $r['pay_to'];
+        $pay_fee = sep3($r['pay_fee']);
+        $pay_date = $r['pay_date'];
+        $pay_desc = $r['pay_desc'];
+        $pay_maker = $r['pay_maker'];
+
+        $user_buyer_info = SELECT_user_by_id($pay_from);
+        $buyer_name = $user_buyer_info['contact_name'];
+        $buyer_codes = $user_buyer_info['contact_tel'];
+
+        $user_giver_info = SELECT_user_by_id($pay_to);
+        $giver_name = $user_giver_info['contact_name'];
+
+        $user_recorder_info = SELECT_user_by_id($pay_maker);
+        $recorder_name = $user_recorder_info['contact_name'];
+
+        if ($buyer_codes == $c_manager) {
+            $permit1 = '';
+            $permit2 = '';
+        } elseif ($buyer_codes == $z_id) {
+            $permit1 = '';
+            $permit2 = '';
+        } elseif ($_COOKIE['uid'] == $c_manager) {
+            $permit1 = '';
+            $permit2 = '';
+        } else {
+            $permit1 = 'force_hide';
+            $permit2 = 'force_hide';
+        }
+
+        echo '
+    <div class="card my_card">
+        <table class="table">
+            <tr class="bg_blue_very_dark font-weight-bold">
+                <td class="text-white text-center">واریز کننده</td>
+                <td class="text-white text-center">دریافت کننده</td>
+                <td class="text-white text-center">مبلغ(ريال)</td>
+                <td class="text-white text-center">تاریخ</td>
+            </tr>
+            <tr class="bg-white font-weight-bold">
+                <td class="text-primary text-right">' . $buyer_name . '</td>
+                <td class="text-primary text-right">' . $giver_name . '</td>
+                <td class="text-primary text-right">' . $pay_fee . '</td>
+                <td class="text-primary text-right">' . $pay_date . '</td>
+            </tr>
+            <tr class="bg_blue_nice font-weight-bold">
+                <td class="td_title text_blue_very_dark text-right" colspan="4">' . $pay_desc . '</td>
+            </tr>
+            <tr class="bg_secondary font-weight-bold">
+                <td class="td_title text_blue_very_dark text-right" colspan="4">ثبت کننده : ' . $recorder_name . '</td>
+            </tr>
+            <tr class="bg-default font-weight-bold">
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
+                    <button class="btn btn-warning w-100 user_img" onclick="navigate(\'./?route=_editPayments&h=null&id=' . $pay_id . '\')">' . $GLOBALS['edit'] . '</button>
+                </td>
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+                    <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $pay_id . ')">' . $GLOBALS['del'] . '</button>
                 </td>
             </tr>
         </table>
@@ -1283,6 +1368,12 @@ function UPDATE_trans($trans_id, $key, $value)
     return 1;
 }
 
+function UPDATE_payments($trans_id, $key, $value)
+{
+    $res = Query("UPDATE `payments` SET `$key` = '$value' WHERE `pay_id` = '$trans_id'");
+    return 1;
+}
+
 function seps3($adad1)
 {
     $adad = '';
@@ -1645,4 +1736,28 @@ function ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_lim
     UPDATE_trans($y, 'trans_person', "$karbaran");
     UPDATE_trans($y, 'trans_person_co', "$karbaran_co");
     UPDATE_trans($y, 'trans_create', "$zaman");
+}
+
+function ADD_new_payments($buyer, $selected_course, $trans_date, $money_limit, $karbaran, $trans_desc, $recorder)
+{
+    $q = explode(',', $karbaran);
+    for ($i = 0; $i < count($q) - 1; $i++) {
+        $w = explode(':', $q[$i]);
+        $pay_to = $w[0];
+        $pay_fee = $w[1];
+        if ($pay_to != $buyer) {
+            $x = Query("INSERT INTO payments(pay_from) VALUES($buyer)");
+            $y = mysqli_insert_id($GLOBALS['conn']);
+            $zaman = date("Y-m-d H:i:s");
+            UPDATE_payments($y, 'pay_to', "$pay_to");
+            UPDATE_payments($y, 'pay_fee', "$pay_fee");
+            UPDATE_payments($y, 'pay_maker', "$recorder");
+            UPDATE_payments($y, 'pay_total', "$money_limit");
+            UPDATE_payments($y, 'pay_date', "$trans_date");
+            UPDATE_payments($y, 'pay_desc', "$trans_desc");
+            UPDATE_payments($y, 'pay_course', "$selected_course");
+            UPDATE_payments($y, 'pay_create', "$zaman");
+        }
+    }
+    return 1;
 }

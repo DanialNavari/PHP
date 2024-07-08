@@ -1058,13 +1058,93 @@ function addTrans() {
           sahm_co +
           "&share_type=" +
           share_type +
-          "&trans_desc" +
+          "&trans_desc=" +
+          trans_desc,
+        url: "server.php",
+        type: "POST",
+        success: function (response) {
+          if (response > 0) {
+            alert("خرید جدید با موفقیت ثبت شد");
+            navigate("./?route=__transactions&h=0&id=" + response);
+          }
+        },
+      });
+    }
+  }
+}
+
+function addNewPayment() {
+  let sahm_mablagh = "";
+  let final_pos = false;
+
+  trans_date = $("#start_from_fa").text();
+
+  money_limit = $("#moneyLimit").text();
+  y = money_limit.split(",");
+  sum_ml = 0;
+  for (m = 0; m < y.length; m++) {
+    sum_ml += y[m] + "";
+  }
+
+  money_limit = parseInt(sum_ml);
+
+  trans_desc = $("#trans_desc").val();
+  let karbaran = $("#karbaran").val().split(",");
+
+  let radio_btn = $("input[type='radio']:checked").val();
+
+  sum_karbar = 0;
+  for (i = 0; i < karbaran.length - 1; i++) {
+    karbar_value = $("#user-" + karbaran[i]).val();
+    x = karbar_value.split(",");
+    sum_kar = 0;
+    for (k = 0; k < x.length; k++) {
+      sum_kar += x[k] + "";
+    }
+
+    sum_karbar += parseInt(sum_kar);
+    sum_kar = parseInt(sum_kar);
+
+    if (radio_btn == "zarib") {
+      // share_type = "coefficient";
+      // sahm_co += karbaran[i] + ":" + sum_kar + ",";
+      sahm_mablagh += karbaran[i] + ":" + "0,";
+    } else if (radio_btn == "mablagh") {
+      // share_type = "amount";
+      sahm_mablagh += karbaran[i] + ":" + sum_kar + ",";
+      // sahm_co += karbaran[i] + ":" + "0,";
+    }
+  }
+
+  if (radio_btn == "mablagh") {
+    if (money_limit == sum_karbar) {
+      final_pos = true;
+    } else {
+      alert("مجموع واریزی افراد با مبلغ تراکنش برابر نمی باشد");
+      final_pos = false;
+    }
+  } else {
+    final_pos = true;
+  }
+
+  if (final_pos == true) {
+    let ans = confirm("آیا می خواهید واریزی جدید ثبت کنید؟");
+    if (ans == true) {
+      $.ajax({
+        data:
+          "add_new_payment=ok&trans_date=" +
+          trans_date +
+          "&money_limit=" +
+          money_limit +
+          "&karbaran=" +
+          sahm_mablagh +
+          "&trans_desc=" +
           trans_desc,
         url: "server.php",
         type: "POST",
         success: function (response) {
           if (response == 1) {
-            alert("خرید جدید با موفقیت ثبت شد");
+            alert("واریزی جدید با موفقیت ثبت شد");
             history.back();
           }
         },
@@ -1124,7 +1204,7 @@ function course_request_reg(course_id) {
           //}
         },
       });
-    }else{
+    } else {
       alert("لطفا همه فیلد ها را تکمیل کنید");
     }
   }
