@@ -116,14 +116,18 @@
 
     $('#savedate1').click(function() {
         fee = $('#trans_cost').val();
-        $.ajax({
-            data: "sep=" + fee,
-            url: "server.php",
-            type: "POST",
-            success: function(response) {
-                $('#moneyLimit').text(response);
-            },
-        });
+        if (parseInt(fee) > 0) {
+            $.ajax({
+                data: "sep=" + fee,
+                url: "server.php",
+                type: "POST",
+                success: function(response) {
+                    $('#moneyLimit').text(response);
+                    $('.record input').val(response);
+                },
+            });
+        }
+
         $('.gray_layer').click();
     });
     $(':radio').click(function() {

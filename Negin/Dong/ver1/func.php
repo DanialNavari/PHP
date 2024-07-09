@@ -1,5 +1,6 @@
 <?php
 require_once('symbol.php');
+require_once('jdf.php');
 
 // function db()
 // {
@@ -407,7 +408,7 @@ function active_transactions($course_id)
         for ($k = 0; $k < $tedad; $k++) {
             $sep_tp = explode(':', $sep_colon[$k]);
             $user_buyer_info1 = SELECT_user_by_id($sep_tp[0]);
-            $zinaf .= $user_buyer_info1['contact_name'] . '(' . sep3($sep_tp[1]) . ' ' . $money_unit . ' ) ';
+            $zinaf .= $user_buyer_info1['contact_name'] . "(" . sep3($sep_tp[1]) . " " . $money_unit . ")   |   ";
         }
 
         if ($user_codes == $c_manager) {
@@ -428,29 +429,31 @@ function active_transactions($course_id)
     <div class="card my_card">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
-                <td class="text-white text-center">خرید کننده</td>
-                <td class="text-white text-center">ثبت کننده</td>
+                <td class="text-white text-center" colspan="2">خرید کننده</td>
                 <td class="text-white text-center">مبلغ(ريال)</td>
                 <td class="text-white text-center">تاریخ</td>
             </tr>
             <tr class="bg-white font-weight-bold">
-                <td class="text-primary text-right">' . $buyer_name . '</td>
-                <td class="text-primary text-right">' . $recorder_name . '</td>
-                <td class="text-primary text-right">' . $trans_fee . '</td>
-                <td class="text-primary text-right">' . $trans_date[0] . '</td>
+                <td class="text-primary text-center" colspan="2">' . $buyer_name . '</td>
+                <td class="text-primary text-center">' . $trans_fee . '</td>
+                <td class="text-primary text-center">' . $trans_date[0] . '</td>
             </tr>
             <tr class="bg_blue_nice font-weight-bold">
                 <td class="td_title text_blue_very_dark text-right" colspan="4">' . $trans_desc . '</td>
             </tr>
             <tr class="bg_secondary font-weight-bold">
-                <td class="td_title_ text_blue_very_dark text-right" colspan="4"> ' . $zinaf . '</td>
+                <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="4"> ' . $zinaf . '</td>
             </tr>
             <tr class="bg-default font-weight-bold">
+            
                 <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
                     <button class="btn btn-warning w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
                 </td>
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
                     <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+                </td>
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="1">
+                    <button class="btn btn-success w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')" disabled>' . $GLOBALS['check'] . '</button>
                 </td>
             </tr>
         </table>
@@ -506,6 +509,13 @@ function active_payments($course_id)
             $permit2 = 'force_hide';
         }
 
+        $create = $r['pay_create'];
+        $create_x = explode(',', $create);
+        $saat = $create_x[1];
+        $geo_date = explode('-', $create_x[0]);
+        $geo_tarikh = gregorian_to_jalali($geo_date[0], $geo_date[1], $geo_date[2], '/');
+
+
         echo '
     <div class="card my_card">
         <table class="table">
@@ -525,7 +535,7 @@ function active_payments($course_id)
                 <td class="td_title text_blue_very_dark text-right" colspan="4">' . $pay_desc . '</td>
             </tr>
             <tr class="bg_secondary font-weight-bold">
-                <td class="td_title text_blue_very_dark text-right" colspan="4">ثبت کننده : ' . $recorder_name . '</td>
+                <td class="td_title text_blue_very_dark text-right" colspan="4">ثبت کننده : ' . $recorder_name . ' <i>(' . $saat . ' - ' . $geo_tarikh . ')</i></td>
             </tr>
             <tr class="bg-default font-weight-bold">
                 <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
@@ -1983,7 +1993,7 @@ function pay_get_contact_share($pay_id, $pos)
                                     </div>
                                 </div>
                                 <div class="user_info text-white border_none box_shadow_none">
-                                    <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($fee) . '" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')">
+                                    <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($fee) . '" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')" disabled>
                                 </div>
                             </div>
                         </div>

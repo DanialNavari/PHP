@@ -26,19 +26,19 @@
         <div class="item_circle">
             <div class="item_icon"><?php echo $active_course; ?></div>
         </div>
-        <div class="item_title">دوره جدید</div>
+        <div class="item_title">دوره</div>
     </div>
     <div class="item_" onclick="page('r','_newPayment','payments')" id="payments">
         <div class="item_circle">
             <div class="item_icon"><?php echo $payment; ?></div>
         </div>
-        <div class="item_title">پرداخت جدید</div>
+        <div class="item_title">پرداخت</div>
     </div>
     <div class="item_" onclick="page('r','_newTransaction','transaction')" id="transaction">
         <div class="item_circle">
             <div class="item_icon"><?php echo $bag_plus; ?></div>
         </div>
-        <div class="item_title">خرید جدید</div>
+        <div class="item_title">خرید</div>
     </div>
 </div>
 

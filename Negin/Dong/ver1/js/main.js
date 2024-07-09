@@ -55,6 +55,10 @@ switch (path_name) {
     $("#transaction").addClass("bg_hover");
     $("#transaction .item_title").show();
     break;
+  case "payments":
+    $("#payments").addClass("bg_hover");
+    $("#payments .item_title").show();
+    break;
 }
 
 function changeCourseName() {
@@ -780,7 +784,9 @@ function editTrans() {
             type: "POST",
             success: function (response) {
               alert("تراکنش با موفقیت ویرایش شد");
-              window.location.assign("./?route=__transactions&h=0&id=" + response);
+              window.location.assign(
+                "./?route=__transactions&h=0&id=" + response
+              );
             },
           });
         } else {
@@ -1259,22 +1265,20 @@ function editPay() {
   if (k == true) {
     $.ajax({
       data:
-        "edit_pay=ok&trans_id=" +
+        "edit_pay=ok&pay_ids=" +
         trans_id +
-        "&start_from_fa=" +
+        "&start_from_fas=" +
         start_from_fa +
-        "&moneyLimit=" +
+        "&moneyLimits=" +
         moneyLimit +
-        "&trans_desc=" +
+        "&pay_descs=" +
         trans_desc +
-        "&buyer=" +
-        buyer_code +
-        "&pay_to_fee=" +
-        pay_to_fee,
+        "&getter=" +
+        buyer_code,
       url: "server.php",
       type: "POST",
       success: function (response) {
-        if (response == 1) {
+        if (response == "ok") {
           $.ajax({
             data: "GetCourseSelected=ok",
             url: "server.php",

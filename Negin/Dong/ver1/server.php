@@ -221,22 +221,16 @@ if (isset($_POST['login'])) {
     $zaman = date("Y-m-d,H:i:s");
     Query("UPDATE `payments` SET `pay_del`='$uid,$zaman' WHERE `pay_id` = '$t_id'");
     echo 1;
+} elseif (isset($_POST['edit_pay'])) {
+    $contact = SELECT_contact($_COOKIE['uid']);
+    $total_fee = seps4($_POST['moneyLimits']);
+    UPDATE_payments($_POST['pay_ids'], 'pay_fee', $total_fee);
+    UPDATE_payments($_POST['pay_ids'], 'pay_date', $_POST['start_from_fas']);
+    UPDATE_payments($_POST['pay_ids'], 'pay_desc', $_POST['pay_descs']);
+    UPDATE_payments($_POST['pay_ids'], 'pay_from', $_POST['getter']);
+    UPDATE_payments($_POST['pay_ids'], 'pay_create', date("Y-m-d,H:i:s"));
+    UPDATE_payments($_POST['pay_ids'], 'pay_maker', $contact['contact_id']);
+    echo "ok";
 } elseif (isset($_POST['GetCourseSelected'])) {
     echo $_COOKIE['selected_courses'];
-} elseif (isset($_POST['edit_pay'])) {
-    $user_fee = seps4($_POST['pay_to_fee']);
-    $total_fee = seps4($_POST['moneyLimit']);
-
-    if ($user_fee == $total_fee) {
-        $contact = SELECT_contact($_COOKIE['uid']);
-        UPDATE_trans($_POST['trans_id'], 'pay_fee', $trans_fee);
-        UPDATE_trans($_POST['trans_id'], 'pay_date', $_POST['start_from_fa']);
-        UPDATE_trans($_POST['trans_id'], 'pay_desc', $_POST['trans_desc']);
-        UPDATE_trans($_POST['trans_id'], 'pay_from', $_POST['buyer']);
-        UPDATE_trans($_POST['trans_id'], 'pay_create', date("Y-m-d,H:i:s"));
-        UPDATE_trans($_POST['trans_id'], 'pay_maker', $contact['contact_id']);
-        echo 1;
-    } else {
-        echo 2;
-    }
 }
