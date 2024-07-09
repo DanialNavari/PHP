@@ -147,7 +147,7 @@ if (isset($_POST['login'])) {
     echo 1;
 } elseif (isset($_POST['getContactList'])) {
     $getContactList = $_POST['getContactList'];
-    setcookie('selected_course', $_POST['getContactList'], time() + 3600, "/");
+    setcookie('selected_course', $getContactList, time() + 3600, "/");
 } elseif (isset($_POST['list_type'])) {
     $selected_course = $_COOKIE['selected_course'];
     $list_type = $_POST['list_type'];
@@ -167,7 +167,27 @@ if (isset($_POST['login'])) {
     $trans_desc = $_POST['trans_desc'];
     $x = SELECT_contact($_COOKIE['uid']);
     $recorder = $x['contact_id'];
-    ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran, $karbaran_co, $share_type, $trans_desc, $recorder);
+
+    if ($share_type == 'coefficient') {
+        $sum_sahm = 0;
+        $karbaran_coo = '';
+        $x = explode(',', $karbaran_co);
+        for ($i = 0; $i < count($x) - 1; $i++) {
+            $y = explode(':', $x[$i]);
+            $sum_sahm += $y[1];
+        }
+        $sahm_each = round($money_limit / $sum_sahm, 0);
+        $x = explode(',', $karbaran_co);
+        for ($i = 0; $i < count($x) - 1; $i++) {
+            $y = explode(':', $x[$i]);
+            $my_sahm = $sahm_each * $y[1];
+            $karbaran_coo .= $y[0] . ':' . $my_sahm . ',';
+        }
+    } else {
+        $karbaran_coo = $karbaran;
+    }
+
+    ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran_coo, $karbaran_co, $share_type, $trans_desc, $recorder);
     echo $selected_course;
 } elseif (isset($_POST['seps4'])) {
     echo seps4($_POST['seps4']);
@@ -178,6 +198,10 @@ if (isset($_POST['login'])) {
     Query("UPDATE `transactions` SET `trans_del`='$uid,$zaman' WHERE `trans_id` = '$t_id'");
     echo 1;
 } elseif (isset($_POST['reg_course'])) {
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $device = $_SERVER['HTTP_USER_AGENT'];
+    $x = SELECT_request_course($_POST['reg_course'], $_POST['reg_tel'], $_POST['reg_fname'], $_POST['reg_lname'], $_POST['reg_desc'], $ip, $device);
+    echo $x;
 } elseif (isset($_POST['add_new_payment'])) {
     $buyer = $_COOKIE['buyer'];
     $selected_course = $_COOKIE['selected_course'];
@@ -189,4 +213,30 @@ if (isset($_POST['login'])) {
     $recorder = $x['contact_id'];
     $x = ADD_new_payments($buyer, $selected_course, "$trans_date", "$money_limit", "$karbaran", "$trans_desc", $recorder);
     echo $x;
+} elseif (isset($_POST['setContactList'])) {
+    echo get_contacts_in_course($_COOKIE['selected_course']);
+} elseif (isset($_POST['del_pay'])) {
+    $uid = $_COOKIE['uid'];
+    $t_id = $_POST['del_pay'];
+    $zaman = date("Y-m-d,H:i:s");
+    Query("UPDATE `payments` SET `pay_del`='$uid,$zaman' WHERE `pay_id` = '$t_id'");
+    echo 1;
+} elseif (isset($_POST['GetCourseSelected'])) {
+    echo $_COOKIE['selected_courses'];
+} elseif (isset($_POST['edit_pay'])) {
+    $user_fee = seps4($_POST['pay_to_fee']);
+    $total_fee = seps4($_POST['moneyLimit']);
+
+    if ($user_fee == $total_fee) {
+        $contact = SELECT_contact($_COOKIE['uid']);
+        UPDATE_trans($_POST['trans_id'], 'pay_fee', $trans_fee);
+        UPDATE_trans($_POST['trans_id'], 'pay_date', $_POST['start_from_fa']);
+        UPDATE_trans($_POST['trans_id'], 'pay_desc', $_POST['trans_desc']);
+        UPDATE_trans($_POST['trans_id'], 'pay_from', $_POST['buyer']);
+        UPDATE_trans($_POST['trans_id'], 'pay_create', date("Y-m-d,H:i:s"));
+        UPDATE_trans($_POST['trans_id'], 'pay_maker', $contact['contact_id']);
+        echo 1;
+    } else {
+        echo 2;
+    }
 }

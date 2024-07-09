@@ -55,7 +55,12 @@
             <tr>
                 <td class="td_title">مبلغ واریزی</td>
                 <td class="font-weight-bold text-center">
-                    <span id="moneyLimit">0</span> <span class="unit">ريال</span>
+                    <span id="moneyLimit">0</span> <span class="unit"><?php
+                                                                        // if (isset($_COOKIE['selected_course'])) {
+                                                                        //     $x = SELECT_course_id($_COOKIE['selected_course']);
+                                                                        //     echo $x['course_money_unit'];
+                                                                        // } ?>ريال
+                    </span>
                 </td>
                 <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
@@ -108,8 +113,6 @@
 <div class="contacts">
     برای نمایش لیست مخاطبین ابتدا دوره را انتخاب کنید
 </div>
-<?php //trans_get_contact_share($id, "complete"); 
-?>
 
 <div class="add_payments hide">
     <table class="border_none mx-auto w-100">
@@ -117,8 +120,7 @@
             <td class="sum pl-3 w-30">خرید کننده</td>
             <td>
                 <select class="form-select sum font-weight-bold" aria-label="Default select example" id="consumers">
-                    <?php echo get_contacts_in_course($_COOKIE['selected_course']);
-                    ?>
+
                 </select>
             </td>
         </tr>
@@ -217,7 +219,7 @@
             });
             $('.gray_layer').click();
             $('#trans_cost').val('');
-        }else{
+        } else {
             $('.gray_layer').click();
         }
     });
