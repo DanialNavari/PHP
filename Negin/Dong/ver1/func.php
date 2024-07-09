@@ -12,6 +12,7 @@ require_once('jdf.php');
 //     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
 //     mysqli_set_charset($GLOBALS['conn'], "utf8");
 // }
+
 function db()
 {
     $db_host = 'localhost';
@@ -648,6 +649,7 @@ function active_course($tel)
 {
     $w = SELECT_course("$tel");
     $num = mysqli_num_rows($w);
+    $GLOBALS['course_count'] = $num;
     for ($k = 0; $k < $num; $k++) {
         $r = mysqli_fetch_assoc($w);
         $c_id = $r['course_id'];

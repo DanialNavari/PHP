@@ -14,7 +14,7 @@ if (isset($_COOKIE['temp_tel'])) {
 }
 
 require_once('header.php');
-echo $pos;
+//echo $pos;
 ?>
 
 <div class="container">
@@ -22,7 +22,7 @@ echo $pos;
         <img src="image/logo.png" alt="logo" class="rounded w-4" />
         <h6 class="mt-2 text-primary">دنگ و دونگ</h6>
         <div class="row mt-4" id="hourGlass">
-            <?php echo $hourGlass; ?> <span id="remain_time">60</span>
+            <?php echo $hourGlass; ?> <span id="remain_time">100</span>
         </div>
         <div class="row mt-4"></div>
         <form action="#" class="form-inline mx-auto" id="sms">
@@ -46,5 +46,5 @@ echo $pos;
 </div>
 <?php require_once('footer.php'); ?>
 <script>
-    countDown();
+    countDown(100);
 </script>

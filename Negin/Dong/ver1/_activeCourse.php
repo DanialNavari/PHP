@@ -3,7 +3,11 @@
 
 <div class="row empty">دوره ها > دوره های فعال</div>
 <div class="cat">
-    <?php active_course($_COOKIE['uid']); ?>
+    <?php active_course($_COOKIE['uid']);
+        if($GLOBALS['course_count']==0){
+            echo '<h5 class="pt-2 text-secondary">ابتدا یک دوره جدید ایجاد کنید</h5>';
+        }
+    ?>
 </div>
 
 <div class="add_fee hide">

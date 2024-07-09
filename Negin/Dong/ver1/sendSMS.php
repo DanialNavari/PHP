@@ -9,10 +9,10 @@ $patternVariables = [
 ];
 $rec = $tel;
 
-/* $messageId = $client->sendPattern(
+$messageId = $client->sendPattern(
     "nx5eglt0qa6352a",    // pattern code
     "+983000505",      // originator
     "$rec",  // recipient
     $patternVariables,  // pattern values
-); */
+); 
 

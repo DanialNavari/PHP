@@ -358,8 +358,8 @@ function countLess() {
   }
 }
 
-function countDown() {
-  $("#remain_time").text("60");
+function countDown(id) {
+  $("#remain_time").text(id);
   cd = setInterval(countLess, 1000);
 }
 
@@ -378,8 +378,16 @@ function next_place(event, id) {
         $("#c" + (id + 1)).val("");
       }
     }
+  } else if (value == "Enter" && id == 1) {
+    check_code();
   } else {
     $("#c" + (id - 1)).focus();
+  }
+}
+
+function keyPress(event) {
+  if (event.key == "Enter") {
+    login();
   }
 }
 

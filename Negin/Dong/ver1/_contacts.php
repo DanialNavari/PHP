@@ -76,7 +76,7 @@
             getContacts();
         } else {
             alert(
-                "Contact list API not supported!. Only for android mobile chrome and chrome version > 80"
+                "این قابلیت فقط روی گوشی های اندرویدی و با مرورگر گوگل کروم ورژن 80 به بالا قابل استفاده است."
             );
         }
     }
@@ -97,10 +97,13 @@
                     data: 'add_contact=ok&contact_name=' + contact_name + '&contact_tel=' + contact_tel,
                     type: 'POST',
                     url: 'server.php',
-                    success: function(response) {}
+                    success: function(response) {
+                        
+                    }
                 });
             }
             alert('مخاطبین با موفقیت اضافه شدند.');
+            window.location.reload();
         } catch (err) {
             alert(err);
         }

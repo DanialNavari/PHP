@@ -11,11 +11,29 @@ if (isset($_POST['login'])) {
 } elseif (isset($_POST['add_contact'])) {
     $c_name = $_POST['contact_name'];
     $c_tel = $_POST['contact_tel'];
+    $tel_explode = explode(',', $c_tel);
+
+    $str_pos = strpos('98', $tel_explode[0]);
+    if ($str_pos >= 0) {
+        $c_tell = '0' . substr($tel_explode[0], 2);
+    }
+
+    $str_pos = strpos('+98', $tel_explode[0]);
+    if ($str_pos >= 0) {
+        $c_tell = '0' . substr($tel_explode[0], 3);
+    }
+
+    $str_pos = strpos('0', $tel_explode[0]);
+    if ($str_pos >= 0) {
+        $c_tell = $tel_explode[0];
+    }
+
     $c_maker = $_COOKIE['uid'];
     $c_date = date("Y-m-d H:i:s");
-    $res = SELECT_contact($c_tel);
+
+    $res = SELECT_contact($c_tell);
     if ($res == 0) {
-        $res = ADD_contact($c_tel, $c_name, $c_maker, $c_date);
+        $res = ADD_contact($c_tell, $c_name, $c_maker, $c_date);
         $resid = 2;
     } else {
         $c_id = $res['contact_id'];
@@ -24,7 +42,7 @@ if (isset($_POST['login'])) {
             Query("UPDATE `contacts` SET `contact_name` = '" . $c_name . "',`contact_active` = '1' WHERE `contact_id` = '$c_id'");
             $resid = 3;
         } else {
-            $res = ADD_contact($c_tel, $c_name, $c_maker, $c_date);
+            $res = ADD_contact($c_tell, $c_name, $c_maker, $c_date);
             $resid = 4;
         }
     }
