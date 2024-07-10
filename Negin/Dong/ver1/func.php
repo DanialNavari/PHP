@@ -1787,7 +1787,7 @@ function active_courses($maker, $pos)
     }
 
     if ($pos == 'active') {
-        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL");
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL");
         $num = mysqli_num_rows($rs);
         return $num;
     } elseif ($pos == 'finished') {

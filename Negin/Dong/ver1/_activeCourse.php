@@ -61,9 +61,7 @@
     </table>
 </div>
 
-
 <div class="cat mb-1 h-1"></div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="static/js/lib/persian-date.min.js"></script>

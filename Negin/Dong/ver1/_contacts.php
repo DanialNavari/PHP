@@ -16,27 +16,25 @@
                 </td>
                 <td class="font-weight-bold"></td>
             </tr>
+        </table>
+        <table class="table">
             <tr>
-                <td class="td_title_"></td>
-                <td class="font-weight-bold"></td>
-                <td class="font-weight-bold"></td>
-            </tr>
-            <tr>
-                <td class="td_title_ "></td>
-                <td class="font-weight-bold"></td>
-                <td class="font-weight-bold"></td>
+                <td colspan="1">
+                    <div class="btn btn-primary w-100 add_user" onclick="openContactPicker()">
+                        <div class="pay_btn_icon">
+                            <?php echo $user_add; ?>
+                        </div>
+                    </div>
+                </td>
+                <td colspan="1">
+                    <div class="btn btn-success w-100 contact_btn" onclick="add()">
+                        <div class="pay_btn_icon">
+                            <?php echo $check; ?>
+                        </div>
+                    </div>
+                </td>
             </tr>
         </table>
-        <div class="pay_btn contact_btn" onclick="add()">
-            <div class="pay_btn_icon">
-                <?php echo $check; ?>
-            </div>
-        </div>
-        <div class="pay_btn contact_btn add_user" onclick="openContactPicker()">
-            <div class="pay_btn_icon">
-                <?php echo $user_add; ?>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -98,7 +96,7 @@
                     type: 'POST',
                     url: 'server.php',
                     success: function(response) {
-                        
+
                     }
                 });
             }

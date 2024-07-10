@@ -357,8 +357,8 @@ h6 {
   background-color: rgba(235, 246, 255, 0.5);
   /* border: 1px solid rgba(20, 115, 189, 0.31); */
   border: 2px solid rgb(1 37 53);
-  box-shadow: 0px 3px 6px #313131;
-  overflow: hidden;
+  /* box-shadow: 0px 3px 6px #313131;
+  padding: 0.2rem; */
 }
 
 .table {
