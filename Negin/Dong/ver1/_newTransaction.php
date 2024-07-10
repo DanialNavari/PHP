@@ -106,7 +106,6 @@
 
 <!-- users box -->
 <div class="contacts">
-    برای نمایش لیست مخاطبین ابتدا دوره را انتخاب کنید
 </div>
 <?php //trans_get_contact_share($id, "complete"); 
 ?>

@@ -3,7 +3,20 @@ let course_code;
 
 function page(type, route, name = null, id = null) {
   if (type == "r") {
-    window.location.assign("./?route=" + route + "&h=" + name + "&id=" + id);
+    if (route == "__payments" || route == "__transactions") {
+      $.ajax({
+        data: "getContactList=" + id,
+        url: "server.php",
+        type: "POST",
+        success: function (response) {
+          window.location.assign(
+            "./?route=" + route + "&h=" + name + "&id=" + id
+          );
+        },
+      });
+    } else {
+      window.location.assign("./?route=" + route + "&h=" + name + "&id=" + id);
+    }
   } else if (type == "d") {
     window.location.assign(route + "/?h=" + name);
   }

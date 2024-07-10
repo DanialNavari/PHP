@@ -7,14 +7,14 @@ if (isset($_COOKIE['temp_tel'])) {
     } else {
         require_once('sendSMS.php');
         $pos = $vcode;
-        setcookie('verify', $vcode, time() + 60, "/");
+        setcookie('verify', $vcode, time() + 100, "/");
     }
 } else {
     echo '<script>window.location.assign("./login.php")</script>';
 }
 
 require_once('header.php');
-//echo $pos;
+echo $pos;
 ?>
 
 <div class="container">

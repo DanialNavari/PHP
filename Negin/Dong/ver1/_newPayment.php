@@ -111,7 +111,6 @@
 
 <!-- users box -->
 <div class="contacts">
-    برای نمایش لیست مخاطبین ابتدا دوره را انتخاب کنید
 </div>
 
 <div class="add_payments hide">

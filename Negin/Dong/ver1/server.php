@@ -150,7 +150,7 @@ if (isset($_POST['login'])) {
     $tel = $_COOKIE['uid'];
     $res = SELECT_contact($tel);
     if ($res == 0) {
-        ADD_contact($tel, 'بدون نام', $_COOKIE['uid'], date("Y-m-d H:i:s"));
+        ADD_contact($tel, 'خودم', $_COOKIE['uid'], date("Y-m-d H:i:s"));
     }
 } elseif (isset($_POST['del_contact'])) {
     $tel = $_POST['tel'];
