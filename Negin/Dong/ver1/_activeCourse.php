@@ -4,9 +4,9 @@
 <div class="row empty">دوره ها > دوره های فعال</div>
 <div class="cat">
     <?php active_course($_COOKIE['uid']);
-        if($GLOBALS['course_count']==0){
-            echo '<h5 class="pt-2 text-secondary">ابتدا یک دوره جدید ایجاد کنید</h5>';
-        }
+    if ($GLOBALS['course_count'] == 0) {
+        echo '<h5 class="pt-2 text-secondary">ابتدا یک دوره جدید ایجاد کنید</h5>';
+    }
     ?>
 </div>
 
@@ -59,6 +59,18 @@
             </td>
         </tr>
     </table>
+</div>
+
+<div class="add_manager">
+    <div class="popup_header">
+        <h6>مدیر دوره را انتخاب کنید</h6>
+        <div class="end_course bg-white w_fit">
+            <div class="btn btn-warning click1" onclick="cancelManager()">انصراف</div>
+        </div>
+    </div>
+    <div class="popup_body">
+
+    </div>
 </div>
 
 <div class="cat mb-1 h-1"></div>

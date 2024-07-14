@@ -351,7 +351,7 @@ h6 {
 
 /* Start of myDebt and myReq*/
 .my_card {
-  margin: 0 auto 1.2rem auto;
+  margin: 0 auto 0.3rem auto;
   border-radius: 0.4rem;
   position: relative;
   background-color: rgba(235, 246, 255, 0.5);
@@ -359,6 +359,11 @@ h6 {
   border: 2px solid rgb(1 37 53);
   /* box-shadow: 0px 3px 6px #313131;
   padding: 0.2rem; */
+}
+
+.little_btn {
+  font-size: 0.8rem;
+  padding: 0.3rem;
 }
 
 .table {
@@ -443,7 +448,53 @@ h6 {
   flex-direction: row;
   justify-content: space-between;
   font-size: 0.8rem;
-  gap: 0.1rem;
+  /* gap: 0.1rem; */
+}
+
+.add_manager {
+  position: fixed;
+  top: 3rem;
+  background: #fff;
+  width: 100%;
+  height: 100vh;
+  display: none;
+}
+
+.w_fit{
+  width: fit-content !important;
+}
+
+.course_id{
+  display: none;
+}
+
+.popup_header {
+  padding: 0.5rem;
+  box-shadow: 0px 3px 4px -2px silver;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup_body {
+  padding: 0.5rem;
+  overflow: scroll;
+  height: 70vh;
+}
+
+.f-left {
+  float: left !important;
+}
+
+.popup_group {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-bottom: 1rem;
 }
 
 .transactions,

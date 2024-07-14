@@ -95,7 +95,17 @@ if (isset($_POST['login'])) {
     $update_course = $_POST['update_course'];
     $key = $_POST['key'];
     $value = $_POST['value'];
-    UPDATE_course($key, $value, $update_course);
+    if ($_POST['key'] == 'course_default') {
+        $uid = $_COOKIE['uid'];
+        if($value == 'NULL'){
+            $v = 'NULL';
+        }else{
+            $v = $update_course;
+        }
+        UPDATE_settings($uid, 'course_default', "$v");
+    } else {
+        UPDATE_course($key, $value, $update_course);
+    }
 } elseif (isset($_POST['seps'])) {
     echo seps3($_POST['seps']);
 } elseif (isset($_POST['trans_update'])) {
@@ -251,4 +261,15 @@ if (isset($_POST['login'])) {
     echo "ok";
 } elseif (isset($_POST['GetCourseSelected'])) {
     echo $_COOKIE['selected_courses'];
+} elseif (isset($_POST['getManagerList'])) {
+    $c_id = $_POST['getManagerList'];
+    echo SELECT_manager($c_id);
+} elseif (isset($_POST['setManagerList'])) {
+    $x = setManagerList($_POST['setManagerList']);
+    echo $x;
+} elseif (isset($_POST['default_course_data'])) {
+    $default = $_POST['default_course_data'];
+    echo default_course("$default");
+}elseif(isset($_POST['payment_users'])){
+    echo SELECT_payment_users($_POST['payment_users'], $_POST['type_person']);
 }

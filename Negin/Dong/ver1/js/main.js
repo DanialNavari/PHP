@@ -834,9 +834,18 @@ function checkValue1(id) {
   }
 }
 
-function buyer() {
-  $(".gray_layer").show();
-  $(".add_payments").show();
+function buyer(type_person) {
+  $(".popup_header_title").text("واریز کننده را انتخاب کنید");
+  id = $(".course_id").text();
+  $.ajax({
+    data: "payment_users=" + id + "&type_person=" + type_person,
+    url: "server.php",
+    type: "POST",
+    success: function (response) {
+      $(".popup_body").html(response);
+    },
+  });
+  $(".variz").show();
 }
 
 function del_contacts(tel) {
@@ -1315,4 +1324,90 @@ function editPay() {
       },
     });
   }
+}
+
+function setManager(id) {
+  $.ajax({
+    data: "getManagerList=" + id,
+    type: "POST",
+    url: "server.php",
+    success: function (response) {
+      $(".popup_body").html(response);
+      $(".add_manager").show();
+    },
+  });
+}
+
+function cancelManager() {
+  $(".add_manager").hide();
+}
+
+function setManagerToCourse(manager_code) {
+  managers = manager_code.split(".");
+  managers_code = managers[1];
+  course_code = managers[2];
+  r = confirm("آیا می خواهید مدیر را تغییر دهید؟");
+  if (r == true) {
+    $.ajax({
+      data: "setManagerList=" + manager_code,
+      type: "POST",
+      url: "server.php",
+      success: function (response) {
+        $("#m" + managers_code).text(response);
+        $(".add_manager").hide();
+        window.location.reload();
+      },
+    });
+  } else {
+    $(".popup_body").empty();
+    setManager(course_code);
+  }
+}
+
+function selectSetCourse() {
+  let course_value_id = $(this).val();
+  let course_value_text = $("#course_name option:selected").text();
+  alert(course_value_id);
+  alert(course_value_text);
+  // $("#course_name_show").text(course_value_text);
+  // $(".add_course").hide();
+  // $(".gray_layer").click();
+  // $("td.click").addClass("dore");
+  // $("#consumer_name").text("****");
+  // $(".contacts").empty();
+
+  // $.ajax({
+  //   data: "getContactList=" + course_value_id,
+  //   url: "server.php",
+  //   type: "POST",
+  //   success: function (response) {
+  //     $("#zarib").show();
+  //     $("label").filter("[for='zarib']").show();
+  //     $("#mablagh").show();
+  //     $("label").filter("[for='mablagh']").show();
+  //     $("#karbaran").remove();
+  //     $("#mablagh").click();
+
+  //     $.ajax({
+  //       data: "setContactList=" + course_value_id,
+  //       url: "server.php",
+  //       type: "POST",
+  //       success: function (response) {
+  //         $("#consumers").html(response);
+  //       },
+  //     });
+  //   },
+  // });
+}
+
+function setContactToList(course_id, class_name) {
+  $.ajax({
+    data: "getManagerList=" + course_id,
+    type: "POST",
+    url: "server.php",
+    success: function (response) {
+      $(".popup_body").html(response);
+      $("." + class_name).show();
+    },
+  });
 }

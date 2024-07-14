@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
-    <link rel="manifest" href="image/site.webmanifest">
+    <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
     <title>دنگ و دونگ</title>
 </head>
@@ -24,7 +24,7 @@
         <div class="headers text-right pr-3">
             <div>
                 <i id="h_menu" class="force_hide"><?php echo $hamburger_menu; ?></i>
-                <img src="image/logo.png" alt="logo" class="rounded w-2" />
+                <img src="image/logo_white.png" alt="logo" class="rounded w-2" />
                 <?php require_once('func.php');
                 if (isset($_COOKIE['uid'])) {
                     $rs = SELECT_contact($_COOKIE['uid']);

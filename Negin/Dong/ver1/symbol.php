@@ -167,14 +167,18 @@ $payment = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=
   <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
 </svg>';
 
-function star($num, $half)
+function star($num, $half, $size=14)
 {
   $stars = '';
   if ($num == 0) {
     $stars = $GLOBALS['star_outline'];
   } elseif ($num > 0) {
     for ($i = 0; $i < $num; $i++) {
-      $stars .= $GLOBALS['star'];
+      $star = '
+      <svg xmlns="http://www.w3.org/2000/svg" width="'.$size.'" height="'.$size.'" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+      </svg>';
+      $stars .= $star;//$GLOBALS['star'];
     }
   }
 

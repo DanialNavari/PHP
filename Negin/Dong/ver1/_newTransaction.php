@@ -22,7 +22,7 @@
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
                 <td class="font-weight-bold text-white text-center w-9">
-                    <span class="text-center text-primary" id="course_name_show">دوره جدید</span>
+                    <span class="text-center text-primary" id="course_name_show">****</span>
                 </td>
                 <td class="text-center dore" onclick="select_course()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>

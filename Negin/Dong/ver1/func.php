@@ -46,6 +46,7 @@ function ADD_user($tel)
     Query("INSERT INTO `users`(`users_tel`,`users_name`) VALUES('$tel',NULL)");
     $id = mysqli_insert_id($GLOBALS['conn']);
     ADD_log($id, 'New User Login');
+    Query("INSERT INTO `settings`(`uid`) VALUES('$tel')");
 }
 
 function ADD_contact($tel, $name, $maker, $date)
@@ -95,7 +96,7 @@ function SELECT_course($tel)
     $r = mysqli_fetch_assoc($result);
     $contact_id = $r['contact_id'];
 
-    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_maker` = '" . $tel . "' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '" . $contact_id . ",%' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $contact_id . ",%' ORDER BY `course_default` DESC;");
+    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '" . $contact_id . ",%' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $contact_id . ",%' ORDER BY `course_id` DESC;");
     return $result1;
 }
 
@@ -657,11 +658,22 @@ function active_course($tel)
         $c_member = count(explode(',', $r['course_member'])) - 1;
         $c_start_date = $r['course_start_date'];
         $c_money_limit = $r['course_money_limit'];
-        $c_default = $r['course_default'];
         $c_disabled = $r['course_disabled'];
         $c_manager = $r['course_manager'];
+
         $rss = SELECT_contact($c_manager);
         $course_manager = $rss['contact_name'];
+        $course_manager_id = $rss['contact_id'];
+
+        $settings = get_settings($tel);
+        $c_default = $settings['course_default'];
+        if (intval($c_default) > 0) {
+            if ($c_default == $c_id) {
+                $c_default = 'checked';
+            }
+        } else {
+            $c_default = '';
+        }
 
         if ($c_manager != $tel) {
             $permit = 'force_hide';
@@ -671,44 +683,20 @@ function active_course($tel)
 
         if ($c_disabled == null) {
             $tpr = '
-            <div class="proofs tpr">
-                <div class="payments font-weight-bold" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["money"] . '</div>
-                    <div class="inline_title">پرداخت ها</div>
-                </div>
-                <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                    <div class="inline_title">خرید ها</div>
-                </div>
+            <div class="end_course transactions font-weight-bold">
+                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
+                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
             </div>
-            <div class="proofs tpr">
-                <div class="w-100 payments font-weight-bold bg-secondary" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                    <div class="inline_title">گزارش</div>
-                </div>
-            </div>';
+            <div class="mb-1"></div>';
         } else {
             $tpr = '
-            <div class="proofs tpr force_hide">
-                <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                    <div class="inline_title">تراکنش ها</div>
-                </div>
-                <div class="transactions font-weight-bold" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                    <div class="inline_title">خرید ها</div>
-                </div>
+            <div class="end_course transactions font-weight-bold force_hide">
+                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                <button class="btn btn-info w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
+                <button class="btn btn-success w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
             </div>
-            <div class="proofs tpr force_hide">
-                <div class="payments font-weight-bold" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["money"] . '</div>
-                    <div class="inline_title">پرداخت ها</div>
-                </div>
-                <div class="payments font-weight-bold" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">
-                    <div class="inline_icon">' . $GLOBALS["list"] . '</div>
-                    <div class="inline_title">گزارش</div>
-                </div>
-            </div>';
+            <div class="mb-1"></div>';
         }
 
         $c_money_unit = $r['course_money_unit'];
@@ -750,9 +738,10 @@ function active_course($tel)
             </tr>
             <tr>
                 <td class="td_title pl-0">مدیر دوره</td>
-                <td class="font-weight-bold text-center" colspan="2">
-                    <span>' . $course_manager . '</span>
+                <td class="font-weight-bold text-center">
+                    <span id="m.' . $c_id . '">' . $course_manager . '</span>
                 </td>
+                <td class="text-center click ' . $permit . '" onclick="setManager(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
             </tr>
 
         </table>
@@ -760,26 +749,31 @@ function active_course($tel)
             <div class="inline_title td_title_ text-primary d-rtl">کل هزینه :</div>
             <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
         </div>
-        ' . $tpr . '
-        <div class="share_link bg_blue_very_dark font-weight-bold ' . $permit . '">
+        
+        <div class="share_link bg_blue_very_dark font-weight-bold">
             <div class="inline_title">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" data-type="' . $c_default . '" role="switch" id="defaultCourse' . $c_id . '" ' . $c_default . ' onchange="chageSwitch(\'defaultCourse\',' . $c_id . ')">
                     <label class="form-check-label" for="defaultCourse">دوره پیش فرض</label>
                 </div>
             </div>
-            <div class="inline_title">
+            <div class="inline_title ' . $permit . '">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" data-type="' . $c_disabled . '" role="switch" id="disabledCourse' . $c_id . '" ' . $c_disabled . ' onchange="chageSwitch(\'disabledCourse\', ' . $c_id . ')">
                     <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
                 </div>
             </div>
         </div>
-        <div class="proofs fld ' . $permit . '">
-            <div class="end_course transactions font-weight-bold">
-                <button class="btn btn-primary w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_course"] . ' اتمام دوره</button>
-                <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: $c_name \n 🔸 تاریخ شروع: $c_start_date \n 🔸 مدیر گروه : ** $course_manager  ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
-                <button class="btn btn-danger w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
+        <div class="permit_btn">
+            <div class="proofs fld ">
+                ' . $tpr . '
+            </div>
+            <div class="proofs fld ' . $permit . '">
+                <div class="end_course transactions font-weight-bold">
+                    <button class="btn btn-primary w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_course"] . ' اتمام دوره</button>
+                    <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: $c_name \n 🔸 تاریخ شروع: $c_start_date \n 🔸 مدیر گروه : ** $course_manager  ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
+                    <button class="btn btn-danger w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1787,7 +1781,7 @@ function active_courses($maker, $pos)
     }
 
     if ($pos == 'active') {
-        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL");
+        $rs = Query("SELECT * FROM `course` WHERE `course_manager` = '$maker' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND course_del_course IS NULL");
         $num = mysqli_num_rows($rs);
         return $num;
     } elseif ($pos == 'finished') {
@@ -2024,4 +2018,103 @@ function get_contact_pay($pay_id)
         $people .= '<option value="' . $c_id . '">' . $contact_name . '</option>';
     }
     return $people;
+}
+
+function SELECT_manager($selected_course)
+{
+    $people_list = '';
+    $x = SELECT_course_id($selected_course);
+    $members = explode(',', $x['course_member']);
+    for ($i = 0; $i < count($members) - 1; $i++) {
+        $y = Query("SELECT * FROM contacts WHERE contact_id = " . $members[$i]);
+        $y_fet = mysqli_fetch_assoc($y);
+        $contact_name = $y_fet['contact_name'];
+        $contact_tel = $y_fet['contact_tel'];
+        $contact_id = $members[$i];
+        $star = get_star($contact_tel);
+
+        $people_list .= '
+        <div class="form-check popup_group">
+            <input class="form-check-input" type="radio" name="manager" id="m.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
+            <label class="form-check-label" for="m.' . $contact_id . '.' . $selected_course . '" onclick="setManagerToCourse(\'m.' . $contact_id . '.' . $selected_course . '\')">
+               ' . $contact_name . ' 
+            </label>
+        </div>
+        ';
+    }
+    return $people_list;
+}
+
+function setManagerList($manager)
+{
+    $manager_info = explode('.', $manager);
+    $manager_code = $manager_info[1];
+    $course_code = $manager_info[2];
+    $q = Query("SELECT * FROM `contacts` WHERE `contact_id` = " . $manager_code . " AND `contact_active` = 1");
+    $c = mysqli_fetch_assoc($q);
+    $contact_tel = $c['contact_tel'];
+    $contact_name = $c['contact_name'];
+    Query("UPDATE `course` SET `course_manager` = '" . $contact_tel . "' WHERE `course_id` = " . $course_code);
+    return $contact_name;
+}
+
+function default_course($tel)
+{
+    $cntc_info = SELECT_contact("$tel");
+    $cntc_id = $cntc_info['contact_id'];
+
+    $x = Query("SELECT * FROM `settings` WHERE `uid` = '$tel'");
+    $y = mysqli_fetch_assoc($x);
+    if ($y['course_default'] > 0) {
+        $z = SELECT_course_id($y['course_default']);
+        return $z['course_id'] . ',' . $z['course_name'];
+    } else {
+        $xx = Query("SELECT * FROM `course` WHERE `course_member` LIKE '$cntc_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL OR `course_member` LIKE '%,$cntc_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL ORDER BY `course_id` DESC");
+        $xx_fet = mysqli_fetch_assoc($xx);
+        return $xx_fet['course_id'] . ',' . $xx_fet['course_name'];
+    }
+}
+
+function UPDATE_settings($uid, $key, $value)
+{
+    Query("UPDATE `settings` SET `$key` = '$value' WHERE `uid` = '$uid'");
+}
+
+
+function get_settings($tel)
+{
+    $x = Query("SELECT * FROM `settings` WHERE `uid` = '$tel'");
+    $fet = mysqli_fetch_assoc($x);
+    return $fet;
+}
+
+
+function SELECT_payment_users($selected_course, $person_type)
+{
+    $people_list = '';
+    $x = SELECT_course_id($selected_course);
+    $members = explode(',', $x['course_member']);
+    for ($i = 0; $i < count($members) - 1; $i++) {
+        $y = Query("SELECT * FROM contacts WHERE contact_id = " . $members[$i]);
+        $y_fet = mysqli_fetch_assoc($y);
+        $contact_name = $y_fet['contact_name'];
+        $contact_id = $members[$i];
+        $func = 'setVarizPerson';
+
+        if ($person_type == 'variz') {
+            $func = 'setVarizPerson';
+        } elseif ($person_type == 'recieve') {
+            $func = 'setVarizPerson';
+        }
+
+        $people_list .= '
+        <div class="form-check popup_group">
+            <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
+            <label class="form-check-label" for="v.' . $contact_id . '.' . $selected_course . '" onclick="' . $func . '(\'v.' . $contact_id . '.' . $selected_course . '\')">
+               ' . $contact_name . ' 
+            </label>
+        </div>
+        ';
+    }
+    return $people_list;
 }
