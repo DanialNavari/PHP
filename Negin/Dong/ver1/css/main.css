@@ -460,11 +460,11 @@ h6 {
   display: none;
 }
 
-.w_fit{
+.w_fit {
   width: fit-content !important;
 }
 
-.course_id{
+.course_id {
   display: none;
 }
 
@@ -1093,6 +1093,46 @@ input[radio] {
   top: 7rem;
   z-index: 9;
   right: 25vw;
+}
+
+.internet {
+  position: fixed;
+  top: 2.5%;
+  z-index: 9;
+  left: 25%;
+  width: 1.5rem;
+  height: 1.2rem;
+}
+
+.internet img {
+  width: inherit;
+  height: inherit;
+}
+
+#disconnect {
+  position: fixed;
+  top: 10%;
+  background: #fff;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9;
+  text-align: center;
+  visibility: hidden;
+}
+
+.btn-diss{
+  padding: 0.7rem;
+  border: none;
+  width: 100%;
+  background: #FF9800;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#disconnect div {
+  margin: 0 auto;
+  margin-top: 30vh;
 }
 
 /* ----------------------- Media Queries ----------------------- */

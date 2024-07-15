@@ -17,7 +17,7 @@
     <title>دنگ و دونگ</title>
 </head>
 
-<body>
+<body id="app_body">
     <div class="container-fluid">
         <div class="nav_drawer"><?php require_once('_nav.php'); ?></div>
         <div class="gray_layer"></div>

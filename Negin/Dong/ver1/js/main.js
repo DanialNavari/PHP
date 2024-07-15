@@ -835,7 +835,12 @@ function checkValue1(id) {
 }
 
 function buyer(type_person) {
-  $(".popup_header_title").text("واریز کننده را انتخاب کنید");
+  if (type_person == "variz") {
+    $(".popup_header_title").text("واریز کننده را انتخاب کنید");
+  } else {
+    $(".popup_header_title").text("دریافت کننده را انتخاب کنید");
+  }
+
   id = $(".course_id").text();
   $.ajax({
     data: "payment_users=" + id + "&type_person=" + type_person,
@@ -846,6 +851,13 @@ function buyer(type_person) {
     },
   });
   $(".variz").show();
+}
+
+function setVarizPerson(code) {
+  alert($("#" + code).text());
+  x = code.split(".");
+  user_code = x[1];
+  course_code = x[2];
 }
 
 function del_contacts(tel) {

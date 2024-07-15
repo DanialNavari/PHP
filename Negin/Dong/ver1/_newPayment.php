@@ -50,16 +50,16 @@
                 <td class="font-weight-bold text-center" id="consumer_name">
                     *****
                 </td>
-                <td class="text-center click" onclick="buyer()"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="text-center click" onclick="buyer('variz')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
             <tr>
                 <td class="td_title tarikh">دریافت کننده</td>
                 <td class="font-weight-bold text-center" id="consumer_name">
                     *****
                 </td>
-                <td class="text-center click" onclick="buyer()"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="text-center click" onclick="buyer('recieve')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td class="td_title">مبلغ واریزی</td>
                 <td class="font-weight-bold text-center">
                     <span id="moneyLimit">0</span> <span class="unit"><?php
@@ -71,22 +71,18 @@
                     </span>
                 </td>
                 <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
-            </tr>
-            <tr class="force_hide">
+            </tr> -->
+            <!-- <tr class="force_hide">
                 <td class="td_title"></td>
                 <td class="font-weight-bold text-center" colspan="2">
                     <span>
-                        <!-- <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="zarib" value="zarib">
-                            <label class="form-check-label" for="zarib"><span>ضریب</span></label>
-                        </div> -->
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="mablagh" value="mablagh">
                             <label class="form-check-label" for="mablagh"><span>مبلغ (ريال)</span></label>
                         </div>
                     </span>
                 </td>
-            </tr>
+            </tr> -->
             <tr>
                 <td class="td_title va_middle">توضیحات</td>
                 <td class="font-weight-bold text-center" colspan="2">
@@ -190,8 +186,8 @@
 <div class="add_manager variz">
     <div class="popup_header">
         <h6 class="popup_header_title"></h6>
-        <div class="end_course bg-white w_fit">
-            <div class="btn btn-warning click1" onclick="cancelManager()">انصراف</div>
+        <div class="end_course bg-white w-5">
+            <div class="btn btn-warning click1 w-100" onclick="cancelManager()">انصراف</div>
         </div>
     </div>
     <div class="popup_body"></div>
@@ -346,6 +342,7 @@
     });
 
     function default_course_data(tel) {
+        $('#savedate').click();
         $.ajax({
             data: "default_course_data=" + tel,
             type: "POST",
@@ -356,7 +353,6 @@
                 $("#course_name_show").text(x[1]);
                 $("option[value='" + x[0] + "']").attr('selected', 'selected');
                 $('#setCourses').click();
-                $('#savedate').click();
             },
         });
     }

@@ -97,9 +97,9 @@ if (isset($_POST['login'])) {
     $value = $_POST['value'];
     if ($_POST['key'] == 'course_default') {
         $uid = $_COOKIE['uid'];
-        if($value == 'NULL'){
+        if ($value == 'NULL') {
             $v = 'NULL';
-        }else{
+        } else {
             $v = $update_course;
         }
         UPDATE_settings($uid, 'course_default', "$v");
@@ -270,6 +270,6 @@ if (isset($_POST['login'])) {
 } elseif (isset($_POST['default_course_data'])) {
     $default = $_POST['default_course_data'];
     echo default_course("$default");
-}elseif(isset($_POST['payment_users'])){
+} elseif (isset($_POST['payment_users'])) {
     echo SELECT_payment_users($_POST['payment_users'], $_POST['type_person']);
 }

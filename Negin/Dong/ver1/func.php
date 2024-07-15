@@ -2099,20 +2099,21 @@ function SELECT_payment_users($selected_course, $person_type)
         $y_fet = mysqli_fetch_assoc($y);
         $contact_name = $y_fet['contact_name'];
         $contact_id = $members[$i];
-        $func = 'setVarizPerson';
+        $func = '';
 
         if ($person_type == 'variz') {
             $func = 'setVarizPerson';
         } elseif ($person_type == 'recieve') {
-            $func = 'setVarizPerson';
+            $func = 'setRecievePerson';
         }
 
         $people_list .= '
         <div class="form-check popup_group">
             <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
-            <label class="form-check-label" for="v.' . $contact_id . '.' . $selected_course . '" onclick="' . $func . '(\'v.' . $contact_id . '.' . $selected_course . '\')">
+            <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')">
                ' . $contact_name . ' 
             </label>
+            <input class="form-control hide" type="number" id="f.' . $contact_id . '.' . $selected_course . '"/>
         </div>
         ';
     }
