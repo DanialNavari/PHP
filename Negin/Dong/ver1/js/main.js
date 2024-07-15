@@ -854,7 +854,8 @@ function buyer(type_person) {
 }
 
 function setVarizPerson(code) {
-  alert($("#" + code).text());
+  x = $("#" + code).text();
+  alert(x);
   x = code.split(".");
   user_code = x[1];
   course_code = x[2];
