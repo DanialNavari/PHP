@@ -472,7 +472,7 @@ h6 {
   padding: 0.5rem;
   box-shadow: 0px 3px 4px -2px silver;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
@@ -482,6 +482,33 @@ h6 {
   padding: 0.5rem;
   overflow: scroll;
   height: 70vh;
+}
+
+.popup_sum {
+  visibility: hidden;
+}
+
+#div_cal {
+  background: #009688;
+  color: #fff;
+}
+
+#sabt {
+  display: none;
+}
+
+.set_debt_user {
+  background: #cddc39;
+  padding: 0.2rem;
+  border-radius: 1rem;
+}
+
+#popup_sum {
+  display: block;
+  width: 100%;
+  padding-top: 0.3rem;
+  padding-right: 0.3rem;
+  text-align: center;
 }
 
 .f-left {
@@ -494,7 +521,25 @@ h6 {
   flex-direction: row-reverse;
   align-items: center;
   flex-wrap: nowrap;
-  margin-bottom: 1rem;
+  border-bottom: 1px dotted silver;
+  cursor: pointer;
+}
+
+.form-control {
+  font-size: 0.8rem !important;
+}
+
+#variz_konande {
+  display: none;
+}
+
+#popup_trans_type {
+  display: none;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
 }
 
 .transactions,
@@ -1120,11 +1165,24 @@ input[radio] {
   visibility: hidden;
 }
 
-.btn-diss{
+.v-hide {
+  visibility: hidden;
+}
+
+.popup_btn {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.btn-diss {
   padding: 0.7rem;
   border: none;
   width: 100%;
-  background: #FF9800;
+  background: #ff9800;
   color: #000;
   font-weight: bold;
   cursor: pointer;
@@ -1133,6 +1191,10 @@ input[radio] {
 #disconnect div {
   margin: 0 auto;
   margin-top: 30vh;
+}
+
+label {
+  font-size: 0.8rem;
 }
 
 /* ----------------------- Media Queries ----------------------- */

@@ -1,5 +1,6 @@
 let cd;
 let course_code;
+let person_types;
 
 function page(type, route, name = null, id = null) {
   if (type == "r") {
@@ -414,15 +415,9 @@ function change_value(input_id, text_id) {
         Toast(107);
         $("#feeLimit").val("");
       } else {
-        $.ajax({
-          data: "sep=" + fee,
-          url: "server.php",
-          type: "POST",
-          success: function (response) {
-            $("#moneyLimit1").text(fee);
-            $("#moneyLimit").text(response);
-          },
-        });
+        var conv_fee = commafy_(fee);
+        $("#moneyLimit1").text(fee);
+        $("#moneyLimit").text(conv_fee);
       }
     } else {
       $("#" + text_id).text(newData);
@@ -837,8 +832,16 @@ function checkValue1(id) {
 function buyer(type_person) {
   if (type_person == "variz") {
     $(".popup_header_title").text("واریز کننده را انتخاب کنید");
+    //document.getElementById("sabt").style.display = "none";
+    document.getElementById("div_sabt").style.display = "none";
+    document.getElementById("popup_sum").style.display = "none";
+    document.getElementById("popup_trans_type").style.display = "none";
   } else {
     $(".popup_header_title").text("دریافت کننده را انتخاب کنید");
+    //document.getElementById("sabt").style.display = "block";
+    document.getElementById("div_sabt").style.display = "block";
+    document.getElementById("popup_sum").style.display = "block";
+    document.getElementById("popup_trans_type").style.display = "flex";
   }
 
   id = $(".course_id").text();
@@ -854,11 +857,87 @@ function buyer(type_person) {
 }
 
 function setVarizPerson(code) {
-  x = $("#" + code).text();
-  alert(x);
-  x = code.split(".");
-  user_code = x[1];
-  course_code = x[2];
+  var user_name = document.getElementById(code).innerHTML;
+  var xcode = code.split(".");
+  uid = xcode[1];
+  $("input[data-group='variz_fee']").css("visibility", "hidden");
+  //document.getElementById(uid).style.visibility = "visible";
+  //document.getElementById(uid).focus();
+  $("#consumer_name").text(user_name);
+  document.getElementById("variz_konande").style.display = "table-row";
+  cancelManager();
+}
+
+function setRecievePerson(code) {
+  var user_name = document.getElementById(code).innerHTML;
+  var xcode = code.split(".");
+  uid = xcode[1];
+  $("input[data-group='variz_fee']").css("visibility", "hidden");
+  document.getElementById(uid).style.visibility = "visible";
+  $("#consumer_name").text(user_name);
+  document.getElementById(uid).focus();
+}
+
+function commafy(num) {
+  var valuee = $("#" + num).val();
+  var num_rep = valuee.replace(/,/g, "");
+  var nums = Number(num_rep).toLocaleString();
+  $("#" + num).val(nums);
+}
+
+function commafy_(num) {
+  var num_rep = num.replace(/,/g, "");
+  var nums = Number(num_rep).toLocaleString();
+  return nums;
+}
+
+function focus_out() {
+  var all_input = $(".pay").length;
+  var total__ = 0;
+  var debt_ = 0;
+  var deb = 0;
+  $("#sum_variz").text("0");
+
+  for (i = 1; i <= all_input; i++) {
+    debt = $(".popup_group:nth-child(" + i + ") .pay").val();
+    deb = parseInt(debt.replace(/,/g, ""));
+    debt_ += parseInt(debt.replace(/,/g, ""));
+    if (deb > 1) {
+      $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "visible");
+    }else{
+      $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "hidden");
+    }
+  }
+
+  var total = $("#sum_variz").text();
+  if (total == "NaN") {
+    total__ = 0;
+  } else {
+    total__ = total;
+  }
+
+  var total_ = parseInt(total__.replace(/,/g, ""));
+  $("#sum_variz").text(Number(debt_ + total_).toLocaleString());
+  if (debt_ > 0) {
+    
+  }else{
+    alert("جمع واریزی ها صفر است");
+  }
+}
+
+function check_val(id) {
+  var meghdar = $("#" + id).val();
+  var course_id = $(".course_id").text();
+  var total_ = parseInt(meghdar.replace(/,/g, ""));
+
+  var id_ = "l." + id + "." + course_id;
+  var element = document.getElementById(id_);
+
+  if (total_ > 0) {
+    element.classList.add("set_debt_user");
+  } else {
+    element.classList.remove("set_debt_user");
+  }
 }
 
 function del_contacts(tel) {
@@ -917,14 +996,8 @@ function change_values(input_id, text_id) {
           url: "server.php",
           type: "POST",
           success: function (response) {
-            $.ajax({
-              data: "sep=" + fee,
-              url: "server.php",
-              type: "POST",
-              success: function (response) {
-                $("#moneyLimit" + course_id).text(response);
-              },
-            });
+            var conv_fee = commafy_(fee);
+            $("#moneyLimit" + course_id).text(conv_fee);
           },
         });
       }

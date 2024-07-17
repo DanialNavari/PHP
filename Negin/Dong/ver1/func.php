@@ -1435,9 +1435,8 @@ function trans_get_contact_share($trans_id, $pos)
     echo '<input type="hidden" value="' . $karbaran . '" id="karbaran"/>';
 }
 
-function trans_get_contact_share1($pos)
+function trans_get_contact_share1($trans_course, $pos)
 {
-    $trans_course = '';
     $trans_share_type = 'amount';
     $course_infos = SELECT_course_id($trans_course);
     $course_members = explode(',', $course_infos['course_member']);
@@ -1491,23 +1490,24 @@ function trans_get_contact_share1($pos)
         }
 
         if ($pos == "complete") {
-            echo '
-            <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
-                <div class="card my_card ' . $bg_dark . ' user-' . $user . '-box">
-                    <div class="record user-' . $user . '-name ' . $bg_color . '">
-                        <div class="user_info text-white border_none box_shadow_none w-12">
-                            <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
-                            <div class="star">
-                                <span class="karbar_name">' . $name . '</span>
-                                <span><i>' . $star_unit . '</i> <i id="user_second_unit_' . $user . '">' . $star . '</i> ' . $sec_unit . '</span>
-                            </div>
-                        </div>
-                        <div class="user_info text-white border_none box_shadow_none">
-                            <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')">
-                        </div>
-                    </div>
-                </div>
-            </div>';
+            // echo '
+            // <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
+            //     <div class="card my_card ' . $bg_dark . ' user-' . $user . '-box">
+            //         <div class="record user-' . $user . '-name ' . $bg_color . '">
+            //             <div class="user_info text-white border_none box_shadow_none w-12">
+            //                 <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+            //                 <div class="star">
+            //                     <span class="karbar_name">' . $name . '</span>
+            //                     <span><i>' . $star_unit . '</i> <i id="user_second_unit_' . $user . '">' . $star . '</i> ' . $sec_unit . '</span>
+            //                 </div>
+            //             </div>
+            //             <div class="user_info text-white border_none box_shadow_none">
+            //                 <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="' . sep3($field) . '" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')">
+            //             </div>
+            //         </div>
+            //     </div>
+            // </div>';
+
         } else {
             if (isset($GLOBALS['trans_list1'][$user]['amount']) && $GLOBALS['trans_list1'][$user]['amount'] > 0) {
                 echo '
@@ -1857,7 +1857,7 @@ function get_contact_box($course_id, $list_type)
             $star = '';
 
             $box .= '
-                <div class="cat mb-1" onclick="add_user_to_course(' . $user . ')">
+                <div class="cat mb-1">
                     <div class="card my_card bg_blue user-' . $user . '-box">
                         <div class="record user-' . $user . '-name">
                             <div class="user_info text-white border_none box_shadow_none w-12">
@@ -1868,7 +1868,7 @@ function get_contact_box($course_id, $list_type)
                                 </div>
                             </div>
                             <div class="user_info text-white border_none box_shadow_none">
-                                <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')">
+                                <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')" disabled>
                             </div>
                         </div>
                     </div>
@@ -2092,30 +2092,33 @@ function get_settings($tel)
 function SELECT_payment_users($selected_course, $person_type)
 {
     $people_list = '';
+    $func = '';
     $x = SELECT_course_id($selected_course);
     $members = explode(',', $x['course_member']);
+
+    $usr = $_COOKIE['uid'];
+    $xxx = SELECT_contact($usr);
+    $xxx_id = $xxx['contact_id'];
+
+    if ($person_type == 'variz') {
+        $func = 'setVarizPerson';
+    } elseif ($person_type == 'recieve') {
+        $func = 'setRecievePerson';
+    }
+
     for ($i = 0; $i < count($members) - 1; $i++) {
         $y = Query("SELECT * FROM contacts WHERE contact_id = " . $members[$i]);
         $y_fet = mysqli_fetch_assoc($y);
         $contact_name = $y_fet['contact_name'];
         $contact_id = $members[$i];
-        $func = '';
-
-        if ($person_type == 'variz') {
-            $func = 'setVarizPerson';
-        } elseif ($person_type == 'recieve') {
-            $func = 'setRecievePerson';
-        }
 
         $people_list .= '
-        <div class="form-check popup_group">
-            <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
-            <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')">
-               ' . $contact_name . ' 
-            </label>
-            <input class="form-control hide" type="number" id="f.' . $contact_id . '.' . $selected_course . '"/>
-        </div>
-        ';
+            <div class="form-check popup_group" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')">
+                <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
+                <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '">' . $contact_name . '</label>
+                <input class="form-control v-hide text-left d-ltr pay" type="text" data-group="variz_fee" id="' . $contact_id . '" onkeyup="commafy(' . $contact_id . ')" value="0" onfocusout="check_val(' . $contact_id . ')"/>
+            </div>
+            ';
     }
     return $people_list;
 }

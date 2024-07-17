@@ -52,7 +52,7 @@
                 </td>
                 <td class="text-center click" onclick="buyer('variz')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
-            <tr>
+            <tr id="variz_konande">
                 <td class="td_title tarikh">دریافت کننده</td>
                 <td class="font-weight-bold text-center" id="consumer_name">
                     *****
@@ -108,7 +108,7 @@
 <!-- selected users -->
 <div class="cat mb-1">
     <div class="card my_card border_none selected_user" id="selected_user_rounded">
-        <?php //trans_get_contact_share($id, "share"); 
+        <?php //trans_get_contact_share1($_COOKIE['selected_course'], "complete");
         ?>
     </div>
 </div>
@@ -186,8 +186,28 @@
 <div class="add_manager variz">
     <div class="popup_header">
         <h6 class="popup_header_title"></h6>
-        <div class="end_course bg-white w-5">
-            <div class="btn btn-warning click1 w-100" onclick="cancelManager()">انصراف</div>
+        <div id="popup_trans_type" class="force_hide">
+            <div class="form-check popup_group" onclick="">
+                <input class="form-check-input" type="radio" id="zarib" name="type">
+                <label class="form-check-label mr-2 ml-2 text-center w-100" for="zarib">ضریب</label>
+            </div>
+            <div class="form-check popup_group" onclick="">
+                <input class="form-check-input" type="radio" id="mablagh" name="type">
+                <label class="form-check-label mr-2 ml-2 text-center w-100" for="mablagh">مبلغ</label>
+            </div>
+        </div>
+        <div class="popup_btn">
+            <div class="end_course bg-white w-5" id="div_sabt">
+                <div class="btn btn-default click1 w-100" id="div_cal" onclick="focus_out()">ثبت</div>
+            </div>
+            <div class="end_course bg-white w-5">
+                <div class="btn btn-warning click1 w-100" onclick="cancelManager()">بازگشت</div>
+            </div>
+        </div>
+        <div id="popup_sum">
+            <?php $x = SELECT_course_id($_COOKIE['selected_course']);
+            $money_unit = $x['course_money_unit']; ?>
+            <h6>جمع کل: <span id="sum_variz">0</span> <?php echo $money_unit; ?></h6>
         </div>
     </div>
     <div class="popup_body"></div>

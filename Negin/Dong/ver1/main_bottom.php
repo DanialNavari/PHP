@@ -120,7 +120,7 @@
             pos = "offline";
         }
         showOnlineStatu(pos);
-    }, 1000);
+    }, 3000);
 
     function checkDissconnect(){
         if (navigator.onLine == true) {
