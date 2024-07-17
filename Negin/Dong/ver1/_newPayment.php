@@ -51,11 +51,13 @@
                     *****
                 </td>
                 <td class="text-center click" onclick="buyer('variz')"><?php echo $GLOBALS['edit']; ?></td>
+                <input type="hidden" id="buyer_person" value="">
+                <input type="hidden" id="sum_all_sahm" value="">
             </tr>
             <tr id="variz_konande">
                 <td class="td_title tarikh">دریافت کننده</td>
-                <td class="font-weight-bold text-center" id="consumer_name">
-                    *****
+                <td class="font-weight-bold text-center" id="reciver_name">
+
                 </td>
                 <td class="text-center click" onclick="buyer('recieve')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
@@ -96,7 +98,7 @@
     <input type="hidden" id="trans_person" value="">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="addNewPayment()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-success w-100" onclick="addNewPayment1()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -108,8 +110,7 @@
 <!-- selected users -->
 <div class="cat mb-1">
     <div class="card my_card border_none selected_user" id="selected_user_rounded">
-        <?php //trans_get_contact_share1($_COOKIE['selected_course'], "complete");
-        ?>
+        
     </div>
 </div>
 
@@ -222,6 +223,10 @@
 <input type="hidden" value="<?php echo $_GET['id']; ?>" id="trans_id" />
 
 <script>
+    $(document).ready(function() {
+        $("#karbaran").val("");
+    });
+
     $('#zarib').hide();
     $('label').filter("[for='zarib']").hide();
     $('#mablagh').hide();

@@ -231,7 +231,7 @@ if (isset($_POST['login'])) {
     $x = SELECT_request_course($_POST['reg_course'], $_POST['reg_tel'], $_POST['reg_fname'], $_POST['reg_lname'], $_POST['reg_desc'], $ip, $device);
     echo $x;
 } elseif (isset($_POST['add_new_payment'])) {
-    $buyer = $_COOKIE['buyer'];
+    $buyer = $_POST['buyer_person'];
     $selected_course = $_COOKIE['selected_course'];
     $trans_date = $_POST['trans_date'];
     $money_limit = $_POST['money_limit'];

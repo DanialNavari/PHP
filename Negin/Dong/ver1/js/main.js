@@ -830,29 +830,62 @@ function checkValue1(id) {
 }
 
 function buyer(type_person) {
+  let id = $(".course_id").text();
+  sum_all_sahm = $("#sum_all_sahm").val();
+
   if (type_person == "variz") {
     $(".popup_header_title").text("واریز کننده را انتخاب کنید");
     //document.getElementById("sabt").style.display = "none";
     document.getElementById("div_sabt").style.display = "none";
     document.getElementById("popup_sum").style.display = "none";
     document.getElementById("popup_trans_type").style.display = "none";
+
+    var tarikh = $("#start_from_fa").text();
+    if (tarikh == "****/**/**") {
+      $("#savedate").click();
+    }
+    $.ajax({
+      data: "payment_users=" + id + "&type_person=" + type_person,
+      url: "server.php",
+      type: "POST",
+      success: function (response) {
+        $(".popup_body").html(response);
+      },
+    });
   } else {
     $(".popup_header_title").text("دریافت کننده را انتخاب کنید");
-    //document.getElementById("sabt").style.display = "block";
     document.getElementById("div_sabt").style.display = "block";
     document.getElementById("popup_sum").style.display = "block";
     document.getElementById("popup_trans_type").style.display = "flex";
+
+    $.ajax({
+      data: "payment_users=" + id + "&type_person=" + type_person,
+      url: "server.php",
+      type: "POST",
+      success: function (response) {
+        $(".popup_body").html(response);
+        if (sum_all_sahm > 0) {
+          var cont = $("#karbaran").val();
+          var cont_sp = cont.split(",");
+
+          for (i = 0; i < cont_sp.length - 1; i++) {
+            var str_detail = cont_sp[i].split(":");
+            idd = str_detail[0] + "." + id;
+            var element = document.getElementById("l." + idd);
+            if (str_detail[1] > 0) {
+              element.classList.add("set_debt_user");
+              document.getElementById("l." + idd).style.visibility = "visible";
+              var valu = Number(str_detail[1]).toLocaleString();
+              $("#" + str_detail[0]).val(valu);
+              document.getElementById(str_detail[0]).style.visibility =
+                "visible";
+            }
+          }
+        }
+      },
+    });
   }
 
-  id = $(".course_id").text();
-  $.ajax({
-    data: "payment_users=" + id + "&type_person=" + type_person,
-    url: "server.php",
-    type: "POST",
-    success: function (response) {
-      $(".popup_body").html(response);
-    },
-  });
   $(".variz").show();
 }
 
@@ -864,6 +897,7 @@ function setVarizPerson(code) {
   //document.getElementById(uid).style.visibility = "visible";
   //document.getElementById(uid).focus();
   $("#consumer_name").text(user_name);
+  $("#buyer_person").val(uid);
   document.getElementById("variz_konande").style.display = "table-row";
   cancelManager();
 }
@@ -874,7 +908,7 @@ function setRecievePerson(code) {
   uid = xcode[1];
   $("input[data-group='variz_fee']").css("visibility", "hidden");
   document.getElementById(uid).style.visibility = "visible";
-  $("#consumer_name").text(user_name);
+  //$("#consumer_name").text(user_name);
   document.getElementById(uid).focus();
 }
 
@@ -897,14 +931,19 @@ function focus_out() {
   var debt_ = 0;
   var deb = 0;
   $("#sum_variz").text("0");
+  var final_string = "";
 
   for (i = 1; i <= all_input; i++) {
-    debt = $(".popup_group:nth-child(" + i + ") .pay").val();
+    var debt = $(".popup_group:nth-child(" + i + ") .pay").val();
+    var child_id = $(".popup_group:nth-child(" + i + ") .pay").attr("id");
+
     deb = parseInt(debt.replace(/,/g, ""));
     debt_ += parseInt(debt.replace(/,/g, ""));
+    final_string += child_id + ":" + deb + ",";
+
     if (deb > 1) {
       $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "visible");
-    }else{
+    } else {
       $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "hidden");
     }
   }
@@ -919,8 +958,25 @@ function focus_out() {
   var total_ = parseInt(total__.replace(/,/g, ""));
   $("#sum_variz").text(Number(debt_ + total_).toLocaleString());
   if (debt_ > 0) {
-    
-  }else{
+    $("#sum_all_sahm").val(debt_);
+    $("#karbaran").val(final_string);
+
+    var karbaran_split = final_string.split(",");
+    for (i = 0; i < karbaran_split.length; i++) {
+      var ks = karbaran_split[i].split(":");
+      ks_uid = ks[0];
+      ks_fee = ks[1];
+      $("#user-" + ks_uid).val(Number(ks_fee).toLocaleString());
+      if (ks_fee > 0) {
+        $(".user-" + ks_uid + "-name").css(
+          "background-color",
+          "var(--green-dark)"
+        );
+      }
+    }
+
+    cancelManager();
+  } else {
     alert("جمع واریزی ها صفر است");
   }
 }
@@ -1494,6 +1550,37 @@ function setContactToList(course_id, class_name) {
     success: function (response) {
       $(".popup_body").html(response);
       $("." + class_name).show();
+    },
+  });
+}
+
+function addNewPayment1() {
+  var trans_date = $("#start_from_fa").text();
+  var sum_all_sahm = $("#start_from_fa").val();
+  var buyer_person = $("#buyer_person").val();
+  var trans_desc = $("#trans_desc").val();
+  var karbaran = $("#karbaran").val();
+  var course_id = $(".course_id").text();
+
+  $.ajax({
+    data:
+      "add_new_payment=ok&trans_date=" +
+      trans_date +
+      "&money_limit=" +
+      sum_all_sahm +
+      "&karbaran=" +
+      karbaran +
+      "&trans_desc=" +
+      trans_desc +
+      "&buyer_person=" +
+      buyer_person,
+    type: "POST",
+    url: "server.php",
+    success: function (response) {
+      if (response == 1) {
+        alert("پرداخت با موفقیت ثبت شد");
+        window.location.assign("./?route=__payments&h=0&id=" + course_id);
+      }
     },
   });
 }

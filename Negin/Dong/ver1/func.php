@@ -512,7 +512,7 @@ function active_payments($course_id)
         }
 
         $create = $r['pay_create'];
-        $create_x = explode(',', $create);
+        $create_x = explode(' ', $create);
         $saat = $create_x[1];
         $geo_date = explode('-', $create_x[0]);
         $geo_tarikh = gregorian_to_jalali($geo_date[0], $geo_date[1], $geo_date[2], '/');
@@ -2100,11 +2100,7 @@ function SELECT_payment_users($selected_course, $person_type)
     $xxx = SELECT_contact($usr);
     $xxx_id = $xxx['contact_id'];
 
-    if ($person_type == 'variz') {
-        $func = 'setVarizPerson';
-    } elseif ($person_type == 'recieve') {
-        $func = 'setRecievePerson';
-    }
+
 
     for ($i = 0; $i < count($members) - 1; $i++) {
         $y = Query("SELECT * FROM contacts WHERE contact_id = " . $members[$i]);
@@ -2112,8 +2108,14 @@ function SELECT_payment_users($selected_course, $person_type)
         $contact_name = $y_fet['contact_name'];
         $contact_id = $members[$i];
 
+        if ($person_type == 'variz') {
+            $func = 'setVarizPerson';
+        } elseif ($person_type == 'recieve') {
+            $func = 'setRecievePerson';
+        }
+
         $people_list .= '
-            <div class="form-check popup_group" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')">
+            <div class="form-check popup_group P.' . $contact_id . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')" >
                 <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
                 <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '">' . $contact_name . '</label>
                 <input class="form-control v-hide text-left d-ltr pay" type="text" data-group="variz_fee" id="' . $contact_id . '" onkeyup="commafy(' . $contact_id . ')" value="0" onfocusout="check_val(' . $contact_id . ')"/>
