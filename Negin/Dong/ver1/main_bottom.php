@@ -1,3 +1,11 @@
+<?php
+$xx = default_course($_COOKIE['uid']);
+if ($xx == 0) {
+    $pos_btn = 'force_hide';
+} else {
+    $pos_btn = '';
+}
+?>
 <!-- space from bottom -->
 <div class="cat mb_4">
     <div class="card my_card border_none"></div>
@@ -28,13 +36,13 @@
         </div>
         <div class="item_title">دوره</div>
     </div>
-    <div class="item_" onclick="page('r','_newPayment','payments')" id="payments">
+    <div class="item_ <?php echo $pos_btn;?>" onclick="page('r','_newPayment','payments')" id="payments">
         <div class="item_circle">
             <div class="item_icon"><?php echo $payment; ?></div>
         </div>
         <div class="item_title">پرداخت</div>
     </div>
-    <div class="item_" onclick="page('r','_newTransaction','transaction')" id="transaction">
+    <div class="item_ <?php echo $pos_btn;?>" onclick="page('r','_newTransaction','transaction')" id="transaction">
         <div class="item_circle">
             <div class="item_icon"><?php echo $bag_plus; ?></div>
         </div>
@@ -79,7 +87,7 @@
     <div>
         <img src="image/no-wifi.png" alt="internet" class="reounded">
         <h4 id="diss_title">اینترنتت قطع شد!!!</h4>
-        <br/>
+        <br />
         <button class="btn btn-primary btn-diss" onclick="checkDissconnect()">اتصال مجدد</button>
     </div>
 </div>
@@ -98,7 +106,7 @@
     }
 
     function showOnlineStatu(event) {
-        if (event== "online") {
+        if (event == "online") {
             $('#wifi_pos').attr('src', 'image/wifi.png');
             document.getElementById("disconnect").style.visibility = "hidden";
             document.getElementById("app_body").style.visibility = "visible";
@@ -122,7 +130,7 @@
         showOnlineStatu(pos);
     }, 3000);
 
-    function checkDissconnect(){
+    function checkDissconnect() {
         if (navigator.onLine == true) {
             pos = "online";
             window.location.reload();

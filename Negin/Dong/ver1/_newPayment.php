@@ -110,7 +110,7 @@
 <!-- selected users -->
 <div class="cat mb-1">
     <div class="card my_card border_none selected_user" id="selected_user_rounded">
-        
+
     </div>
 </div>
 
@@ -207,7 +207,12 @@
         </div>
         <div id="popup_sum">
             <?php $x = SELECT_course_id($_COOKIE['selected_course']);
-            $money_unit = $x['course_money_unit']; ?>
+            if($x){
+                $money_unit = $x['course_money_unit']; 
+            }else{
+                $money_unit = 'ريال';
+            }
+            ?>
             <h6>جمع کل: <span id="sum_variz">0</span> <?php echo $money_unit; ?></h6>
         </div>
     </div>
@@ -384,3 +389,11 @@
 
     default_course_data("<?php echo $_COOKIE['uid']; ?>");
 </script>
+
+<?php
+if (isset($_COOKIE['selected_course'])) {
+} else {
+    echo '<script>window.location.reload();</script>';
+}
+
+?>

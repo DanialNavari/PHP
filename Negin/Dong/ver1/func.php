@@ -349,8 +349,7 @@ function give_contacts_list1($contact_maker, $course_id, $pos)
 function ADD_course($name, $member, $start, $limit, $manager, $maker, $create)
 {
     db();
-    Query("UPDATE `course` SET `course_default` = '' WHERE `course_maker` = '$maker'");
-    Query("INSERT INTO `course`(`course_id`,`course_name`,`course_member`,`course_start_date`,`course_money_limit`,`course_default`,`course_manager`,`course_maker`,`course_create_date`,`course_money_unit`) VALUES(NULL,'$name','$member','$start','$limit','checked','$manager','$maker','$create','ريال')");
+    Query("INSERT INTO `course`(`course_id`,`course_name`,`course_member`,`course_start_date`,`course_money_limit`,`course_manager`,`course_maker`,`course_create_date`,`course_money_unit`) VALUES(NULL,'$name','$member','$start','$limit','$manager','$maker','$create','ريال')");
     $id = mysqli_insert_id($GLOBALS['conn']);
     ADD_log($id, 'New Course Create');
     return $id;
@@ -1669,6 +1668,14 @@ function contact_list($tel)
             $star_incomplete = 0;
         }
 
+        if ($c_tel != $tel) {
+            $key_del = '<i onclick="del_contacts(' . $c_id . ')">' . $GLOBALS['del'] . '</i>';
+            $key_edit = '<i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>';
+        } else {
+            $key_del = '';
+            $key_edit = '';
+        }
+
         $cont .= '
         <div class="cat mb-2 contactBox" data="' . $c_name . ' ' . $c_tel . '">
             <div class="card my_card bg_blue user-' . $c_id . '-box">
@@ -1689,7 +1696,7 @@ function contact_list($tel)
                                 
                             </div>
                             <div class="tools">
-                                <i onclick="del_contacts(' . $c_id . ')">' . $GLOBALS['del'] . '</i> <i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>
+                                ' . $key_del . ' ' . $key_edit . '
                             </div>
                         </div>
                     </div>
@@ -2065,13 +2072,18 @@ function default_course($tel)
 
     $x = Query("SELECT * FROM `settings` WHERE `uid` = '$tel'");
     $y = mysqli_fetch_assoc($x);
-    if ($y['course_default'] > 0) {
+    if (intval($y['course_default']) > 0) {
         $z = SELECT_course_id($y['course_default']);
         return $z['course_id'] . ',' . $z['course_name'];
     } else {
         $xx = Query("SELECT * FROM `course` WHERE `course_member` LIKE '$cntc_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL OR `course_member` LIKE '%,$cntc_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL ORDER BY `course_id` DESC");
-        $xx_fet = mysqli_fetch_assoc($xx);
-        return $xx_fet['course_id'] . ',' . $xx_fet['course_name'];
+        $yy = mysqli_num_rows($xx);
+        if ($yy > 0) {
+            $xx_fet = mysqli_fetch_assoc($xx);
+            return $xx_fet['course_id'] . ',' . $xx_fet['course_name'];
+        } else {
+            return 0;
+        }
     }
 }
 
@@ -2118,7 +2130,7 @@ function SELECT_payment_users($selected_course, $person_type)
             <div class="form-check popup_group P.' . $contact_id . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')" >
                 <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
                 <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '">' . $contact_name . '</label>
-                <input class="form-control v-hide text-left d-ltr pay" type="text" data-group="variz_fee" id="' . $contact_id . '" onkeyup="commafy(' . $contact_id . ')" value="0" onfocusout="check_val(' . $contact_id . ')"/>
+                <input class="form-control v-hide text-left d-ltr pay input_no_border" type="text" data-group="variz_fee" id="' . $contact_id . '" value="" onfocusout="check_val(' . $contact_id . ')"/>
             </div>
             ';
     }

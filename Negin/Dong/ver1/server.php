@@ -62,33 +62,6 @@ if (isset($_POST['login'])) {
     $date = date("Y-m-d H:i:s");
     $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
     echo $res;
-} elseif (isset($_POST['new_course'])) {
-    $course_name = $_POST['course_name'];
-    $course_start = $_POST['course_start'];
-    $money_limit = $_POST['money_limit'];
-    $members = $_POST['members'];
-    $maker = $_COOKIE['uid'];
-    $date = date("Y-m-d H:i:s");
-    $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
-    echo $res;
-} elseif (isset($_POST['new_course'])) {
-    $course_name = $_POST['course_name'];
-    $course_start = $_POST['course_start'];
-    $money_limit = $_POST['money_limit'];
-    $members = $_POST['members'];
-    $maker = $_COOKIE['uid'];
-    $date = date("Y-m-d H:i:s");
-    $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
-    echo $res;
-} elseif (isset($_POST['new_course'])) {
-    $course_name = $_POST['course_name'];
-    $course_start = $_POST['course_start'];
-    $money_limit = $_POST['money_limit'];
-    $members = $_POST['members'];
-    $maker = $_COOKIE['uid'];
-    $date = date("Y-m-d H:i:s");
-    $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
-    echo $res;
 } elseif (isset($_POST['sep'])) {
     echo sep3($_POST['sep']);
 } elseif (isset($_POST['update_course'])) {
@@ -103,6 +76,9 @@ if (isset($_POST['login'])) {
             $v = $update_course;
         }
         UPDATE_settings($uid, 'course_default', "$v");
+    } elseif ($_POST['key'] == 'course_finish' || $_POST['key'] == 'course_del_course') {
+        UPDATE_course($key, $value, $update_course);
+        UPDATE_settings($uid, 'course_default', null);
     } else {
         UPDATE_course($key, $value, $update_course);
     }

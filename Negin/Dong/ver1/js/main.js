@@ -585,7 +585,7 @@ function saveNewCourse() {
     url: "server.php",
     success: function (response) {
       if (response > 0) {
-        alert("دوره جدید با موفقیت ایجاد شد");
+        //alert("دوره جدید با موفقیت ایجاد شد");
         window.location.assign("./?route=_activeCourse&h=null");
       }
     },
@@ -607,7 +607,7 @@ function editNewCourse(id) {
     url: "server.php",
     success: function (response) {
       if (response > 0) {
-        alert("دوره جدید با موفقیت ویرایش شد");
+        //alert("دوره جدید با موفقیت ویرایش شد");
         window.location.assign("./?route=_activeCourse&h=null");
       }
     },
@@ -875,7 +875,7 @@ function buyer(type_person) {
             if (str_detail[1] > 0) {
               element.classList.add("set_debt_user");
               document.getElementById("l." + idd).style.visibility = "visible";
-              var valu = Number(str_detail[1]).toLocaleString();
+              var valu = str_detail[1]; //Number(str_detail[1]).toLocaleString();
               $("#" + str_detail[0]).val(valu);
               document.getElementById(str_detail[0]).style.visibility =
                 "visible";
@@ -887,6 +887,11 @@ function buyer(type_person) {
   }
 
   $(".variz").show();
+}
+
+function realTimeSum(id) {
+  var sum_variz = $("#sum_variz").text().replace(",", "");
+  var this_field = $("#" + id).val();
 }
 
 function setVarizPerson(code) {
@@ -936,9 +941,14 @@ function focus_out() {
   for (i = 1; i <= all_input; i++) {
     var debt = $(".popup_group:nth-child(" + i + ") .pay").val();
     var child_id = $(".popup_group:nth-child(" + i + ") .pay").attr("id");
+    if (debt == "" || parseInt(debt) <= 0) {
+      deb = 0;
+      $(".popup_group:nth-child(" + i + ") .pay").val("0");
+    } else {
+      deb = parseInt(debt.replace(/,/g, ""));
+    }
 
-    deb = parseInt(debt.replace(/,/g, ""));
-    debt_ += parseInt(debt.replace(/,/g, ""));
+    debt_ += deb;
     final_string += child_id + ":" + deb + ",";
 
     if (deb > 1) {
@@ -951,6 +961,7 @@ function focus_out() {
   var total = $("#sum_variz").text();
   if (total == "NaN") {
     total__ = 0;
+    $("#sum_variz").text("0");
   } else {
     total__ = total;
   }
@@ -974,7 +985,6 @@ function focus_out() {
         );
       }
     }
-
     cancelManager();
   } else {
     alert("جمع واریزی ها صفر است");
@@ -1382,7 +1392,7 @@ function del_payment(id) {
       url: "server.php",
       success: function (response) {
         if (response == 1) {
-          alert("پرداخت با موفقیت حذف شد");
+          //alert("پرداخت با موفقیت حذف شد");
           window.location.reload();
         }
       },
@@ -1578,7 +1588,7 @@ function addNewPayment1() {
     url: "server.php",
     success: function (response) {
       if (response == 1) {
-        alert("پرداخت با موفقیت ثبت شد");
+        //alert("پرداخت با موفقیت ثبت شد");
         window.location.assign("./?route=__payments&h=0&id=" + course_id);
       }
     },
