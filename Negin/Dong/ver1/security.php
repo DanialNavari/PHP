@@ -9,6 +9,6 @@ if(strpos($_SERVER['HTTP_USER_AGENT'],'Windows')){
 if (isset($_COOKIE['uid'])) {
     $security = true;
 } else {
-    echo '<script>window.location.assign("login.php")</script>';
+    echo '<script>window.location.assign("splash.php")</script>';
     $security = false;
 }

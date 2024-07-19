@@ -1,6 +1,7 @@
 <?php
 require_once('symbol.php');
 require_once('jdf.php');
+$app_name = 'دونگت';
 
 // function db()
 // {
@@ -296,7 +297,7 @@ function Object_contact1($name, $tel, $course_id, $contac_id, $pos)
                         <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                         <div class="star">
                             <span style="' . $pro . '" class="karbar_name">' . $name . '</span>
-                            <a href="tel://' . $tel . '" target="_blank" style="' . $pro . '">' . $tel . '</a>    
+                            <a target="_blank" style="' . $pro . '">' . $tel . '</a>    
                         </div>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none" >
@@ -352,6 +353,8 @@ function ADD_course($name, $member, $start, $limit, $manager, $maker, $create)
     Query("INSERT INTO `course`(`course_id`,`course_name`,`course_member`,`course_start_date`,`course_money_limit`,`course_manager`,`course_maker`,`course_create_date`,`course_money_unit`) VALUES(NULL,'$name','$member','$start','$limit','$manager','$maker','$create','ريال')");
     $id = mysqli_insert_id($GLOBALS['conn']);
     ADD_log($id, 'New Course Create');
+    $uid = $_COOKIE['uid'];
+    UPDATE_settings($uid, "course_default", "$id");
     return $id;
 }
 
@@ -1684,7 +1687,7 @@ function contact_list($tel)
                         <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                         <div class="star">
                             <span style="' . $ozviat . '" id="c-' . $c_id . '">' . $c_name . ' </span>
-                            <a style="' . $ozviat . '" href="tel://' . $c_tel . '" target="_blank" id="t-' . $c_id . '">' . $c_tel . '</a>
+                            <a style="' . $ozviat . '" target="_blank" id="t-' . $c_id . '">' . $c_tel . '</a>
                         </div>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none">
@@ -1911,7 +1914,7 @@ function ADD_new_payments($buyer, $selected_course, $trans_date, $money_limit, $
         $w = explode(':', $q[$i]);
         $pay_to = $w[0];
         $pay_fee = $w[1];
-        if ($pay_to != $buyer) {
+        if ($pay_to != $buyer && $pay_fee > 0) {
             $x = Query("INSERT INTO payments(pay_from) VALUES($buyer)");
             $y = mysqli_insert_id($GLOBALS['conn']);
             $zaman = date("Y-m-d H:i:s");
@@ -2130,7 +2133,7 @@ function SELECT_payment_users($selected_course, $person_type)
             <div class="form-check popup_group P.' . $contact_id . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')" >
                 <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
                 <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '">' . $contact_name . '</label>
-                <input class="form-control v-hide text-left d-ltr pay input_no_border" type="text" data-group="variz_fee" id="' . $contact_id . '" value="" onfocusout="check_val(' . $contact_id . ')"/>
+                <input class="form-control v-hide text-left d-ltr pay input_no_border" type="number" pattern="[0-9]" data-group="variz_fee" id="' . $contact_id . '" value="" onfocusout="check_val(' . $contact_id . ')"/>
             </div>
             ';
     }

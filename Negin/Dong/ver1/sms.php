@@ -1,5 +1,7 @@
 <?php
-$page_title = 'دنگ و دونگ';
+require_once('func.php');
+
+$page_title = $app_name;
 if (isset($_COOKIE['temp_tel'])) {
     $tel = $_COOKIE['temp_tel'];
     if (isset($_COOKIE['verify'])) {

@@ -387,13 +387,13 @@
         });
     }
 
-    default_course_data("<?php echo $_COOKIE['uid']; ?>");
+    //default_course_data("<?php echo $_COOKIE['uid']; ?>");
 </script>
 
 <?php
 if (isset($_COOKIE['selected_course'])) {
 } else {
-    echo '<script>window.location.reload();</script>';
+    //echo '<script>window.location.reload();</script>';
 }
 
 ?>

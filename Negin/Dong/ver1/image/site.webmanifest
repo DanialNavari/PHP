@@ -1,6 +1,8 @@
 {
   "name": "اپلیکیشن دنگ و دونگ",
   "short_name": "دنگ و دونگ",
+  "start_url": "../",
+  "display": "standalone",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
@@ -14,7 +16,5 @@
     }
   ],
   "theme_color": "#ffffff",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "start_url": "../login.php"
+  "background_color": "#ffffff"
 }

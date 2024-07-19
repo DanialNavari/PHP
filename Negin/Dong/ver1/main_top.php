@@ -1,3 +1,4 @@
+<?php require_once('func.php');?>
 <!DOCTYPE html>
 <html lang="fa">
 
@@ -14,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
-    <title>دنگ و دونگ</title>
+    <title><?php echo $app_name;?></title>
 </head>
 
 <body id="app_body">
@@ -33,7 +34,7 @@
                     $name = '';
                 }
                 ?>
-                <h1 class="pt-3 pb-3 pr-3 d-inline-block ">دنگ و دونگ</h1>
+                <h1 class="pt-3 pb-3 pr-3 d-inline-block "><?php echo $app_name;?></h1>
                 <h6 class="d_inline"><?php echo $name; ?></h6>
             </div>
             <i id="h_menu" class="pl-3 click1" onclick="navigate('logout.php')"><?php echo $logout; ?></i>
