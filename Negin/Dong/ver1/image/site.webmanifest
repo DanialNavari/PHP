@@ -1,8 +1,11 @@
 {
-  "name": "اپلیکیشن دنگ و دونگ",
-  "short_name": "دنگ و دونگ",
+  "name": "اپلیکیشن دونگت",
+  "short_name": "...::| دونگت |::...",
   "start_url": "../",
   "display": "standalone",
+  "description": "سامانه آنلاین محاسبه دونگ",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "android-chrome-192x192.png",

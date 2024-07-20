@@ -12,25 +12,8 @@
     }
 </style>
 
-<?php
-$x = SELECT_pay_detail($_GET['id']);
-$y = mysqli_fetch_assoc($x);
-$pay_course = $y['pay_course'];
-$pay_date = $y['pay_date'];
-$pay_from = $y['pay_from'];
-$pay_to = $y['pay_to'];
-$pay_desc = $y['pay_desc'];
-$pay_fee = $y['pay_fee'];
-$pay_id = $y['pay_id'];
-$z = SELECT_user_by_id($pay_from);
-$pay_from_user = $z['contact_name'];
-?>
-<input type="hidden" id="pay_to" value="<?php echo $pay_to; ?>">
-<input type="hidden" id="pay_fee" value="<?php echo $pay_fee; ?>">
-<input type="hidden" id="pay_id" value="<?php echo $pay_id; ?>">
-
 <div class="row empty">
-    ویرایش واریزی
+    خرید جدید
 </div>
 
 <div class="cat">
@@ -39,14 +22,14 @@ $pay_from_user = $z['contact_name'];
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
                 <td class="font-weight-bold text-white text-center w-9">
-                    <span class="text-center text-primary" id="course_name_show"></span>
+                    <span class="text-center text-primary" id="course_name_show">****</span>
                 </td>
-                <td class="td_title_ va_middle w-6"></td>
+                <td class="text-center dore" onclick="select_course()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
             <tr>
-                <td class="td_title tarikh">تاریخ واریز</td>
+                <td class="td_title tarikh">تاریخ تراکنش</td>
                 <td class="font-weight-bold text-center">
-                    <span id="start_from_fa"><?php echo $pay_date; ?></span>
+                    <span id="start_from_fa">****/**/**</span>
                 </td>
                 <td class="text-center click" onclick="setDate()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
@@ -63,26 +46,38 @@ $pay_from_user = $z['contact_name'];
                 </td>
             </tr>
             <tr>
-                <td class="td_title tarikh">واریز کننده</td>
+                <td class="td_title tarikh">خرید کننده</td>
                 <td class="font-weight-bold text-center" id="consumer_name">
-                    <?php echo $pay_from_user; ?>
+                    *****
                 </td>
-                <td class="text-center click" onclick="buyer('variz')"><?php echo $GLOBALS['edit']; ?></td>
-                <input type="hidden" id="buyer_person" value="<?php echo $pay_from;?>">
-                <input type="hidden" id="sum_all_sahm" value="<?php echo $pay_fee;?>">
+                <td class="text-center click" onclick="buyer()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
-            <tr id="variz_konandeha">
-                <td class="td_title tarikh">دریافت کننده</td>
-                <td class="font-weight-bold text-center" id="reciver_name">
-
+            <tr>
+                <td class="td_title">مبلغ تراکنش</td>
+                <td class="font-weight-bold text-center">
+                    <span id="moneyLimit">0</span> <span class="unit">ريال</span>
                 </td>
-                <td class="text-center click" onclick="buyer('recieve')"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
-            <tr id="variz_konande force_hide"></tr>
+            <tr>
+                <td class="td_title">سهم افراد</td>
+                <td class="font-weight-bold text-center" colspan="2">
+                    <span>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="zarib" value="zarib">
+                            <label class="form-check-label" for="zarib"><span>ضریب</span></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="mablagh" value="mablagh">
+                            <label class="form-check-label" for="mablagh"><span>مبلغ (ريال)</span></label>
+                        </div>
+                    </span>
+                </td>
+            </tr>
             <tr>
                 <td class="td_title va_middle">توضیحات</td>
                 <td class="font-weight-bold text-center" colspan="2">
-                    <textarea class="form-control sum" rows="3" id="trans_desc"><?php echo $pay_desc; ?></textarea>
+                    <textarea class="form-control sum" rows="3" id="trans_desc"></textarea>
                 </td>
             </tr>
         </table>
@@ -92,25 +87,28 @@ $pay_from_user = $z['contact_name'];
     <input type="hidden" id="trans_person" value="">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="addNewPayment2()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-success w-100" onclick="addTrans()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
     <div class="group_name">
-        <h6 class="font-weight-bold">دریافت کنندگان</h6>
+        <h6 class="font-weight-bold">مصرف کنندگان</h6>
     </div>
 </div>
 
 <!-- selected users -->
 <div class="cat mb-1">
     <div class="card my_card border_none selected_user" id="selected_user_rounded">
-
+        <?php //trans_get_contact_share($id, "share"); 
+        ?>
     </div>
 </div>
 
 <!-- users box -->
 <div class="contacts">
 </div>
+<?php //trans_get_contact_share($id, "complete"); 
+?>
 
 <div class="add_payments hide">
     <table class="border_none mx-auto w-100">
@@ -118,7 +116,8 @@ $pay_from_user = $z['contact_name'];
             <td class="sum pl-3 w-30">خرید کننده</td>
             <td>
                 <select class="form-select sum font-weight-bold" aria-label="Default select example" id="consumers">
-
+                    <?php echo get_contacts_in_course($_COOKIE['selected_course']);
+                    ?>
                 </select>
             </td>
         </tr>
@@ -133,9 +132,7 @@ $pay_from_user = $z['contact_name'];
 <div class="add_course hide">
     <table class="border_none mx-auto w-100">
         <tr class="font-weight-bold">
-            <td class="sum pl-3 w-30 text-center pt-1 pb-1">نام دوره را انتخاب کنید</td>
-        </tr>
-        <tr class="font-weight-bold">
+            <td class="sum pl-3 w-30">نام دوره</td>
             <td>
                 <select class="form-select sum font-weight-bold" aria-label="Default select example" id="course_name">
                     <?php
@@ -145,7 +142,7 @@ $pay_from_user = $z['contact_name'];
                         $fet = mysqli_fetch_assoc($x);
                         $course_name = $fet['course_name'];
                         $course_id = $fet['course_id'];
-                        echo '<option value="' . $course_id . '" onclick="selectSetCourse()">' . $course_name . '</option>';
+                        echo '<option value="' . $course_id . '">' . $course_name . '</option>';
                     }
                     ?>
                 </select>
@@ -156,7 +153,7 @@ $pay_from_user = $z['contact_name'];
         </tr>
         <tr>
             <td colspan="2">
-                <button class="btn btn-success btn-sm w-100" id="setCourses">ثبت</button>
+                <button class="btn btn-success btn-sm w-100" id="setCourse">ثبت</button>
             </td>
         </tr>
     </table>
@@ -178,44 +175,6 @@ $pay_from_user = $z['contact_name'];
     </table>
 </div>
 
-<div class="add_manager variz">
-    <div class="popup_header">
-        <h6 class="popup_header_title"></h6>
-        <div id="popup_trans_type" class="force_hide">
-            <div class="form-check popup_group" onclick="">
-                <input class="form-check-input" type="radio" id="zarib" name="type">
-                <label class="form-check-label mr-2 ml-2 text-center w-100" for="zarib">ضریب</label>
-            </div>
-            <div class="form-check popup_group" onclick="">
-                <input class="form-check-input" type="radio" id="mablagh" name="type">
-                <label class="form-check-label mr-2 ml-2 text-center w-100" for="mablagh">مبلغ</label>
-            </div>
-        </div>
-        <div class="popup_btn">
-            <div class="end_course bg-white w-5" id="div_sabt">
-                <div class="btn btn-default click1 w-100" id="div_cal" onclick="focus_out()">ثبت</div>
-            </div>
-            <div class="end_course bg-white w-5">
-                <div class="btn btn-warning click1 w-100" onclick="cancelManager()">بازگشت</div>
-            </div>
-        </div>
-        <div id="popup_sum">
-            <?php $x = SELECT_course_id($pay_course);
-            if ($x) {
-                $money_unit = $x['course_money_unit'];
-            } else {
-                $money_unit = 'ريال';
-            }
-            ?>
-            <h6>جمع کل: <span id="sum_variz">0</span> <?php echo $money_unit; ?></h6>
-        </div>
-    </div>
-    <div class="popup_body"></div>
-</div>
-
-<div class="course_id"><?php if (isset($pay_course)) {
-                            echo $pay_course;
-                        } ?></div>
 <div class="cat mb-1 h-1"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -224,43 +183,6 @@ $pay_from_user = $z['contact_name'];
 <input type="hidden" value="<?php echo $_GET['id']; ?>" id="trans_id" />
 
 <script>
-    $(document).ready(function() {
-        $("#karbaran").val("");
-        course_id = $('.course_id').text();
-        $("option[value='" + course_id + "']").attr('selected', 'selected');
-        $('#setCourses').click();
-        tarikh = $('#start_from_fa').text();
-        tarikh_sp = tarikh.split('/');
-
-        maah = tarikh_sp[1];
-        if (maah < 10) {
-            maah = tarikh_sp[1].substr(1);
-        } else {
-            maah = tarikh_sp[1];
-        }
-
-        rooz = tarikh_sp[2];
-        if (rooz < 10) {
-            rooz = tarikh_sp[2].substr(1);
-        } else {
-            rooz = tarikh_sp[2];
-        }
-
-        new_tarikh = tarikh_sp[0] + ',' + maah + ',' + rooz;
-        $('.table-days td').removeClass('selected');
-        x = $("[data-date='" + new_tarikh + "']").addClass('selected');
-        $('#savedate').click();
-
-        pay_to = $('#pay_to').val();
-        pay_fee = $('#pay_fee').val();
-
-        window.setTimeout(function() {
-            $(".user_info input").val(0);
-            $("#user-" + pay_to).val(Number(pay_fee).toLocaleString());
-            
-        }, 1000);
-    });
-
     $('#zarib').hide();
     $('label').filter("[for='zarib']").hide();
     $('#mablagh').hide();
@@ -294,7 +216,7 @@ $pay_from_user = $z['contact_name'];
             });
             $('.gray_layer').click();
             $('#trans_cost').val('');
-        } else {
+        }else{
             $('.gray_layer').click();
         }
     });
@@ -363,64 +285,4 @@ $pay_from_user = $z['contact_name'];
             }
         }
     });
-
-    $('#setCourses').click(function() {
-        let course_value_id = $("#course_name").val();
-        let course_value_text = $("#course_name option:selected").text();
-
-        $("#course_name_show").text(course_value_text);
-        $(".add_course").hide();
-        $(".gray_layer").click();
-        $("td.click").addClass("dore");
-        //$("#consumer_name").text("****");
-        $(".contacts").empty();
-        //$('#savedate').click();
-
-        $.ajax({
-            data: "getContactList=" + course_value_id,
-            url: "server.php",
-            type: "POST",
-            success: function(response) {
-                $("#zarib").show();
-                $("label").filter("[for='zarib']").show();
-                $("#mablagh").show();
-                $("label").filter("[for='mablagh']").show();
-                $("#karbaran").remove();
-                $("#mablagh").click();
-
-                $.ajax({
-                    data: "setContactList=" + course_value_id,
-                    url: "server.php",
-                    type: "POST",
-                    success: function(response) {
-                        $("#consumers").html(response);
-                    },
-                });
-            },
-        });
-    });
-
-    function default_course_data(tel) {
-        $('#savedate').click();
-        $.ajax({
-            data: "default_course_data=" + tel,
-            type: "POST",
-            url: "server.php",
-            success: function(response) {
-                x = response.split(',');
-                $(".course_id").text(x[0]);
-                $("#course_name_show").text(x[1]);
-                $("option[value='" + x[0] + "']").attr('selected', 'selected');
-                $('#setCourses').click();
-            },
-        });
-    }
 </script>
-
-<?php
-if (isset($_COOKIE['selected_course'])) {
-} else {
-    // echo "<script>$('#setCourses').click();</script>";
-}
-
-?>

@@ -686,9 +686,9 @@ function active_course($tel)
         if ($c_disabled == null) {
             $tpr = '
             <div class="end_course transactions font-weight-bold">
-                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
-                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
-                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
+                <button class="btn btn-info w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                <button class="btn btn-success w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
+                <button class="btn btn-dark w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
             </div>
             <div class="mb-1"></div>';
         } else {
@@ -712,7 +712,7 @@ function active_course($tel)
         }
 
         echo '
-    <div class="card my_card">
+    <div class="card my_card" style="border: 1px solid #99bcdf;margin-bottom:1rem;">
         <table class="table">
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
@@ -752,7 +752,7 @@ function active_course($tel)
             <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
         </div>
         
-        <div class="share_link bg_blue_very_dark font-weight-bold">
+        <div class="share_link font-weight-bold">
             <div class="inline_title">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" data-type="' . $c_default . '" role="switch" id="defaultCourse' . $c_id . '" ' . $c_default . ' onchange="chageSwitch(\'defaultCourse\',' . $c_id . ')">
@@ -1913,7 +1913,12 @@ function ADD_new_payments($buyer, $selected_course, $trans_date, $money_limit, $
     for ($i = 0; $i < count($q) - 1; $i++) {
         $w = explode(':', $q[$i]);
         $pay_to = $w[0];
-        $pay_fee = $w[1];
+        if (isset($w[1])) {
+            $pay_fee = $w[1];
+        } else {
+            $pay_fee = 0;
+        }
+        
         if ($pay_to != $buyer && $pay_fee > 0) {
             $x = Query("INSERT INTO payments(pay_from) VALUES($buyer)");
             $y = mysqli_insert_id($GLOBALS['conn']);

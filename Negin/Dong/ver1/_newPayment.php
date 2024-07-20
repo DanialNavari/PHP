@@ -103,7 +103,7 @@
 
 <div class="cat mb-2">
     <div class="group_name">
-        <h6 class="font-weight-bold">مخاطبین تراکنش</h6>
+        <h6 class="font-weight-bold">دریافت کنندگان</h6>
     </div>
 </div>
 
@@ -337,6 +337,7 @@
 
     $('#setCourses').click(function() {
         let course_value_id = $("#course_name").val();
+        let course_id = $(".course_id").text(course_value_id);
         let course_value_text = $("#course_name option:selected").text();
 
         $("#course_name_show").text(course_value_text);

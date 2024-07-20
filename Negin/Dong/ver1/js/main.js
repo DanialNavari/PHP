@@ -1,6 +1,7 @@
 let cd;
 let course_code;
 let person_types;
+let edit_payment_pos = 0;
 
 function page(type, route, name = null, id = null) {
   if (type == "r") {
@@ -835,7 +836,6 @@ function buyer(type_person) {
 
   if (type_person == "variz") {
     $(".popup_header_title").text("واریز کننده را انتخاب کنید");
-    //document.getElementById("sabt").style.display = "none";
     document.getElementById("div_sabt").style.display = "none";
     document.getElementById("popup_sum").style.display = "none";
     document.getElementById("popup_trans_type").style.display = "none";
@@ -853,10 +853,12 @@ function buyer(type_person) {
       },
     });
   } else {
-    $(".popup_header_title").text("دریافت کننده را انتخاب کنید");
+    edit_payment_pos = 1;
+    $(".popup_header_title").text("دریافت کنندگان را انتخاب کنید");
     document.getElementById("div_sabt").style.display = "block";
     document.getElementById("popup_sum").style.display = "block";
     document.getElementById("popup_trans_type").style.display = "flex";
+    $("#sum_variz").text(Number(sum_all_sahm).toLocaleString());
 
     $.ajax({
       data: "payment_users=" + id + "&type_person=" + type_person,
@@ -871,12 +873,77 @@ function buyer(type_person) {
           for (i = 0; i < cont_sp.length - 1; i++) {
             var str_detail = cont_sp[i].split(":");
             idd = str_detail[0] + "." + id;
-            var element = document.getElementById("l." + idd);
-            if (str_detail[1] > 0) {
+            chk = "v." + idd;
+            //var valu = str_detail[1]; //Number(str_detail[1]).toLocaleString();
+            //$("#" + str_detail[0]).val(valu);
+            if (parseInt(pay_fee) > 0) {
+              var element = document.getElementById("l." + idd);
               element.classList.add("set_debt_user");
               document.getElementById("l." + idd).style.visibility = "visible";
-              var valu = str_detail[1]; //Number(str_detail[1]).toLocaleString();
-              $("#" + str_detail[0]).val(valu);
+              document.getElementById(pay_to).value = pay_fee;
+              document.getElementById(str_detail[0]).style.visibility =
+                "visible";
+            }
+          }
+        }
+      },
+    });
+  }
+
+  $(".variz").show();
+}
+
+function buyers(type_person) {
+  let id = $(".course_id").text();
+  sum_all_sahm = $("#sum_all_sahm").val();
+
+  if (type_person == "variz") {
+    $(".popup_header_title").text("خرید کننده را انتخاب کنید");
+    document.getElementById("div_sabt").style.display = "none";
+    document.getElementById("popup_sum").style.display = "none";
+    document.getElementById("popup_trans_type").style.display = "none";
+
+    var tarikh = $("#start_from_fa").text();
+    if (tarikh == "****/**/**") {
+      $("#savedate").click();
+    }
+    $.ajax({
+      data: "payment_users=" + id + "&type_person=" + type_person,
+      url: "server.php",
+      type: "POST",
+      success: function (response) {
+        $(".popup_body").html(response);
+      },
+    });
+  } else {
+    edit_payment_pos = 1;
+    $(".popup_header_title").text("مصرف کنندگان را انتخاب کنید");
+    document.getElementById("div_sabt").style.display = "block";
+    document.getElementById("popup_sum").style.display = "block";
+    document.getElementById("popup_trans_type").style.display = "flex";
+    $("#sum_variz").text(Number(sum_all_sahm).toLocaleString());
+
+    $.ajax({
+      data: "payment_users=" + id + "&type_person=" + type_person,
+      url: "server.php",
+      type: "POST",
+      success: function (response) {
+        $(".popup_body").html(response);
+        if (sum_all_sahm > 0) {
+          var cont = $("#karbaran").val();
+          var cont_sp = cont.split(",");
+
+          for (i = 0; i < cont_sp.length - 1; i++) {
+            var str_detail = cont_sp[i].split(":");
+            idd = str_detail[0] + "." + id;
+            chk = "v." + idd;
+            //var valu = str_detail[1]; //Number(str_detail[1]).toLocaleString();
+            //$("#" + str_detail[0]).val(valu);
+            if (parseInt(pay_fee) > 0) {
+              var element = document.getElementById("l." + idd);
+              element.classList.add("set_debt_user");
+              document.getElementById("l." + idd).style.visibility = "visible";
+              document.getElementById(pay_to).value = pay_fee;
               document.getElementById(str_detail[0]).style.visibility =
                 "visible";
             }
@@ -899,11 +966,9 @@ function setVarizPerson(code) {
   var xcode = code.split(".");
   uid = xcode[1];
   $("input[data-group='variz_fee']").css("visibility", "hidden");
-  //document.getElementById(uid).style.visibility = "visible";
-  //document.getElementById(uid).focus();
   $("#consumer_name").text(user_name);
   $("#buyer_person").val(uid);
-  document.getElementById("variz_konande").style.display = "table-row";
+  //document.getElementById("variz_konande").style.display = "table-row";
   cancelManager();
 }
 
@@ -989,6 +1054,7 @@ function focus_out() {
   } else {
     alert("جمع واریزی ها صفر است");
   }
+  edit_payment_pos = 1;
 }
 
 function check_val(id) {
@@ -1491,6 +1557,7 @@ function setManager(id) {
 }
 
 function cancelManager() {
+  edit_payment_pos = 0;
   $(".add_manager").hide();
 }
 
@@ -1591,6 +1658,25 @@ function addNewPayment1() {
         //alert("پرداخت با موفقیت ثبت شد");
         window.location.assign("./?route=__payments&h=0&id=" + course_id);
       }
+    },
+  });
+}
+
+function addNewPayment2() {
+  pay_id = $("#pay_id").val();
+  if (edit_payment_pos == 0) {
+    buyer("recieve");
+    window.setTimeout(function () {
+      focus_out();
+    }, 100);
+  }
+
+  $.ajax({
+    data: "del_pay=" + pay_id,
+    url: "server.php",
+    type: "POST",
+    success: function (response) {
+      addNewPayment1();
     },
   });
 }

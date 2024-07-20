@@ -67,6 +67,10 @@ body {
   box-shadow: none;
 }
 
+.mr_1{
+  margin-right: 1rem;
+}
+
 .btn_shadow {
   box-shadow: 0px 3px 3px 0px #00000069;
 }
@@ -530,7 +534,7 @@ h6 {
 }
 
 #variz_konande {
-  display: none;
+  /* display: none; */
 }
 
 #popup_trans_type {
@@ -575,14 +579,39 @@ h6 {
   gap: 0.4rem;
   padding: 0.3rem;
   font-size: 0.7rem;
-  color: #fff;
+  color: #333030;
+  border-bottom: 1px solid silver;
 }
 
 .end_course {
-  background-color: #012535;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  /* background-color: #012535; */
+  background-color: #f5faff;
+  padding-top: 0.3rem;
+  padding-bottom: 0.1rem;
   width: 100%;
+}
+
+.div_summ_all {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.div_all {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.div_share {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
 .end_course .btn {
