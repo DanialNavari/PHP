@@ -250,6 +250,9 @@ function Toast(error_id) {
     e108: "جمع سهم افراد با مبلغ تراکنش برابر نمی باشد",
     e109: "نام دوره را وارد کنید",
     e110: "دسترسی شما به برنامه مسدود شده است",
+    e111: "خرید کننده را انتخاب کنید",
+    e112: "مصرف کنندگان را انتخاب کنید",
+    e113: "سهم افراد را مشخص کنید",
   };
 
   switch (error_id) {
@@ -282,6 +285,15 @@ function Toast(error_id) {
       break;
     case 110:
       err = "خطای " + error_id + ": " + message.e110;
+      break;
+    case 111:
+      err = "خطای " + error_id + ": " + message.e111;
+      break;
+    case 112:
+      err = "خطای " + error_id + ": " + message.e112;
+      break;
+    case 113:
+      err = "خطای " + error_id + ": " + message.e113;
       break;
   }
 
@@ -976,9 +988,8 @@ function setRecievePerson(code) {
   var user_name = document.getElementById(code).innerHTML;
   var xcode = code.split(".");
   uid = xcode[1];
-  $("input[data-group='variz_fee']").css("visibility", "hidden");
-  document.getElementById(uid).style.visibility = "visible";
-  //$("#consumer_name").text(user_name);
+  //$("input[data-group='variz_fee']").css("visibility", "hidden");
+  //document.getElementById(uid).style.visibility = "visible";
   document.getElementById(uid).focus();
 }
 
@@ -987,6 +998,11 @@ function commafy(num) {
   var num_rep = valuee.replace(/,/g, "");
   var nums = Number(num_rep).toLocaleString();
   $("#" + num).val(nums);
+
+  chk = $("#buyforall").prop("checked");
+  if (chk == true) {
+    buy_for_all();
+  }
 }
 
 function commafy_(num) {
@@ -1633,7 +1649,7 @@ function setContactToList(course_id, class_name) {
 
 function addNewPayment1() {
   var trans_date = $("#start_from_fa").text();
-  var sum_all_sahm = $("#start_from_fa").val();
+  var sum_all_sahm = $("#sum_all_sahm").val();
   var buyer_person = $("#buyer_person").val();
   var trans_desc = $("#trans_desc").val();
   var karbaran = $("#karbaran").val();
@@ -1649,7 +1665,7 @@ function addNewPayment1() {
       karbaran +
       "&trans_desc=" +
       trans_desc +
-      "&buyer_person=" +
+      "&buyer=" +
       buyer_person,
     type: "POST",
     url: "server.php",
@@ -1679,4 +1695,62 @@ function addNewPayment2() {
       addNewPayment1();
     },
   });
+}
+
+function addNewPayment3() {
+  var trans_date = $("#start_from_fa").text();
+  var sum_all_sahm = $("#sum_all_sahm").val();
+  var buyer_person = $("#buyer_person").val();
+  var trans_desc = $("#trans_desc").val();
+  var karbaran = $("#karbaran").val();
+  var course_id = $(".course_id").text();
+  var pos = false;
+  karbaran_sp_colon = karbaran.split(":");
+
+  if (buyer_person == "") {
+    Toast(111);
+  } else if (karbaran == "") {
+    Toast(112);
+  } else if (karbaran_sp_colon.length > 2) {
+    $.ajax({
+      data:
+        "add_trans=ok&trans_date=" +
+        trans_date +
+        "&money_limit=" +
+        sum_all_sahm +
+        "&karbaran=" +
+        karbaran +
+        "&trans_desc=" +
+        trans_desc +
+        "&buyer_person=" +
+        buyer_person +
+        "&share_type=amount",
+      type: "POST",
+      url: "server.php",
+      success: function (response) {
+        if (response > 0) {
+          //alert("پرداخت با موفقیت ثبت شد");
+          window.location.assign("./?route=__transactions&h=0&id=" + course_id);
+        }
+      },
+    });
+  } else {
+    Toast(112);
+  }
+}
+
+function buy_for_all() {
+  chk = $("#buyforall").prop("checked");
+  inputs = $("input[data-group='variz_fee']");
+  if (chk == true) {
+    sum_variz = $("#sum_variz").val();
+    sum_variz_number = parseInt(sum_variz.replace(/,/g, ""));
+    each_share = Math.round(sum_variz_number / inputs.length);
+    for (i = 0; i < inputs.length; i++) {
+      j = i + 1;
+      $("input[data-group='variz_fee']:nth-child(" + j + ")").val(each_share);
+    }
+  } else {
+    $("input[data-group='variz_fee']").val("");
+  }
 }

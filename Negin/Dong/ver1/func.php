@@ -3,17 +3,6 @@ require_once('symbol.php');
 require_once('jdf.php');
 $app_name = 'دونگت';
 
-// function db()
-// {
-//     $db_host = 'localhost';
-//     $db_username = 'qndomtoj_dong';
-//     $db_password = '6Jz&yhG(Ez%y';
-//     $db_name = 'qndomtoj_Dong';
-//     date_default_timezone_set('Asia/Tehran');
-//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//     mysqli_set_charset($GLOBALS['conn'], "utf8");
-// }
-
 function db()
 {
     $db_host = 'localhost';
@@ -1891,7 +1880,7 @@ function get_contact_box($course_id, $list_type)
     }
 }
 
-function ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran, $karbaran_co, $type, $trans_desc, $recorder)
+function ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran, $type, $trans_desc, $recorder)
 {
     $x = Query("INSERT INTO transactions(trans_buyer) VALUES($buyer)");
     $y = mysqli_insert_id($GLOBALS['conn']);
@@ -1903,7 +1892,6 @@ function ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_lim
     UPDATE_trans($y, 'trans_desc', "$trans_desc");
     UPDATE_trans($y, 'trans_course', "$selected_course");
     UPDATE_trans($y, 'trans_person', "$karbaran");
-    UPDATE_trans($y, 'trans_person_co', "$karbaran_co");
     UPDATE_trans($y, 'trans_create', "$zaman");
 }
 
@@ -2138,7 +2126,7 @@ function SELECT_payment_users($selected_course, $person_type)
             <div class="form-check popup_group P.' . $contact_id . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')" >
                 <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
                 <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '">' . $contact_name . '</label>
-                <input class="form-control v-hide text-left d-ltr pay input_no_border" type="number" pattern="[0-9]" data-group="variz_fee" id="' . $contact_id . '" value="" onfocusout="check_val(' . $contact_id . ')"/>
+                <input class="form-control text-left d-ltr pay mb-0-2" type="number" pattern="[0-9]" data-group="variz_fee" id="' . $contact_id . '" value="" onfocusout="check_val(' . $contact_id . ')"/>
             </div>
             ';
     }

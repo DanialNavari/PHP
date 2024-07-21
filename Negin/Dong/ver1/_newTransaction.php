@@ -98,7 +98,7 @@
     <input type="hidden" id="trans_person" value="">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="addNewPayment1()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-success w-100" onclick="addNewPayment3()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -215,17 +215,27 @@
             ?>
             <div class="div_all">
                 <div class="div_summ_all">
-                    <h6>جمع خرید : </h6><input class="form-control" type="number" id="sum_variz">
+                    <h6>جمع خرید : </h6><input class="form-control w-9 d-ltr" type="text" id="sum_variz" onkeyup="commafy('sum_variz')">
                     <h6><?php echo $money_unit; ?></h6>
                 </div>
                 <div class="div_share">
+                    <!-- <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="zaribs">
+                        <label class="form-check-label" for="zaribs">
+                        ضریب
+                        </label>
+                    </div> -->
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="share_type" id="meghdar" />
-                        <label class="form-check-label mr-2 ml-2 text-center w-100" for="meghdar">ضریب</label>
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="mablaghs" checked>
+                        <label class="form-check-label" for="mablaghs">
+                            مبلغ
+                        </label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="share_type" id="meghdar1" />
-                        <label class="form-check-label mr-2 ml-2 text-center w-100" for="meghdar1">ضریب</label>
+                    <div class="form-check" onclick="buy_for_all()">
+                        <input class="form-check-input" type="checkbox" name="buyforall" id="buyforall" checked>
+                        <label class="form-check-label" for="buyforall">
+                            خرید برای همه
+                        </label>
                     </div>
                 </div>
             </div>

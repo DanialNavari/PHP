@@ -160,13 +160,13 @@ if (isset($_POST['login'])) {
 } elseif (isset($_POST['buyer'])) {
     setcookie('buyer', $_POST['buyer'], time() + 3600, "/");
 } elseif (isset($_POST['add_trans'])) {
-    $buyer = $_COOKIE['buyer'];
+    $buyer = $_POST['buyer_person'];
     $list_type = $_COOKIE['list_type'];
     $selected_course = $_COOKIE['selected_course'];
     $trans_date = $_POST['trans_date'];
     $money_limit = $_POST['money_limit'];
     $karbaran = $_POST['karbaran'];
-    $karbaran_co = $_POST['karbaran_co'];
+    //$karbaran_co = $_POST['karbaran_co'];
     $share_type = $_POST['share_type'];
     $trans_desc = $_POST['trans_desc'];
     $x = SELECT_contact($_COOKIE['uid']);
@@ -191,7 +191,7 @@ if (isset($_POST['login'])) {
         $karbaran_coo = $karbaran;
     }
 
-    ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran_coo, $karbaran_co, $share_type, $trans_desc, $recorder);
+    ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran_coo, $share_type, $trans_desc, $recorder);
     echo $selected_course;
 } elseif (isset($_POST['seps4'])) {
     echo seps4($_POST['seps4']);
