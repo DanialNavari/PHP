@@ -3,6 +3,17 @@ require_once('symbol.php');
 require_once('jdf.php');
 $app_name = 'دونگت';
 
+// function db()
+// {
+//     $db_host = 'localhost';
+//     $db_username = 'qndomtoj_dong';
+//     $db_password = '6Jz&yhG(Ez%y';
+//     $db_name = 'qndomtoj_Dong';
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
+
 function db()
 {
     $db_host = 'localhost';
@@ -418,8 +429,14 @@ function active_transactions($course_id)
             $permit2 = 'force_hide';
         }
 
+        if ($i == $num - 1) {
+            $st = 'margin-bottom: 6rem;';
+        } else {
+            $st = '';
+        }
+
         echo '
-    <div class="card my_card">
+    <div class="card my_card" style="' . $st . '">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center" colspan="2">خرید کننده</td>
@@ -508,9 +525,14 @@ function active_payments($course_id)
         $geo_date = explode('-', $create_x[0]);
         $geo_tarikh = gregorian_to_jalali($geo_date[0], $geo_date[1], $geo_date[2], '/');
 
+        if ($i == $num - 1) {
+            $st = 'margin-bottom: 6rem;';
+        } else {
+            $st = '';
+        }
 
         echo '
-    <div class="card my_card">
+    <div class="card my_card" style="' . $st . '">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center">واریز کننده</td>
@@ -976,24 +998,18 @@ function final_report($id)
         $daryafti = all_variz($_GET['id'], $c_member[$j]);
 
         $remain_ = $buyer_cost - $p_cost + $varizi;
-        if ($remain - $daryafti > 0) {
+        $final_number = $buyer_cost - $p_cost + $varizi - $daryafti;
+        if ($final_number > 0) {
             $debt_pos = '(بستانکار)';
             $debt_pos_en = 'talabkar';
-        } else if ($remain_ < 0) {
+            $best += $final_number;
+        } else if ($final_number < 0) {
             $debt_pos = '(بدهکار)';
             $debt_pos_en = 'bedehkar';
-            $sum_debt_all_users += $remain_;
-        } else if ($remain_ == 0) {
+            $sum_debt_all_users += $final_number;
+        } else if ($final_number == 0) {
             $debt_pos = '';
             $debt_pos_en = '';
-        }
-
-        if ($remain - $daryafti < 0) {
-            $debt_pos = '(بدهکار)';
-            $debt_pos_en = 'bedehkar';
-            $best += $remain - $daryafti;
-        } else {
-            $best += 0;
         }
 
         $report .=  '
@@ -1012,7 +1028,7 @@ function final_report($id)
                 <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($p_cost) . '</td>
                 <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($varizi) . '</td>
                 <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($daryafti) . '</td>
-                <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3(abs($remain - $daryafti))  . '</td>
+                <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3(abs($buyer_cost - $p_cost + $varizi - $daryafti))  . '</td>
         </tr>
         <tr><td colspan="6" class="empty_tr"></td></tr>';
     }
@@ -1035,10 +1051,6 @@ function final_report($id)
             <tr class="bg_grey">
                 <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2" >مانده بدهکاری افراد دوره</td>
                 <td class="td_title_ text-primary text-center d-rtl text-danger" colspan="3"><span id="remain_debt">' . sep3($sum_all_trans - $sum_all_pay) . '</span> <span class="unit">' . $course_money_unit . '</span></td>
-            </tr>
-            <tr class="bg_grey">
-                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2" >مانده بستانکاری افراد دوره</td>
-                <td class="td_title_ text-primary text-center d-rtl text-success" colspan="3"><span id="remain_debt">' . sep3(abs($best)) . '</span> <span class="unit">' . $course_money_unit . '</span></td>
             </tr>
             <tr class="bg_grey sum_all_cost">
                 <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle " colspan="2">جمع کل هزینه دوره</td>
@@ -1906,9 +1918,9 @@ function ADD_new_payments($buyer, $selected_course, $trans_date, $money_limit, $
         } else {
             $pay_fee = 0;
         }
-        
+
         if ($pay_to != $buyer && $pay_fee > 0) {
-            $x = Query("INSERT INTO payments(pay_from) VALUES($buyer)");
+            $x = Query("INSERT INTO `payments`(`pay_from`) VALUES($buyer)");
             $y = mysqli_insert_id($GLOBALS['conn']);
             $zaman = date("Y-m-d H:i:s");
             UPDATE_payments($y, 'pay_to', "$pay_to");

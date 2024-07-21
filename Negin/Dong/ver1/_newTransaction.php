@@ -215,7 +215,7 @@
             ?>
             <div class="div_all">
                 <div class="div_summ_all">
-                    <h6>جمع خرید : </h6><input class="form-control w-9 d-ltr" type="text" id="sum_variz" onkeyup="commafy('sum_variz')">
+                    <h6>مبلغ خرید : </h6><input class="form-control w-9 d-ltr" type="text" id="sum_variz" onkeyup="commafy('sum_variz')">
                     <h6><?php echo $money_unit; ?></h6>
                 </div>
                 <div class="div_share">
@@ -225,7 +225,7 @@
                         ضریب
                         </label>
                     </div> -->
-                    <div class="form-check">
+                    <div class="form-check force_hide">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="mablaghs" checked>
                         <label class="form-check-label" for="mablaghs">
                             مبلغ

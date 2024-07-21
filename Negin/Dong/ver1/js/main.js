@@ -198,11 +198,6 @@ function add_user_to_course(id) {
   }
 }
 
-$(".floatingActionButton").click(function () {
-  $(".gray_layer").show();
-  $(".add_payments").fadeIn();
-});
-
 function payment(pay_id = 0) {
   window.location.assign("./?route=_editTransaction&h=null&id=" + pay_id);
 }
@@ -1665,7 +1660,7 @@ function addNewPayment1() {
       karbaran +
       "&trans_desc=" +
       trans_desc +
-      "&buyer=" +
+      "&buyer_person=" +
       buyer_person,
     type: "POST",
     url: "server.php",
