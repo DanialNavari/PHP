@@ -3,6 +3,10 @@ let course_code;
 let person_types;
 let edit_payment_pos = 0;
 
+function confirm(text) {
+  
+}
+
 function page(type, route, name = null, id = null) {
   if (type == "r") {
     if (route == "__payments" || route == "__transactions") {
@@ -233,7 +237,7 @@ function navigate(page) {
   window.location.assign(page);
 }
 
-function Toast(error_id) {
+function Toast(error_id, type = "alert") {
   message = {
     e101: "پاسخی از سرور دریافت نشد",
     e102: "کد وارد شده نادرست می باشد",
@@ -292,8 +296,14 @@ function Toast(error_id) {
       break;
   }
 
-  $(".alertBox .alert span").text(err);
-  $(".alertBox").fadeIn(300);
+  if (type == "alert" || type == "") {
+    $(".alertBox .alert span").text(err);
+    $(".alertBox").fadeIn(300);
+  } else {
+    $(".okBox .alert span").text(err);
+    $(".okBox").fadeIn(300);
+  }
+
   $(".rapid_access div").hide();
   hide_After_time(3000);
 }
@@ -841,8 +851,17 @@ function buyer(type_person) {
   let id = $(".course_id").text();
   sum_all_sahm = $("#sum_all_sahm").val();
 
+  masir = window.location.href;
+  masir_sp = masir.split("&");
+  masir_sp_ = masir_sp[0].split("=");
+  masir_arg = masir_sp_[1];
+
   if (type_person == "variz") {
-    $(".popup_header_title").text("واریز کننده را انتخاب کنید");
+    if(masir_arg == "_editTransaction"){
+      $(".popup_header_title").text("خرید کننده را انتخاب کنید");
+    }else{
+      $(".popup_header_title").text("واریز کننده را انتخاب کنید");
+    }
     document.getElementById("div_sabt").style.display = "none";
     document.getElementById("popup_sum").style.display = "none";
     document.getElementById("popup_trans_type").style.display = "none";
@@ -857,15 +876,25 @@ function buyer(type_person) {
       type: "POST",
       success: function (response) {
         $(".popup_body").html(response);
+        $("[data-group='variz_fee']").css("visibility", "hidden");
       },
     });
   } else {
     edit_payment_pos = 1;
-    $(".popup_header_title").text("دریافت کنندگان را انتخاب کنید");
+    if(masir_arg == "_editTransaction"){
+      $(".popup_header_title").text("مصرف کنندگان را انتخاب کنید");
+      $("#sum_variz").val(Number(sum_all_sahm).toLocaleString());
+      buy_for_all();
+    }else{
+      $(".popup_header_title").text("دریافت کنندگان را انتخاب کنید");
+      $("#sum_variz").text(Number(sum_all_sahm).toLocaleString());
+    }
+
     document.getElementById("div_sabt").style.display = "block";
     document.getElementById("popup_sum").style.display = "block";
     document.getElementById("popup_trans_type").style.display = "flex";
-    $("#sum_variz").text(Number(sum_all_sahm).toLocaleString());
+    
+    
 
     $.ajax({
       data: "payment_users=" + id + "&type_person=" + type_person,
@@ -881,9 +910,15 @@ function buyer(type_person) {
             var str_detail = cont_sp[i].split(":");
             idd = str_detail[0] + "." + id;
             chk = "v." + idd;
-            //var valu = str_detail[1]; //Number(str_detail[1]).toLocaleString();
-            //$("#" + str_detail[0]).val(valu);
-            if (parseInt(pay_fee) > 0) {
+
+            if (masir_arg == "_editTransaction") {
+              var element = document.getElementById("l." + idd);
+              element.classList.add("set_debt_user");
+              document.getElementById("l." + idd).style.visibility = "visible";
+              document.getElementById(str_detail[0]).value = str_detail[1];
+              document.getElementById(str_detail[0]).style.visibility =
+                "visible";
+            } else if (parseInt(pay_fee) > 0) {
               var element = document.getElementById("l." + idd);
               element.classList.add("set_debt_user");
               document.getElementById("l." + idd).style.visibility = "visible";
@@ -920,6 +955,7 @@ function buyers(type_person) {
       type: "POST",
       success: function (response) {
         $(".popup_body").html(response);
+        $("[data-group='variz_fee']").css("visibility", "hidden");
       },
     });
   } else {
@@ -1734,6 +1770,25 @@ function addNewPayment3() {
   }
 }
 
+function addNewPayment4() {
+  trans_id = $("#trans_id").val();
+  if (edit_payment_pos == 0) {
+    buyer("recieve");
+    window.setTimeout(function () {
+      focus_out();
+    }, 100);
+  }
+
+  $.ajax({
+    data: "del_trans=" + trans_id,
+    url: "server.php",
+    type: "POST",
+    success: function (response) {
+      addNewPayment3();
+    },
+  });
+}
+
 function buy_for_all() {
   chk = $("#buyforall").prop("checked");
   inputs = $("input[data-group='variz_fee']");
@@ -1744,8 +1799,12 @@ function buy_for_all() {
     for (i = 0; i < inputs.length; i++) {
       j = i + 1;
       $("input[data-group='variz_fee']:nth-child(" + j + ")").val(each_share);
+      $("input[data-group='variz_fee']:nth-child(" + j + ")").attr("disabled","disabled");
     }
   } else {
     $("input[data-group='variz_fee']").val("");
+    $("input[data-group='variz_fee']").removeAttr("disabled");
   }
 }
+
+

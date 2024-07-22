@@ -12,8 +12,23 @@
     }
 </style>
 
+<?php
+$x = SELECT_trans_details($_GET['id']);
+$y = mysqli_fetch_assoc($x);
+$trans_buyer = $y['trans_buyer'];
+$trans_fee = $y['trans_fee'];
+$trans_date = $y['trans_date'];
+$trans_desc = $y['trans_desc'];
+$trans_course = $y['trans_course'];
+$trans_person = $y['trans_person'];
+$z = SELECT_user_by_id($trans_buyer);
+$buy_from_user = $z['contact_name'];
+?>
+<input type="hidden" id="trans_fee" value="<?php echo $trans_fee; ?>">
+<input type="hidden" id="trans_id" value="<?php echo $_GET['id']; ?>">
+
 <div class="row empty">
-    خرید جدید
+    ویرایش خرید
 </div>
 
 <div class="cat">
@@ -22,14 +37,14 @@
             <tr class="">
                 <td class="td_title va_middle w-6">نام دوره</td>
                 <td class="font-weight-bold text-white text-center w-9">
-                    <span class="text-center text-primary" id="course_name_show">***</span>
+                    <span class="text-center text-primary" id="course_name_show"></span>
                 </td>
-                <td class="text-center dore" onclick="select_course()"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="td_title_ va_middle w-6"></td>
             </tr>
             <tr>
                 <td class="td_title tarikh">تاریخ خرید</td>
                 <td class="font-weight-bold text-center">
-                    <span id="start_from_fa">****/**/**</span>
+                    <span id="start_from_fa"><?php echo $trans_date; ?></span>
                 </td>
                 <td class="text-center click" onclick="setDate()"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
@@ -48,62 +63,39 @@
             <tr>
                 <td class="td_title tarikh">خرید کننده</td>
                 <td class="font-weight-bold text-center" id="consumer_name">
-                    *****
+                    <?php echo $buy_from_user; ?>
                 </td>
-                <td class="text-center click" onclick="buyers('variz')"><?php echo $GLOBALS['edit']; ?></td>
-                <input type="hidden" id="buyer_person" value="">
-                <input type="hidden" id="sum_all_sahm" value="">
+                <td class="text-center click" onclick="buyer('variz')"><?php echo $GLOBALS['edit']; ?></td>
+                <input type="hidden" id="buyer_person" value="<?php echo $trans_buyer; ?>">
+                <input type="hidden" id="sum_all_sahm" value="<?php echo $trans_fee; ?>">
             </tr>
-            <tr id="variz_konande">
+            <tr id="variz_konandeha">
                 <td class="td_title tarikh">مصرف کننده</td>
                 <td class="font-weight-bold text-center" id="reciver_name">
 
                 </td>
-                <td class="text-center click" onclick="buyers('recieve')"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="text-center click" onclick="buyer('recieve')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
-            <!-- <tr>
-                <td class="td_title">مبلغ واریزی</td>
-                <td class="font-weight-bold text-center">
-                    <span id="moneyLimit">0</span> <span class="unit"><?php
-                                                                        // if (isset($_COOKIE['selected_course'])) {
-                                                                        //     $x = SELECT_course_id($_COOKIE['selected_course']);
-                                                                        //     echo $x['course_money_unit'];
-                                                                        // } 
-                                                                        ?>ريال
-                    </span>
-                </td>
-                <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
-            </tr> -->
-            <!-- <tr class="force_hide">
-                <td class="td_title"></td>
-                <td class="font-weight-bold text-center" colspan="2">
-                    <span>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="mablagh" value="mablagh">
-                            <label class="form-check-label" for="mablagh"><span>مبلغ (ريال)</span></label>
-                        </div>
-                    </span>
-                </td>
-            </tr> -->
+            <tr id="variz_konande force_hide"></tr>
             <tr>
                 <td class="td_title va_middle">توضیحات</td>
                 <td class="font-weight-bold text-center" colspan="2">
-                    <textarea class="form-control sum" rows="3" id="trans_desc"></textarea>
+                    <textarea class="form-control sum" rows="3" id="trans_desc"><?php echo $trans_desc; ?></textarea>
                 </td>
             </tr>
         </table>
         <input type="hidden" id="buyer" value="' . $trans_buyer_code . '" />
 
     </div>
-    <input type="hidden" id="trans_person" value="">
+    <input type="hidden" id="trans_person" value="<?php echo $trans_person; ?>">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="addNewPayment3()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-success w-100" onclick="addNewPayment4()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
     <div class="group_name">
-        <h6 class="font-weight-bold">دریافت کنندگان</h6>
+        <h6 class="font-weight-bold">مصرف کنندگان</h6>
     </div>
 </div>
 
@@ -184,6 +176,41 @@
     </table>
 </div>
 
+<!-- <div class="add_manager variz">
+    <div class="popup_header">
+        <h6 class="popup_header_title"></h6>
+        <div id="popup_trans_type" class="force_hide">
+            <div class="form-check popup_group" onclick="">
+                <input class="form-check-input" type="radio" id="zarib" name="type">
+                <label class="form-check-label mr-2 ml-2 text-center w-100" for="zarib">ضریب</label>
+            </div>
+            <div class="form-check popup_group" onclick="">
+                <input class="form-check-input" type="radio" id="mablagh" name="type">
+                <label class="form-check-label mr-2 ml-2 text-center w-100" for="mablagh">مبلغ</label>
+            </div>
+        </div>
+        <div class="popup_btn">
+            <div class="end_course bg-white w-5" id="div_sabt">
+                <div class="btn btn-default click1 w-100" id="div_cal" onclick="focus_out()">ثبت</div>
+            </div>
+            <div class="end_course bg-white w-5">
+                <div class="btn btn-warning click1 w-100" onclick="cancelManager()">بازگشت</div>
+            </div>
+        </div>
+        <div id="popup_sum">
+            <?php $x = SELECT_course_id($trans_course);
+            if ($x) {
+                $money_unit = $x['course_money_unit'];
+            } else {
+                $money_unit = 'ريال';
+            }
+            ?>
+            <h6>جمع کل: <span id="sum_variz">0</span> <?php echo $money_unit; ?></h6>
+        </div>
+    </div>
+    <div class="popup_body"></div>
+</div> -->
+
 <div class="add_manager variz">
     <div class="popup_header">
         <h6 class="popup_header_title"></h6>
@@ -215,7 +242,7 @@
             ?>
             <div class="div_all">
                 <div class="div_summ_all">
-                    <h6>مبلغ خرید : </h6><input class="form-control w-9 d-ltr" type="text" id="sum_variz" onkeyup="commafy('sum_variz')">
+                    <h6>مبلغ خرید : </h6><input class="form-control w-9 d-ltr" type="text" id="sum_variz" onkeyup="commafy('sum_variz')" value="">
                     <h6><?php echo $money_unit; ?></h6>
                 </div>
                 <div class="div_share">
@@ -232,7 +259,7 @@
                         </label>
                     </div>
                     <div class="form-check" onclick="buy_for_all()">
-                        <input class="form-check-input" type="checkbox" name="buyforall" id="buyforall" checked>
+                        <input class="form-check-input" type="checkbox" name="buyforall" id="buyforall">
                         <label class="form-check-label" for="buyforall">
                             خرید برای همه
                         </label>
@@ -244,7 +271,9 @@
     <div class="popup_body"></div>
 </div>
 
-<div class="course_id"></div>
+<div class="course_id"><?php if (isset($trans_course)) {
+                            echo $trans_course;
+                        } ?></div>
 <div class="cat mb-1 h-1"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -254,7 +283,50 @@
 
 <script>
     $(document).ready(function() {
-        $("#karbaran").val("");
+
+        course_id = $('.course_id').text();
+        $("option[value='" + course_id + "']").attr('selected', 'selected');
+        $('#setCourses').click();
+        tarikh = $('#start_from_fa').text();
+        tarikh_sp = tarikh.split('/');
+
+        maah = tarikh_sp[1];
+        if (maah < 10) {
+            maah = tarikh_sp[1].substr(1);
+        } else {
+            maah = tarikh_sp[1];
+        }
+
+        rooz = tarikh_sp[2];
+        if (rooz < 10) {
+            rooz = tarikh_sp[2].substr(1);
+        } else {
+            rooz = tarikh_sp[2];
+        }
+
+        new_tarikh = tarikh_sp[0] + ',' + maah + ',' + rooz;
+        $('.table-days td').removeClass('selected');
+        x = $("[data-date='" + new_tarikh + "']").addClass('selected');
+        $('#savedate').click();
+
+        trans_to = $('#trans_to').val();
+        trans_fee = $('#trans_fee').val();
+
+        window.setTimeout(function() {
+            $(".user_info input").val(0);
+            $("#user-" + trans_to).val(Number(trans_fee).toLocaleString());
+            let trans_person = $("#trans_person").val();
+            $("#karbaran").val(trans_person);
+
+            trans_persons = trans_person.split(",");
+            for (i = 0; i < trans_persons.length - 1; i++) {
+                trans_personss = trans_persons[i].split(":");
+                user_id = trans_personss[0];
+                user_cost = trans_personss[1];
+                $("#user-" + user_id).val(Number(user_cost).toLocaleString());
+            }
+            pay_fee = trans_fee;
+        }, 1000);
     });
 
     $('#zarib').hide();
@@ -362,16 +434,15 @@
 
     $('#setCourses').click(function() {
         let course_value_id = $("#course_name").val();
-        let course_id = $(".course_id").text(course_value_id);
         let course_value_text = $("#course_name option:selected").text();
 
         $("#course_name_show").text(course_value_text);
         $(".add_course").hide();
         $(".gray_layer").click();
         $("td.click").addClass("dore");
-        $("#consumer_name").text("****");
+        //$("#consumer_name").text("****");
         $(".contacts").empty();
-        $('#savedate').click();
+        //$('#savedate').click();
 
         $.ajax({
             data: "getContactList=" + course_value_id,
@@ -411,15 +482,14 @@
                 $('#setCourses').click();
             },
         });
-    }
 
-    default_course_data("<?php echo $_COOKIE['uid']; ?>");
+    }
 </script>
 
 <?php
 if (isset($_COOKIE['selected_course'])) {
 } else {
-    echo '<script>window.location.reload();</script>';
+    // echo "<script>$('#setCourses').click();</script>";
 }
 
 ?>

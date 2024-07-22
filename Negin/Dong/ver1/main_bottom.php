@@ -71,7 +71,15 @@ if ($xx == 0) {
     <div class="alert alert-danger alert-dismissible fade show sum1" role="alert">
         <?php echo $alert; ?>
         <span></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+    </div>
+</div>
+
+<div class="alertBox okBox">
+    <div class="alert alert-success alert-dismissible fade show sum1" role="alert">
+        <?php echo $check_circle; ?>
+        <span></span>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
     </div>
 </div>
 

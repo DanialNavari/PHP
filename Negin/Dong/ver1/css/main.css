@@ -92,7 +92,8 @@ form#sms > input {
   margin: 0 auto;
 }
 
-.alertBox {
+.alertBox,
+.okBox {
   position: fixed;
   bottom: 0;
   width: 92%;
@@ -100,7 +101,8 @@ form#sms > input {
   right: 4vw;
 }
 
-.alertBox {
+.alertBox,
+.okBox {
   display: none;
 }
 

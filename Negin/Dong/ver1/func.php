@@ -397,6 +397,7 @@ function active_transactions($course_id)
         $trans_date = explode(' ', $r['trans_date']);
         $trans_desc = $r['trans_desc'];
         $trans_person = $r['trans_person'];
+        $trans_acc = $r['trans_acc'];
 
         $user_buyer_info = SELECT_user_by_id($trans_buyer);
         $buyer_name = $user_buyer_info['contact_name'];
@@ -418,12 +419,14 @@ function active_transactions($course_id)
         if ($user_codes == $c_manager) {
             $permit1 = '';
             $permit2 = '';
+            $ma = 'ok';
         } elseif ($trans_buyer == $z_id) {
             $permit1 = '';
             $permit2 = '';
         } elseif ($_COOKIE['uid'] == $c_manager) {
             $permit1 = '';
             $permit2 = '';
+            $ma = 'ok';
         } else {
             $permit1 = 'force_hide';
             $permit2 = 'force_hide';
@@ -433,6 +436,27 @@ function active_transactions($course_id)
             $st = 'margin-bottom: 6rem;';
         } else {
             $st = '';
+        }
+
+        if ($trans_acc == null || $trans_acc == '') {
+            $trans_acc_pos = '
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
+                <button class="btn btn-warning w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
+            </td>
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
+                <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+            </td>
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="1">
+                    <button class="btn btn-success w-100 user_img" onclick="accept_trans(' . $trans_id . ')">' . $GLOBALS['check'] . '</button>
+            </td>';
+        } elseif ($trans_acc != null && $ma == 'ok' || $trans_acc != '' && $ma == 'ok') {
+            $trans_acc_pos = '
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
+                <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+            </td>
+            ';
+        } else {
+            $trans_acc_pos = '';
         }
 
         echo '
@@ -455,16 +479,7 @@ function active_transactions($course_id)
                 <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="4"> ' . $zinaf . '</td>
             </tr>
             <tr class="bg-default font-weight-bold">
-            
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
-                    <button class="btn btn-warning w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
-                </td>
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
-                    <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
-                </td>
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="1">
-                    <button class="btn btn-success w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')" disabled>' . $GLOBALS['check'] . '</button>
-                </td>
+                ' . $trans_acc_pos . '
             </tr>
         </table>
     </div>
