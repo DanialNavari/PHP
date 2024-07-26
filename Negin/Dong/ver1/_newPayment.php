@@ -74,17 +74,21 @@
                 </td>
                 <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
             </tr> -->
-            <!-- <tr class="force_hide">
-                <td class="td_title"></td>
+            <tr>
+                <td class="td_title w-7">جمع مبلغ پرداختی</td>
                 <td class="font-weight-bold text-center" colspan="2">
-                    <span>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="mablagh" value="mablagh">
-                            <label class="form-check-label" for="mablagh"><span>مبلغ (ريال)</span></label>
-                        </div>
+                    <span id="moneyLimits">0</span> <span class="unit">
+                        <?php
+                        if (isset($_COOKIE['selected_course'])) {
+                            $x = SELECT_course_id($_COOKIE['selected_course']);
+                            echo $x['course_money_unit'];
+                        } else {
+                            echo 'ريال';
+                        }
+                        ?>
                     </span>
                 </td>
-            </tr> -->
+            </tr>
             <tr>
                 <td class="td_title va_middle">توضیحات</td>
                 <td class="font-weight-bold text-center" colspan="2">
@@ -98,7 +102,7 @@
     <input type="hidden" id="trans_person" value="">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="addNewPayment1()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-prime w-100 sum" onclick="addNewPayment1()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -207,9 +211,9 @@
         </div>
         <div id="popup_sum">
             <?php $x = SELECT_course_id($_COOKIE['selected_course']);
-            if($x){
-                $money_unit = $x['course_money_unit']; 
-            }else{
+            if ($x) {
+                $money_unit = $x['course_money_unit'];
+            } else {
                 $money_unit = 'ريال';
             }
             ?>

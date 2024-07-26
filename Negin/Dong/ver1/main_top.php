@@ -1,4 +1,4 @@
-<?php require_once('func.php');?>
+<?php require_once('func.php'); ?>
 <!DOCTYPE html>
 <html lang="fa">
 
@@ -15,7 +15,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
-    <title><?php echo $app_name;?></title>
+    <title><?php echo $app_name; ?></title>
 </head>
 
 <body id="app_body">
@@ -28,14 +28,24 @@
                 <img src="image/logo_white.png" alt="logo" class="rounded w-2" />
                 <?php require_once('func.php');
                 if (isset($_COOKIE['uid'])) {
-                    $rs = SELECT_contact($_COOKIE['uid']);
-                    $name = '(' . trim($rs['contact_name'], " ") . ')';
+                    $rs = SELECT_malek($_COOKIE['uid']);
+                    if ($rs != '0') {
+                        $fetch = mysqli_fetch_assoc($rs);
+                        if ($_COOKIE['uid'] == $fetch['contact_maker']) {
+                            $name = trim($fetch['contact_name'], " ");
+                        } else {
+                            $name = "خودم";
+                        }
+                    }else{
+                        $rs = SELECT_contact($_COOKIE['uid']);
+                        $name = trim($rs['contact_name'], " ");
+                    }
                 } else {
                     $name = '';
                 }
                 ?>
-                <h1 class="pt-3 pb-3 pr-3 d-inline-block "><?php echo $app_name;?></h1>
-                <h6 class="d_inline"><?php echo $name; ?></h6>
+                <h1 class="pt-3 pb-3 pr-3 d-inline-block "><?php echo $app_name; ?></h1>
+                <h6 class="d_inline" id="my_local_name"><?php echo $name; ?></h6>
             </div>
             <i id="h_menu" class="pl-3 click1" onclick="navigate('logout.php')"><?php echo $logout; ?></i>
         </div>

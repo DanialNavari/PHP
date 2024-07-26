@@ -20,14 +20,14 @@
         <table class="table">
             <tr>
                 <td colspan="1">
-                    <div class="btn btn-primary w-100 add_user" onclick="openContactPicker()">
+                    <div class="btn btn-prime w-100 add_user sum" onclick="openContactPicker()">
                         <div class="pay_btn_icon">
                             <?php echo $user_add; ?>
                         </div>
                     </div>
                 </td>
                 <td colspan="1">
-                    <div class="btn btn-success w-100 contact_btn" onclick="add()">
+                    <div class="btn btn-prime w-100 contact_btn sum" onclick="add()">
                         <div class="pay_btn_icon">
                             <?php echo $check; ?>
                         </div>

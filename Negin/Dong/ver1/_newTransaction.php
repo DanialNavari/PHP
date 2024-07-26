@@ -61,19 +61,21 @@
                 </td>
                 <td class="text-center click" onclick="buyers('recieve')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
-            <!-- <tr>
-                <td class="td_title">مبلغ واریزی</td>
-                <td class="font-weight-bold text-center">
-                    <span id="moneyLimit">0</span> <span class="unit"><?php
-                                                                        // if (isset($_COOKIE['selected_course'])) {
-                                                                        //     $x = SELECT_course_id($_COOKIE['selected_course']);
-                                                                        //     echo $x['course_money_unit'];
-                                                                        // } 
-                                                                        ?>ريال
+            <tr>
+                <td class="td_title">جمع مبلغ واریزی</td>
+                <td class="font-weight-bold text-center" colspan="2">
+                    <span id="moneyLimits">0</span> <span class="unit">
+                        <?php
+                        if (isset($_COOKIE['selected_course'])) {
+                            $x = SELECT_course_id($_COOKIE['selected_course']);
+                            echo $x['course_money_unit'];
+                        } else {
+                            echo 'ريال';
+                        }
+                        ?>
                     </span>
                 </td>
-                <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
-            </tr> -->
+            </tr>
             <!-- <tr class="force_hide">
                 <td class="td_title"></td>
                 <td class="font-weight-bold text-center" colspan="2">
@@ -98,7 +100,7 @@
     <input type="hidden" id="trans_person" value="">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="addNewPayment3()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-prime w-100 sum" onclick="addNewPayment3()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">

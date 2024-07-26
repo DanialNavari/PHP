@@ -92,6 +92,36 @@ form#sms > input {
   margin: 0 auto;
 }
 
+.none_click_box {
+  border: 1px solid #1473bd4f !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: #212529 !important;
+}
+
+.btn-prime {
+  color: #fff;
+  background-color: #1473bd;
+  border-color: #1473bd;
+}
+
+.bg-prime{
+  background-color: #1473bd;
+  border-color: #1473bd;
+}
+
+.btn-prime-dark {
+  color: #fff;
+  background-color: #074576;
+  border-color: #074576;
+}
+
+.btn-management {
+  color: #000 !important;
+  background-color: #ebf6ff;
+  border-color: rgba(20, 115, 189, 0.31);
+}
+
 .alertBox,
 .okBox {
   position: fixed;
@@ -156,6 +186,9 @@ form#sms > input {
 
 .alert {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
 }
 
 h1 {
@@ -219,8 +252,9 @@ h6 {
   min-height: 1rem;
   padding: 0.5rem 0.5rem 0.1rem 0.5rem;
   color: #1d5da9;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   border-bottom: 1px solid rgba(20, 115, 189, 0.44);
+  font-weight: bold;
 }
 
 .box_cat_parent {
@@ -228,7 +262,31 @@ h6 {
   align-items: center;
   flex-direction: row;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 1rem;
+}
+
+#my_local_name::before {
+  content: "(";
+}
+
+#my_local_name::after {
+  content: ")";
+}
+
+.set_name {
+  z-index: 9;
+  position: fixed;
+  top: 30vh;
+  padding: 1rem;
+  background: #fff;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1rem;
+  visibility: hidden;
 }
 
 .box_cat {
@@ -413,7 +471,7 @@ h6 {
   position: absolute;
   bottom: 4.5rem;
   left: 0.5rem;
-  background-color: #82cf01;
+  background-color: #212529;
   width: 2.6rem;
   height: 2.6rem;
   border-radius: 2rem;
@@ -987,11 +1045,15 @@ input[radio] {
 }
 
 .bedehkar {
-  background: #ff5a96 !important;
+  background: #ffeee8 !important;
 }
 
 .talabkar {
-  background: #8bc34a !important;
+  background: #f0ffe3 !important;
+}
+
+.box_icon img {
+  width: 1.5rem;
 }
 
 .h-1 {
@@ -1091,7 +1153,7 @@ input[radio] {
 }
 
 .bg_grey {
-  background-color: #f1f1f1;
+  /* background-color: #f1f1f1; */
   color: #1d5da9;
 }
 

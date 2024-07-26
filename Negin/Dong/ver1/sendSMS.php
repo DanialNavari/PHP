@@ -3,7 +3,7 @@ require 'ippanel/vendor/autoload.php';
 $apiKey = "WIsqaEu45JFhybtmDhwJqAlySO2DDanRt7F10rdo_5E=";
 $client = new \IPPanel\Client($apiKey);
 
-$vcode = mt_rand(111111, 999999);
+$vcode = mt_rand(1000, 9999);
 $patternVariables = [
     "vcode" => $vcode,
 ];

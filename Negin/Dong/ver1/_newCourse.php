@@ -79,7 +79,7 @@
             </tr>
             <tr>
                 <td class="td_title_ font-weight-bold text-white">
-                    <button class="btn btn-success w-100 sum" id="btn_add_new_contact" onclick="addNewContact()">اضافه کردن مخاطب</button>
+                    <button class="btn btn-prime w-100 sum" id="btn_add_new_contact" onclick="addNewContact()">اضافه کردن مخاطب</button>
                 </td>
             </tr>
         </table>

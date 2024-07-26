@@ -2,10 +2,8 @@ let cd;
 let course_code;
 let person_types;
 let edit_payment_pos = 0;
-
-function confirm(text) {
-  
-}
+let del_modal;
+let my_name_pos = 0;
 
 function page(type, route, name = null, id = null) {
   if (type == "r") {
@@ -28,6 +26,12 @@ function page(type, route, name = null, id = null) {
   }
 }
 
+function showModal(msg_title, msg_body) {
+  $("#exampleModalLongTitle").text(msg_title);
+  $(".modal-body").text(msg_body);
+  $("#confirmBox").click();
+}
+
 var nav_drawer = 0;
 
 $("#h_menu").click(function () {
@@ -42,13 +46,16 @@ $("#h_menu").click(function () {
 });
 
 $(".gray_layer").click(function () {
-  $(".nav_drawer").fadeOut();
-  $(".gray_layer").fadeOut();
-  $(".add_payments").fadeOut();
-  $(".add_course").fadeOut();
-  $(".add_fee").fadeOut();
-  $(".tarikh_table").fadeOut();
-  nav_drawer = 0;
+  if (my_name_pos == -1) {
+  } else {
+    $(".nav_drawer").fadeOut();
+    $(".gray_layer").fadeOut();
+    $(".add_payments").fadeOut();
+    $(".add_course").fadeOut();
+    $(".add_fee").fadeOut();
+    $(".tarikh_table").fadeOut();
+    nav_drawer = 0;
+  }
 });
 
 let path_name = $("#path_name").val();
@@ -252,47 +259,51 @@ function Toast(error_id, type = "alert") {
     e111: "خرید کننده را انتخاب کنید",
     e112: "مصرف کنندگان را انتخاب کنید",
     e113: "سهم افراد را مشخص کنید",
+    e114: "نام باید حداقل 3 حرف باشد",
   };
 
   switch (error_id) {
     case 101:
-      err = "خطای " + error_id + ": " + message.e101;
+      err = message.e101;
       break;
     case 102:
-      err = "خطای " + error_id + ": " + message.e102;
+      err = message.e102;
       break;
     case 103:
-      err = "خطای " + error_id + ": " + message.e103;
+      err = message.e103;
       break;
     case 104:
-      err = "خطای " + error_id + ": " + message.e104;
+      err = message.e104;
       break;
     case 105:
-      err = "خطای " + error_id + ": " + message.e105;
+      err = message.e105;
       break;
     case 106:
-      err = "خطای " + error_id + ": " + message.e106;
+      err = message.e106;
       break;
     case 107:
-      err = "خطای " + error_id + ": " + message.e107;
+      err = message.e107;
       break;
     case 108:
-      err = "خطای " + error_id + ": " + message.e108;
+      err = message.e108;
       break;
     case 109:
-      err = "خطای " + error_id + ": " + message.e109;
+      err = message.e109;
       break;
     case 110:
-      err = "خطای " + error_id + ": " + message.e110;
+      err = message.e110;
       break;
     case 111:
-      err = "خطای " + error_id + ": " + message.e111;
+      err = message.e111;
       break;
     case 112:
-      err = "خطای " + error_id + ": " + message.e112;
+      err = message.e112;
       break;
     case 113:
-      err = "خطای " + error_id + ": " + message.e113;
+      err = message.e113;
+      break;
+    case 114:
+      err = message.e114;
       break;
   }
 
@@ -305,7 +316,20 @@ function Toast(error_id, type = "alert") {
   }
 
   $(".rapid_access div").hide();
-  hide_After_time(3000);
+  hide_After_time(4000);
+}
+
+function Toast_msg(text, type, time) {
+  if (type == "okBox") {
+    $(".okBox .alert span").text(text);
+    $(".okBox").fadeIn(300);
+  } else {
+    $(".alertBox .alert span").text(text);
+    $(".alertBox").fadeIn(300);
+  }
+
+  $(".rapid_access div").hide();
+  hide_After_time(time);
 }
 
 function login() {
@@ -337,6 +361,7 @@ $(".btn-close").click(function () {
 function hide_After_time(time) {
   const hide_After_time = setTimeout(function () {
     $(".alertBox").fadeOut("slow");
+    $(".okBox").fadeOut("slow");
     $(".rapid_access div").fadeIn("slow");
     $("input").css("border", "1px solid #ced4da");
   }, time);
@@ -347,10 +372,8 @@ function check_code() {
   var c2 = $("#c2").val();
   var c3 = $("#c3").val();
   var c4 = $("#c4").val();
-  var c5 = $("#c5").val();
-  var c6 = $("#c6").val();
 
-  let user_code = c6 + "" + c5 + "" + c4 + "" + c3 + "" + c2 + "" + c1;
+  let user_code = c4 + "" + c3 + "" + c2 + "" + c1;
 
   $.ajax({
     type: "POST",
@@ -373,8 +396,9 @@ function check_code() {
         $("#c2").val("");
         $("#c3").val("");
         $("#c4").val("");
-        $("#c5").val("");
-        $("#c6").val("");
+        $("#c4").focus();
+      } else {
+        window.location.reload();
       }
     },
   });
@@ -397,8 +421,9 @@ function countDown(id) {
 
 function next_place(event, id) {
   let value = event.key;
+  let val_1 = $("#c1").val();
   if (value == "Backspace") {
-    if (id == 6) {
+    if (id == 4) {
       $("#c" + id).val("");
     } else {
       let number_box = $("#c" + id).val();
@@ -410,6 +435,8 @@ function next_place(event, id) {
         $("#c" + (id + 1)).val("");
       }
     }
+  } else if (parseInt(val_1) > 0) {
+    $("button").focus();
   } else if (value == "Enter" && id == 1) {
     check_code();
   } else {
@@ -588,7 +615,9 @@ function saveNewCourse() {
     j = i + 1;
     member_list +=
       $(".selected_user div:nth-child(" + j + ")").attr("data") + ",";
+    esm_karbar = $(".selected_user div:nth-child(" + j + ") .user_name").text();
   }
+
   $.ajax({
     data:
       "new_course=1&course_name=" +
@@ -857,9 +886,9 @@ function buyer(type_person) {
   masir_arg = masir_sp_[1];
 
   if (type_person == "variz") {
-    if(masir_arg == "_editTransaction"){
+    if (masir_arg == "_editTransaction") {
       $(".popup_header_title").text("خرید کننده را انتخاب کنید");
-    }else{
+    } else {
       $(".popup_header_title").text("واریز کننده را انتخاب کنید");
     }
     document.getElementById("div_sabt").style.display = "none";
@@ -881,11 +910,11 @@ function buyer(type_person) {
     });
   } else {
     edit_payment_pos = 1;
-    if(masir_arg == "_editTransaction"){
+    if (masir_arg == "_editTransaction") {
       $(".popup_header_title").text("مصرف کنندگان را انتخاب کنید");
       $("#sum_variz").val(Number(sum_all_sahm).toLocaleString());
       buy_for_all();
-    }else{
+    } else {
       $(".popup_header_title").text("دریافت کنندگان را انتخاب کنید");
       $("#sum_variz").text(Number(sum_all_sahm).toLocaleString());
     }
@@ -893,8 +922,6 @@ function buyer(type_person) {
     document.getElementById("div_sabt").style.display = "block";
     document.getElementById("popup_sum").style.display = "block";
     document.getElementById("popup_trans_type").style.display = "flex";
-    
-    
 
     $.ajax({
       data: "payment_users=" + id + "&type_person=" + type_person,
@@ -1097,6 +1124,7 @@ function focus_out() {
         );
       }
     }
+    $("#moneyLimits").text(Number(debt_).toLocaleString());
     cancelManager();
   } else {
     alert("جمع واریزی ها صفر است");
@@ -1799,7 +1827,10 @@ function buy_for_all() {
     for (i = 0; i < inputs.length; i++) {
       j = i + 1;
       $("input[data-group='variz_fee']:nth-child(" + j + ")").val(each_share);
-      $("input[data-group='variz_fee']:nth-child(" + j + ")").attr("disabled","disabled");
+      $("input[data-group='variz_fee']:nth-child(" + j + ")").attr(
+        "disabled",
+        "disabled"
+      );
     }
   } else {
     $("input[data-group='variz_fee']").val("");
@@ -1807,4 +1838,34 @@ function buy_for_all() {
   }
 }
 
+function show_change_my_name() {
+  document.getElementById("set_name").style.visibility = "visible";
+  $(".gray_layer").show();
+  my_name_pos = -1;
+}
 
+function change_my_name() {
+  my_name = $("#my_name_value").val();
+  if (my_name.length >= 3) {
+    $.ajax({
+      data: "my_name_first=" + my_name,
+      type: "POST",
+      url: "server.php",
+      success: function (response) {
+        if (response > 0) {
+          $(".gray_layer").hide();
+          $(".set_name").hide();
+          $("#my_local_name").text(my_name);
+        }
+      },
+    });
+  } else {
+    Toast(114, "alert");
+    $("#my_name_value").focus();
+  }
+}
+
+function DownloadReport(id) {
+  k = "e6664a";
+  $("#screenshot").attr("src", "screenshot.php?id=" + id + "&k=" + k);
+}

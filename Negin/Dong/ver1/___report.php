@@ -13,3 +13,5 @@
     let users_debt = $('#users_sum_debt').val();
     $('#remain_debt').text(users_debt);
 </script>
+
+<iframe src="" id="screenshot"></iframe>

@@ -61,6 +61,11 @@ if (isset($_POST['login'])) {
     $maker = $_COOKIE['uid'];
     $date = date("Y-m-d H:i:s");
     $res = ADD_course($course_name, $members, $course_start, $money_limit, $maker, $maker, $date);
+    if (isset($_POST['my_name'])) {
+        $my_name = $_POST['my_name'];
+        $my_id = $_POST['my_id'];
+        Query("UPDATE `contacts` SET `contact_name` = '$my_name' WHERE `contact_id` = '$my_id'");
+    }
     echo $res;
 } elseif (isset($_POST['sep'])) {
     echo sep3($_POST['sep']);
@@ -137,6 +142,7 @@ if (isset($_POST['login'])) {
     $res = SELECT_contact($tel);
     if ($res == 0) {
         ADD_contact($tel, 'خودم', $_COOKIE['uid'], date("Y-m-d H:i:s"));
+        Query("INSERT INTO `settings`(`uid`,`course_default`) VALUES('$tel',NULL)");
     }
 } elseif (isset($_POST['del_contact'])) {
     $tel = $_POST['tel'];
@@ -151,14 +157,14 @@ if (isset($_POST['login'])) {
     echo 1;
 } elseif (isset($_POST['getContactList'])) {
     $getContactList = $_POST['getContactList'];
-    setcookie('selected_course', $getContactList, time() + 3600, "/");
+    setcookie('selected_course', $getContactList, time() + 604800, "/");
 } elseif (isset($_POST['list_type'])) {
     $selected_course = $_COOKIE['selected_course'];
     $list_type = $_POST['list_type'];
-    setcookie('list_type', $_POST['list_type'], time() + 3600, "/");
+    setcookie('list_type', $_POST['list_type'], time() + 604800, "/");
     echo get_contact_box($selected_course, $list_type);
 } elseif (isset($_POST['buyer'])) {
-    setcookie('buyer', $_POST['buyer'], time() + 3600, "/");
+    setcookie('buyer', $_POST['buyer'], time() + 604800, "/");
 } elseif (isset($_POST['add_trans'])) {
     $buyer = $_POST['buyer_person'];
     $list_type = $_COOKIE['list_type'];
@@ -248,4 +254,9 @@ if (isset($_POST['login'])) {
     echo default_course("$default");
 } elseif (isset($_POST['payment_users'])) {
     echo SELECT_payment_users($_POST['payment_users'], $_POST['type_person']);
+} elseif (isset($_POST['my_name_first'])) {
+    $tel = $_COOKIE['uid'];
+    $my_name = $_POST['my_name_first'];
+    Query("UPDATE `contacts` SET `contact_name` = '$my_name' WHERE `contact_tel` = '$tel' AND `contact_maker` = '$tel'");
+    echo 1;
 }

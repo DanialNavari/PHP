@@ -36,13 +36,13 @@ if ($xx == 0) {
         </div>
         <div class="item_title">دوره</div>
     </div>
-    <div class="item_ <?php echo $pos_btn;?>" onclick="page('r','_newPayment','payments')" id="payments">
+    <div class="item_ <?php echo $pos_btn; ?>" onclick="page('r','_newPayment','payments')" id="payments">
         <div class="item_circle">
             <div class="item_icon"><?php echo $payment; ?></div>
         </div>
         <div class="item_title">پرداخت</div>
     </div>
-    <div class="item_ <?php echo $pos_btn;?>" onclick="page('r','_newTransaction','transaction')" id="transaction">
+    <div class="item_ <?php echo $pos_btn; ?>" onclick="page('r','_newTransaction','transaction')" id="transaction">
         <div class="item_circle">
             <div class="item_icon"><?php echo $bag_plus; ?></div>
         </div>
@@ -75,11 +75,37 @@ if ($xx == 0) {
     </div>
 </div>
 
-<div class="alertBox okBox">
+<div class="okBox">
     <div class="alert alert-success alert-dismissible fade show sum1" role="alert">
         <?php echo $check_circle; ?>
         <span></span>
         <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+    </div>
+</div>
+
+<!-- Modal -->
+<button id="confirmBox" type="button" class="btn btn-primary force_hide" data-toggle="modal" data-target="#exampleModalCenter">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">عنوان پیام</h5>
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modal-body">
+                متن پیام
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">انصراف</button>
+                <button type="button" class="btn btn-success" onclick="acceptModal()">تایید</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -147,6 +173,24 @@ if ($xx == 0) {
         }
         showOnlineStatu(pos);
     }
+
+    $(document).ready(function() {
+        var my_local_name = $("#my_local_name").text();
+        if (my_local_name == "خودم") {
+            show_change_my_name();
+        }
+
+        screen_width = screen.width;
+        if (screen_width < 316) {
+            $("#app_body").html("<h2 style='padding: 1rem; line-height: 4rem; margin-top: 30%;text-align: justify;'>لطفا از دستگاه هایی با صفحه نمایش بزرگتر از 320 پیکسل استفاده کنید</h2>");
+        }
+    });
 </script>
+
+<div class="set_name" id="set_name">
+    <h6>نام و نام خانوادگی خود را وارد کنید</h6>
+    <input type="text" id="my_name_value" value="" class="form-control">
+    <button class="btn btn-prime" onclick="change_my_name()">ذخیره</button>
+</div>
 
 </html>

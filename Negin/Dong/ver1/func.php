@@ -3,16 +3,7 @@ require_once('symbol.php');
 require_once('jdf.php');
 $app_name = 'دونگت';
 
-// function db()
-// {
-//     $db_host = 'localhost';
-//     $db_username = 'qndomtoj_dong';
-//     $db_password = '6Jz&yhG(Ez%y';
-//     $db_name = 'qndomtoj_Dong';
-//     date_default_timezone_set('Asia/Tehran');
-//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//     mysqli_set_charset($GLOBALS['conn'], "utf8");
-// }
+
 
 function db()
 {
@@ -48,6 +39,8 @@ function ADD_user($tel)
     $id = mysqli_insert_id($GLOBALS['conn']);
     ADD_log($id, 'New User Login');
     Query("INSERT INTO `settings`(`uid`) VALUES('$tel')");
+    $dates = date("Y-m-d H:i:s");
+    Query("INSERT INTO `contacts`(`contact_name`,`contact_tel`,`contact_maker`,`contact_date`,`contact_active`) VALUES('خودم','$tel','$tel','$dates','1')");
 }
 
 function ADD_contact($tel, $name, $maker, $date)
@@ -105,7 +98,12 @@ function SELECT_course_id($course_id)
 {
     db();
     $result = Query("SELECT * FROM `course` WHERE `course_id` ='$course_id'");
-    $r = mysqli_fetch_assoc($result);
+    $n = mysqli_num_rows($result);
+    if ($n > 0) {
+        $r = mysqli_fetch_assoc($result);
+    } else {
+        $r = 0;
+    }
     return $r;
 }
 
@@ -163,7 +161,7 @@ function check_login($tel)
 function check_code($user_code, $real_code)
 {
     if ($user_code == $real_code) {
-        setcookie("uid", $_COOKIE['temp_tel'], time() + 86400, "/");
+        setcookie("uid", $_COOKIE['temp_tel'], time() + 604800, "/");
         $tel = $_COOKIE['temp_tel'];
         $q = Query("SELECT * FROM users WHERE `users_tel` LIKE '%$tel%'");
         $num = mysqli_num_rows($q);
@@ -233,7 +231,8 @@ function Object_contact($name, $tel, $maker)
     if ($result1 == 0) {
         $pro = '';
     } else {
-        $pro = 'color:ffd700;';
+        //$pro = 'color:ffd700;';
+        $pro = 'color:#fff;';
     }
 
 
@@ -276,7 +275,8 @@ function Object_contact1($name, $tel, $course_id, $contac_id, $pos)
     if ($result1 == 0) {
         $pro = '';
     } else {
-        $pro = 'color:#ffd700;';
+        //$pro = 'color:#ffd700;';
+        $pro = 'color:#fff;';
     }
     $rs = Query("SELECT * FROM `course` WHERE `course_id` = '$course_id' AND `course_member` LIKE '" . $contac_id . ",%' OR `course_id` = '$course_id' AND `course_member` LIKE '%," . $contac_id . ",%'");
     $rs_num = mysqli_num_rows($rs);
@@ -440,43 +440,45 @@ function active_transactions($course_id)
 
         if ($trans_acc == null || $trans_acc == '') {
             $trans_acc_pos = '
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
-                <button class="btn btn-warning w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="3">
+                <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
             </td>
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
-                <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+                <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
             </td>
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="1">
-                    <button class="btn btn-success w-100 user_img" onclick="accept_trans(' . $trans_id . ')">' . $GLOBALS['check'] . '</button>
-            </td>';
+            ';
         } elseif ($trans_acc != null && $ma == 'ok' || $trans_acc != '' && $ma == 'ok') {
             $trans_acc_pos = '
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
-                <button class="btn btn-danger w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+                <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
             </td>
             ';
         } else {
             $trans_acc_pos = '';
         }
 
+        $l = $i + 1;
+
         echo '
     <div class="card my_card" style="' . $st . '">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
+                <td class="text-white text-center">ردیف</td>
                 <td class="text-white text-center" colspan="2">خرید کننده</td>
                 <td class="text-white text-center">مبلغ(ريال)</td>
                 <td class="text-white text-center">تاریخ</td>
             </tr>
             <tr class="bg-white font-weight-bold">
+                <td class="text-primary text-center">' . $l . '</td>
                 <td class="text-primary text-center" colspan="2">' . $buyer_name . '</td>
                 <td class="text-primary text-center">' . $trans_fee . '</td>
                 <td class="text-primary text-center">' . $trans_date[0] . '</td>
             </tr>
             <tr class="bg_blue_nice font-weight-bold">
-                <td class="td_title text_blue_very_dark text-right" colspan="4">' . $trans_desc . '</td>
+                <td class="td_title text_blue_very_dark text-right" colspan="5">' . $trans_desc . '</td>
             </tr>
             <tr class="bg_secondary font-weight-bold">
-                <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="4"> ' . $zinaf . '</td>
+                <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="5"> ' . $zinaf . '</td>
             </tr>
             <tr class="bg-default font-weight-bold">
                 ' . $trans_acc_pos . '
@@ -569,10 +571,10 @@ function active_payments($course_id)
             </tr>
             <tr class="bg-default font-weight-bold">
                 <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
-                    <button class="btn btn-warning w-100 user_img" onclick="navigate(\'./?route=_editPayments&h=null&id=' . $pay_id . '\')">' . $GLOBALS['edit'] . '</button>
+                    <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editPayments&h=null&id=' . $pay_id . '\')">' . $GLOBALS['edit'] . '</button>
                 </td>
                 <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
-                    <button class="btn btn-danger w-100 user_img" onclick="del_payment(' . $pay_id . ')">' . $GLOBALS['del'] . '</button>
+                    <button class="btn btn-prime-dark w-100 user_img" onclick="del_payment(' . $pay_id . ')">' . $GLOBALS['del'] . '</button>
                 </td>
             </tr>
         </table>
@@ -712,17 +714,17 @@ function active_course($tel)
         if ($c_disabled == null) {
             $tpr = '
             <div class="end_course transactions font-weight-bold">
-                <button class="btn btn-info w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
-                <button class="btn btn-success w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
-                <button class="btn btn-dark w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
             </div>
             <div class="mb-1"></div>';
         } else {
             $tpr = '
             <div class="end_course transactions font-weight-bold force_hide">
-                <button class="btn btn-light w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
-                <button class="btn btn-info w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
-                <button class="btn btn-success w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
             </div>
             <div class="mb-1"></div>';
         }
@@ -798,9 +800,9 @@ function active_course($tel)
             </div>
             <div class="proofs fld ' . $permit . '">
                 <div class="end_course transactions font-weight-bold">
-                    <button class="btn btn-primary w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_course"] . ' اتمام دوره</button>
-                    <a class="btn btn-warning w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: $c_name \n 🔸 تاریخ شروع: $c_start_date \n 🔸 مدیر گروه : ** $course_manager  ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
-                    <button class="btn btn-danger w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
+                    <button class="btn btn-management w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_of_course"] . ' اتمام دوره</button>
+                    <a class="btn btn-management w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: $c_name \n 🔸 تاریخ شروع: $c_start_date \n 🔸 مدیر گروه : ** $course_manager  ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
+                    <button class="btn btn-management w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
                 </div>
             </div>
         </div>
@@ -1053,7 +1055,11 @@ function final_report($id)
         <table class="table">
             <tr class="bg_dark_blue">
                 <td class="td_title font-weight-bold text-white" colspan="1">نام دوره</td>
-                <td class="td_title_ text-white" colspan="3"><span>' . $c_name . '</span><span>(' . $c_start_date . ')</span></td>
+                <td class="td_title_ text-white" colspan="3"><span>' . $c_name . '</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تاریخ شروع</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . $c_start_date . ' </td>
             </tr>
             <tr class="bg_grey">
                 <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تعداد افراد دوره</td>
@@ -1085,10 +1091,188 @@ function final_report($id)
         </tr>
             ';
 
-
+    $download = $GLOBALS['download'];
     echo $report . '</table>
     <input type="text" id="users_sum_debt" value="' . sep3(abs($sum_debt_all_users)) . '" class="hide"/>
-    </div>';
+    </div>
+        <table class="table">
+            <tr class="">
+                <td>
+                    <button class="btn btn-dark w-100" onclick="DownloadReport(' . $id . ')">' . $download . ' دانلود گزارش جامع</button>
+                </td>
+            </tr>
+        </table>
+    ';
+}
+
+function final_report1($id)
+{
+    db();
+    $trans_list = [];
+    $trans_list_buyer = [];
+    $pay_all = [];
+    $report = '';
+
+    $r = SELECT_course_id($id);
+    $c_name = $r['course_name'];
+    $c_member_count = count(explode(',', $r['course_member'])) - 1;
+    $c_member = explode(',', $r['course_member']);
+    $c_start_date = $r['course_start_date'];
+    $course_money_unit = $r['course_money_unit'];
+
+    $z = SELECT_trans($id);
+    $trans_num = mysqli_num_rows($z);
+    $sum_all_trans = 0;
+    for ($i = 0; $i < $trans_num; $i++) {
+        $v = mysqli_fetch_assoc($z);
+
+        $buyer = $v['trans_buyer'];
+        if (isset($trans_list_buyer[$buyer])) {
+            $trans_list_buyer[$buyer] += $v['trans_fee'];
+        } else {
+            $trans_list_buyer[$buyer] =  $v['trans_fee'];
+        }
+
+
+        $sum_all_trans += $v['trans_fee'];
+        $trans_ = explode(',', $v['trans_person']);
+        $trans_c = count($trans_) - 1;
+        for ($o = 0; $o < $trans_c; $o++) {
+            $trans_p = explode(':', $trans_[$o]);
+            $trans_p_uid = $trans_p[0];
+            $trans_p_cost = $trans_p[1];
+            if (isset($trans_list[$trans_p_uid])) {
+                $trans_list[$trans_p_uid] += $trans_p_cost;
+            } else {
+                $trans_list[$trans_p_uid] =  $trans_p_cost;
+            }
+        }
+    }
+
+    $a = SELECT_pay($id);
+    $payment_num = mysqli_num_rows($a);
+    $sum_all_pay = 0;
+    for ($j = 0; $j < $payment_num; $j++) {
+        $d = mysqli_fetch_assoc($a);
+        $sum_all_pay += $d['pay_fee'];
+    }
+
+    $sum_debt_all_users = 0;
+    $best = 0;
+    for ($j = 0; $j < $c_member_count; $j++) {
+        $person_info = SELECT_user_by_id($c_member[$j]);
+        $person_name = $person_info['contact_name'];
+        if (isset($trans_list[$c_member[$j]])) {
+            $p_cost = $trans_list[$c_member[$j]];
+        } else {
+            $p_cost = 0;
+        }
+
+        if (isset($trans_list_buyer[$c_member[$j]])) {
+            $buyer_cost = $trans_list_buyer[$c_member[$j]];
+        } else {
+            $buyer_cost = 0;
+        }
+
+
+        $spbi = SELECT_pay_by_id($_GET['id'], $c_member[$j]);
+        $spbi_num = mysqli_num_rows($spbi);
+        $varizi = 0;
+        if ($spbi_num > 0) {
+            for ($q = 0; $q < $spbi_num; $q++) {
+                $t = mysqli_fetch_assoc($spbi);
+                $varizi += $t['pay_fee'];
+                $from = $t['pay_from'];
+                $to = $t['pay_to'];
+                $pay_fee = $t['pay_fee'];
+
+                if (isset($pay_all[$from][$to])) {
+                    $pay_all[$from][$to] += $pay_fee;
+                } else {
+                    $pay_all[$from][$to] = $pay_fee;
+                }
+            }
+        }
+
+        $daryafti = all_variz($_GET['id'], $c_member[$j]);
+
+        $final_number = $buyer_cost - $p_cost + $varizi - $daryafti;
+        if ($final_number > 0) {
+            $debt_pos = '(بستانکار)';
+            $debt_pos_en = 'talabkar';
+            $best += $final_number;
+        } else if ($final_number < 0) {
+            $debt_pos = '(بدهکار)';
+            $debt_pos_en = 'bedehkar';
+            $sum_debt_all_users += $final_number;
+        } else if ($final_number == 0) {
+            $debt_pos = '';
+            $debt_pos_en = '';
+        }
+
+        $sum_final = $buyer_cost - $p_cost + $varizi - $daryafti;
+        if ($sum_final > 0) {
+            $final_pos = 'بستانکار';
+        } else {
+            $final_pos = 'بدهکار';
+        }
+
+        $report .=  '
+        <tr class="bt">
+            <td class="td_title_ text-primary text-center ">' . $j + 1 . '</td>
+            <td class="td_title_ text-primary text-center ">' . $person_name . '</td>
+            <td class="td_title_ text-primary text-center ">' . sep3($buyer_cost) . '</td>
+            <td class="td_title_ text-primary text-center ">' . sep3($p_cost) . '</td>
+            <td class="td_title_ text-primary text-center ">' . sep3($varizi) . '</td>
+            <td class="td_title_ text-primary text-center  d-rtl">' . sep3($daryafti) . '</td>
+            <td class="td_title_ text-primary text-center  d-rtl">' . sep3(abs($buyer_cost - $p_cost + $varizi - $daryafti))  . '</td>
+            <td class="td_title_ text-primary text-center  d-rtl">' . $final_pos  . '</td>
+        </tr>
+        <tr><td colspan="7" class="empty_tr"></td></tr>';
+    }
+
+    echo '    
+    <div class="card my_card">
+        <table class="table">
+            <tr class="bg_dark_blue">
+                <td class="td_title font-weight-bold text-white" colspan="1">نام دوره</td>
+                <td class="td_title_ text-white" colspan="3"><span>' . $c_name . '</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تاریخ شروع</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . $c_start_date . ' </td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تعداد افراد دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . $c_member_count . ' <span class="unit">نفر</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">تعداد تراکنش</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . $trans_num . ' <span class="unit">مورد</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2" >مانده بدهکاری افراد دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl text-danger" colspan="3"><span id="remain_debt">' . sep3($sum_all_trans - $sum_all_pay) . '</span> <span class="unit">' . $course_money_unit . '</span></td>
+            </tr>
+            <tr class="bg_grey sum_all_cost">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle " colspan="2">جمع کل هزینه دوره</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($sum_all_trans) . ' <span class="unit">' . $course_money_unit . '</span></td>
+            </tr>
+            <tr class="bg_grey">
+                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">میانگین هزینه هر نفر</td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($sum_all_trans / $c_member_count) . ' <span class="unit">' . $course_money_unit . '</span></td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="card my_card">
+        <table class="table">
+        <tr class="">
+            <td colspan="6" class="text-center">کلیه مبالغ به ' . $course_money_unit . ' می باشد</td>
+        </tr>
+            ';
+
+    return $report;
 }
 
 function share($trans_id)
@@ -1629,6 +1813,18 @@ function SELECT_contact($tel)
     return $fetch;
 }
 
+function SELECT_malek($tel)
+{
+    $res = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel' AND `contact_maker`='$tel' ORDER BY `contact_id` DESC");
+    $num = mysqli_num_rows($res);
+    if ($num > 0) {
+        $fetch = $res;
+    } else {
+        $fetch = 0;
+    }
+    return $fetch;
+}
+
 function sahm($trans_fee, $trans_person_co)
 {
     $x = explode(',', $trans_person_co);
@@ -1674,7 +1870,8 @@ function contact_list($tel)
             if ($ozv_res == 0) {
                 $ozviat = 'color:#fff;';
             } else {
-                $ozviat = 'color:#ffd700;';
+                //$ozviat = 'color:#ffd700;';
+                $ozviat = 'color:#fff;';
             }
         }
 
@@ -1692,7 +1889,7 @@ function contact_list($tel)
             $key_edit = '<i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>';
         } else {
             $key_del = '';
-            $key_edit = '';
+            $key_edit = '<i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>';
         }
 
         $cont .= '
@@ -2097,7 +2294,9 @@ function default_course($tel)
     $y = mysqli_fetch_assoc($x);
     if (intval($y['course_default']) > 0) {
         $z = SELECT_course_id($y['course_default']);
-        return $z['course_id'] . ',' . $z['course_name'];
+        if ($z != 0) {
+            return $z['course_id'] . ',' . $z['course_name'];
+        }
     } else {
         $xx = Query("SELECT * FROM `course` WHERE `course_member` LIKE '$cntc_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL OR `course_member` LIKE '%,$cntc_id,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL ORDER BY `course_id` DESC");
         $yy = mysqli_num_rows($xx);
