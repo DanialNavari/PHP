@@ -90,7 +90,7 @@ $buy_from_user = $z['contact_name'];
     <input type="hidden" id="trans_person" value="<?php echo $trans_person; ?>">
     <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-success w-100" onclick="addNewPayment4()" disabled><span></span> ذخیره</button>
+    <button class="btn btn-prime w-100 sum" onclick="addNewPayment4()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">

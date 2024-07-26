@@ -3,11 +3,12 @@
 // header("Cache-Control: no-store, no-cache");  
 // header('Content-Disposition: attachment; filename="finalreport.jpg"');
 
-$key = $_GET['k'];
+$key = "e6664a";
 $id = $_GET['id'];
-// $key = 'e6664a';
 
-?>
-<img id="screen" src="https://api.screenshotmachine.com/?key=<?php echo $key; ?>&url=https%3A%2F%2Fnavarimachinary.ir%2FDong%2Ffinal_report.php%3Fid%3D<?php echo $id; ?>&device=desktop&dimension=800xfull&format=png&cacheLimit=0&delay=200" alt="finalReport">
+$addr = "https://api.screenshotmachine.com/?key=$key&url=https%3A%2F%2Fnavarimachinary.ir%2FDong%2Ffinal_report.php%3Fid%3D$id&device=desktop&dimension=800xfull&format=png&cacheLimit=0&delay=200";
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+$x = file_get_contents($addr);
+$name = time();
+file_put_contents("./temp/" . $name . ".jpg", $x);
+echo "./temp/" . $name . ".jpg";

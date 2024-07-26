@@ -909,7 +909,6 @@ function buyer(type_person) {
       },
     });
   } else {
-    edit_payment_pos = 1;
     if (masir_arg == "_editTransaction") {
       $(".popup_header_title").text("مصرف کنندگان را انتخاب کنید");
       $("#sum_variz").val(Number(sum_all_sahm).toLocaleString());
@@ -954,12 +953,13 @@ function buyer(type_person) {
                 "visible";
             }
           }
+          edit_payment_pos = 1;
         }
       },
     });
   }
-
   $(".variz").show();
+  return edit_payment_pos;
 }
 
 function buyers(type_person) {
@@ -1745,15 +1745,20 @@ function addNewPayment2() {
       focus_out();
     }, 100);
   }
+  chk_edit_payment(1);
+}
 
-  $.ajax({
-    data: "del_pay=" + pay_id,
-    url: "server.php",
-    type: "POST",
-    success: function (response) {
-      addNewPayment1();
-    },
-  });
+function chk_edit_payment(value) {
+  if (edit_payment_pos == value) {
+    $.ajax({
+      data: "del_pay=" + pay_id,
+      url: "server.php",
+      type: "POST",
+      success: function (response) {
+        addNewPayment1();
+      },
+    });
+  }
 }
 
 function addNewPayment3() {
@@ -1866,6 +1871,26 @@ function change_my_name() {
 }
 
 function DownloadReport(id) {
-  k = "e6664a";
-  $("#screenshot").attr("src", "screenshot.php?id=" + id + "&k=" + k);
+  $(".please_wait h6").show();
+  $("#download_link").hide();
+  my_name_pos = -1;
+  $(".gray_layer").show();
+  $(".please_wait").show();
+
+  $.ajax({
+    data: "id=" + id,
+    type: "GET",
+    url: "screenshot.php",
+    success: function (response) {
+      $(".please_wait h6").hide();
+      $("#download_link").show();
+      $("#download_link").attr("href", response);
+    },
+  });
+}
+
+function download_btn() {
+  my_name_pos = 0;
+  $(".gray_layer").hide();
+  $(".please_wait").hide();
 }

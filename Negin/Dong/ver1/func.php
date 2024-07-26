@@ -117,7 +117,13 @@ function SELECT_trans_details($trans_id)
 function SELECT_trans($course_id)
 {
     db();
-    $w = Query("SELECT * FROM `transactions` WHERE `trans_course` = '$course_id' AND `trans_del` IS NULL");
+    $w = Query("SELECT * FROM `transactions` WHERE `trans_course` = '$course_id' AND `trans_del` IS NULL ORDER BY `trans_id` DESC");
+    return $w;
+}
+function SELECT_trans_with_del($course_id)
+{
+    db();
+    $w = Query("SELECT * FROM `transactions` WHERE `trans_course` = '$course_id' ORDER BY `trans_id` DESC");
     return $w;
 }
 
@@ -125,6 +131,12 @@ function SELECT_pay($course_id)
 {
     db();
     $w = Query("SELECT * FROM `payments` WHERE `pay_course` = '$course_id' AND `pay_del` IS NULL");
+    return $w;
+}
+function SELECT_pay_with_del($course_id)
+{
+    db();
+    $w = Query("SELECT * FROM `payments` WHERE `pay_course` = '$course_id'");
     return $w;
 }
 
@@ -381,7 +393,7 @@ function active_transactions($course_id)
     $cids = SELECT_course_id("$course_id");
     $money_unit = $cids['course_money_unit'];
     $c_manager = $cids['course_manager'];
-    $w = SELECT_trans("$course_id");
+    $w = SELECT_trans_with_del("$course_id");
     $num = mysqli_num_rows($w);
 
     $z = SELECT_contact($_COOKIE['uid']);
@@ -398,6 +410,7 @@ function active_transactions($course_id)
         $trans_desc = $r['trans_desc'];
         $trans_person = $r['trans_person'];
         $trans_acc = $r['trans_acc'];
+        $trans_del = $r['trans_del'];
 
         $user_buyer_info = SELECT_user_by_id($trans_buyer);
         $buyer_name = $user_buyer_info['contact_name'];
@@ -438,7 +451,7 @@ function active_transactions($course_id)
             $st = '';
         }
 
-        if ($trans_acc == null || $trans_acc == '') {
+        if ($trans_acc == null && is_null($trans_del)|| $trans_acc == '' && is_null($trans_del)) {
             $trans_acc_pos = '
             <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="3">
                 <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
@@ -447,7 +460,7 @@ function active_transactions($course_id)
                 <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
             </td>
             ';
-        } elseif ($trans_acc != null && $ma == 'ok' || $trans_acc != '' && $ma == 'ok') {
+        } elseif ($trans_acc != null && $ma == 'ok' && is_null($trans_del) || $trans_acc != '' && $ma == 'ok' && is_null($trans_del)) {
             $trans_acc_pos = '
             <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
                 <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
@@ -459,8 +472,19 @@ function active_transactions($course_id)
 
         $l = $i + 1;
 
+        $bg_del = '';
+        $del_row = '';
+
+        if (is_null($trans_del)) {
+            $bg_del = "";
+            $del_row = "";
+        } else {
+            $bg_del = "filter: hue-rotate(120deg) blur(0.8px)";
+            $del_row = "<tr><td colspan='5' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد</td></tr>";
+        }
+
         echo '
-    <div class="card my_card" style="' . $st . '">
+    <div class="card my_card" style="' . $st . $bg_del . '">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center">ردیف</td>
@@ -483,6 +507,7 @@ function active_transactions($course_id)
             <tr class="bg-default font-weight-bold">
                 ' . $trans_acc_pos . '
             </tr>
+            ' . $del_row . '
         </table>
     </div>
     ';
@@ -494,7 +519,7 @@ function active_payments($course_id)
     $cids = SELECT_course_id("$course_id");
     $money_unit = $cids['course_money_unit'];
     $c_manager = $cids['course_manager'];
-    $w = SELECT_pay("$course_id");
+    $w = SELECT_pay_with_del("$course_id");
     $num = mysqli_num_rows($w);
 
     $z = SELECT_contact($_COOKIE['uid']);
@@ -511,6 +536,17 @@ function active_payments($course_id)
         $pay_date = $r['pay_date'];
         $pay_desc = $r['pay_desc'];
         $pay_maker = $r['pay_maker'];
+        $pay_del = $r['pay_del'];
+        $bg_del = '';
+        $del_row = '';
+
+        if (is_null($pay_del)) {
+            $bg_del = "";
+            $del_row = "";
+        } else {
+            $bg_del = "filter: hue-rotate(120deg) blur(0.8px)";
+            $del_row = "<tr><td colspan='4' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد</td></tr>";
+        }
 
         $user_buyer_info = SELECT_user_by_id($pay_from);
         $buyer_name = $user_buyer_info['contact_name'];
@@ -522,13 +558,13 @@ function active_payments($course_id)
         $user_recorder_info = SELECT_user_by_id($pay_maker);
         $recorder_name = $user_recorder_info['contact_name'];
 
-        if ($buyer_codes == $c_manager) {
+        if ($buyer_codes == $c_manager && $bg_del == "") {
             $permit1 = '';
             $permit2 = '';
-        } elseif ($buyer_codes == $z_id) {
+        } elseif ($buyer_codes == $z_id && $bg_del == "") {
             $permit1 = '';
             $permit2 = '';
-        } elseif ($_COOKIE['uid'] == $c_manager) {
+        } elseif ($_COOKIE['uid'] == $c_manager && $bg_del == "") {
             $permit1 = '';
             $permit2 = '';
         } else {
@@ -549,7 +585,7 @@ function active_payments($course_id)
         }
 
         echo '
-    <div class="card my_card" style="' . $st . '">
+    <div class="card my_card" style="' . $st . $bg_del . '">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center">واریز کننده</td>
@@ -577,6 +613,7 @@ function active_payments($course_id)
                     <button class="btn btn-prime-dark w-100 user_img" onclick="del_payment(' . $pay_id . ')">' . $GLOBALS['del'] . '</button>
                 </td>
             </tr>
+            ' . $del_row . '
         </table>
     </div>
     ';
@@ -1098,7 +1135,7 @@ function final_report($id)
         <table class="table">
             <tr class="">
                 <td>
-                    <button class="btn btn-dark w-100" onclick="DownloadReport(' . $id . ')">' . $download . ' دانلود گزارش جامع</button>
+                    <button class="btn btn-dark w-100" onclick="DownloadReport(' . $id . ')">' . $download . ' ایجاد گزارش</button>
                 </td>
             </tr>
         </table>

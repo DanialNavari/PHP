@@ -38,7 +38,11 @@ if (isset($_POST['login'])) {
     } else {
         $c_id = $res['contact_id'];
         $c__maker = $res['contact_maker'];
-        if ($c_maker == $c__maker) {
+        if ($c_maker == $_COOKIE['uid']) {
+            Query("UPDATE `users` SET `users_name` = '$c_name' WHERE `users_tel` = '$c_tell'");
+            Query("UPDATE `contacts` SET `contact_name` = '" . $c_name . "',`contact_active` = '1' WHERE `contact_id` = '$c_id'");
+            $resid = 3;
+        } elseif ($c_maker == $c__maker) {
             Query("UPDATE `contacts` SET `contact_name` = '" . $c_name . "',`contact_active` = '1' WHERE `contact_id` = '$c_id'");
             $resid = 3;
         } else {
@@ -258,5 +262,6 @@ if (isset($_POST['login'])) {
     $tel = $_COOKIE['uid'];
     $my_name = $_POST['my_name_first'];
     Query("UPDATE `contacts` SET `contact_name` = '$my_name' WHERE `contact_tel` = '$tel' AND `contact_maker` = '$tel'");
+    Query("UPDATE `users` SET `users_name` = '$my_name' WHERE `users_tel` = '$tel'");
     echo 1;
 }

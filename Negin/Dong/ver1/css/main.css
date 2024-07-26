@@ -105,7 +105,7 @@ form#sms > input {
   border-color: #1473bd;
 }
 
-.bg-prime{
+.bg-prime {
   background-color: #1473bd;
   border-color: #1473bd;
 }
@@ -138,6 +138,28 @@ form#sms > input {
 
 .alert span {
   margin-right: 0.2rem;
+}
+
+#screenshot {
+  display: none;
+}
+
+.please_wait {
+  display: none;
+  position: fixed;
+  z-index: 9;
+  top: 40vh;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.5rem;
+  background: #1473bd;
+  width: 100%;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+#download_link{
+  display: none;
 }
 
 #hourGlass {
