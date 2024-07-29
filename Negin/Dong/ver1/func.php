@@ -3,40 +3,7 @@ require_once('symbol.php');
 require_once('jdf.php');
 $app_name = 'دونگت';
 
-// navarimachinary
-// function db()
-// {
-//     $db_host = 'localhost';
-//     $db_username = 'qndomtoj_dong';
-//     $db_password = '6Jz&yhG(Ez%y';
-//     $db_name = 'qndomtoj_Dong';
-//     date_default_timezone_set('Asia/Tehran');
-//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//     mysqli_set_charset($GLOBALS['conn'], "utf8");
-// }
 
-// Dongeto.com
-function db()
-// {
-//     $db_host = 'localhost';
-//     $db_username = 'dongetoc_dongeto';
-//     $db_password = 'KCZhgh54nKuegWsVvY8Q';
-//     $db_name = 'dongetoc_dongeto';
-//     date_default_timezone_set('Asia/Tehran');
-//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//     mysqli_set_charset($GLOBALS['conn'], "utf8");
-// }
-
-// function db()
-{
-    $db_host = 'localhost';
-    $db_username = 'root';
-    $db_password = '';
-    $db_name = 'dong';
-    date_default_timezone_set('Asia/Tehran');
-    $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-    mysqli_set_charset($GLOBALS['conn'], "utf8");
-}
 
 function Query($query)
 {
