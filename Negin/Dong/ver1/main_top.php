@@ -16,7 +16,9 @@
     <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
     <title><?php echo $app_name; ?></title>
+    <script src="./js/telegram-web-app.js"></script>
     <script>
+        //alert(window.Telegram.WebApp.BiometricManager);
         function Go_Back() {
             var page_ = document.getElementById('page_').value;
             if(page_ != 'main page'){
