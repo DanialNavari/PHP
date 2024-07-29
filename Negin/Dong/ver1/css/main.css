@@ -1302,6 +1302,11 @@ input[radio] {
   left: 25%;
   width: 1.5rem;
   height: 1.2rem;
+  display: none;
+}
+
+.btn_ {
+  margin-top: 0vh !important;
 }
 
 .internet img {

@@ -122,14 +122,16 @@ if ($xx == 0) {
         <img src="image/no-wifi.png" alt="internet" class="reounded">
         <h4 id="diss_title">اینترنتت قطع شد!!!</h4>
         <br />
-        <button class="btn btn-primary btn-diss" onclick="checkDissconnect()">اتصال مجدد</button>
+        <div class="btn_">
+            <button class="btn btn-primary" onclick="checkDissconnect()">اتصال مجدد</button>
+        </div>
     </div>
 </div>
 
 <script>
     function showOnlineStatus(event) {
         if (event.type === "online") {
-            $('#wifi_pos').attr('src', 'image/wifi.png');
+            //$('#wifi_pos').attr('src', 'image/wifi.png');
             document.getElementById("disconnect").style.visibility = "hidden";
             document.getElementById("app_body").style.visibility = "visible";
         } else {
@@ -141,7 +143,7 @@ if ($xx == 0) {
 
     function showOnlineStatu(event) {
         if (event == "online") {
-            $('#wifi_pos').attr('src', 'image/wifi.png');
+            //$('#wifi_pos').attr('src', 'image/wifi.png');
             document.getElementById("disconnect").style.visibility = "hidden";
             document.getElementById("app_body").style.visibility = "visible";
         } else {

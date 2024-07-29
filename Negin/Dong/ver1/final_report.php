@@ -1,5 +1,5 @@
 <div class="mt-3-r">
-<?php
+    <?php
     require_once("symbol.php");
     require_once("main_top.php");
     require_once("func.php");
@@ -7,7 +7,6 @@
     if (isset($_GET['id'])) {
         $x = final_report1($_GET['id']);
     }
-
     ?>
 
     <table class="table w-100">
@@ -21,8 +20,7 @@
             <td class="td_title_ font-weight-bold text-center text-prime d-rtl va_middle">مانده</td>
             <td class="td_title_ font-weight-bold text-center text-prime d-rtl va_middle">وضعیت</td>
         </tr>
-
-        <?php echo $x;?>
+        <?php echo $x; ?>
     </table>
 </div>
 
@@ -69,7 +67,7 @@
         margin-right: 0.2rem;
     }
 
-    td{
+    td {
         border: none;
     }
 </style>
@@ -88,4 +86,3 @@
         $("#file_html").val(body);
     });
 </script>
-

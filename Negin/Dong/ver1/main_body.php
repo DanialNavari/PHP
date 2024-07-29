@@ -93,6 +93,24 @@
                 <div class="box_title">تلگرام</div>
             </div>
         </div>
+        <div class="box_cat" onclick="navigate('logout.php')">
+            <div class="box_cat">
+                <div class="box d-flex mt-2 ">
+                    <div class="box_icon"><?php echo $GLOBALS['robot'];?></div>
+                    <div class="box_num text-danger"></div>
+                </div>
+                <div class="box_title">ربات تلگرام</div>
+            </div>
+        </div>
+        <div class="box_cat" onclick="navigate('logout.php')">
+            <div class="box_cat">
+                <div class="box d-flex mt-2 ">
+                    <div class="box_icon"><?php echo $GLOBALS['logout'];?></div>
+                    <div class="box_num text-danger"></div>
+                </div>
+                <div class="box_title">خروج</div>
+            </div>
+        </div>
     </div>
 </div>
 

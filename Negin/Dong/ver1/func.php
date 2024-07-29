@@ -3,9 +3,31 @@ require_once('symbol.php');
 require_once('jdf.php');
 $app_name = 'دونگت';
 
+// navarimachinary
+// function db()
+// {
+//     $db_host = 'localhost';
+//     $db_username = 'qndomtoj_dong';
+//     $db_password = '6Jz&yhG(Ez%y';
+//     $db_name = 'qndomtoj_Dong';
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
 
-
+// Dongeto.com
 function db()
+// {
+//     $db_host = 'localhost';
+//     $db_username = 'dongetoc_dongeto';
+//     $db_password = 'KCZhgh54nKuegWsVvY8Q';
+//     $db_name = 'dongetoc_dongeto';
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
+
+// function db()
 {
     $db_host = 'localhost';
     $db_username = 'root';
@@ -23,13 +45,13 @@ function Query($query)
     return $result;
 }
 
-function ADD_log($id, $event)
+function ADD_log($id, $event, $page = "")
 {
     db();
     $ip = $_SERVER['REMOTE_ADDR'];
     $device = $_SERVER['HTTP_USER_AGENT'];
     $zaman = date("Y-m-d H:i:s");
-    Query("INSERT INTO `log`(`log_id`,`log_uid`,`log_event`,`log_zaman`,`log_ip`,`log_device`) VALUES(NULL,'$id','$event','$zaman','$ip','$device')");
+    Query("INSERT INTO `log`(`log_id`,`log_uid`,`log_event`,`log_zaman`,`log_ip`,`log_device`,`log_page`) VALUES(NULL,'$id','$event','$zaman','$ip','$device','$page')");
 }
 
 function ADD_user($tel)
@@ -58,6 +80,7 @@ function ADD_contact($tel, $name, $maker, $date)
             return 2;
         }
     } else {
+        ADD_log($tel, 'Add New Contact');
         return 0;
     }
 }
@@ -179,6 +202,7 @@ function check_code($user_code, $real_code)
         $num = mysqli_num_rows($q);
         if ($num == 0) {
             ADD_user($tel);
+            ADD_log($tel, 'New User Login');
         } else {
             ADD_log($tel, 'Old User Login');
         }
@@ -451,7 +475,7 @@ function active_transactions($course_id)
             $st = '';
         }
 
-        if ($trans_acc == null && is_null($trans_del)|| $trans_acc == '' && is_null($trans_del)) {
+        if ($trans_acc == null && is_null($trans_del) || $trans_acc == '' && is_null($trans_del)) {
             $trans_acc_pos = '
             <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="3">
                 <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
@@ -1087,6 +1111,14 @@ function final_report($id)
         <tr><td colspan="6" class="empty_tr"></td></tr>';
     }
 
+    if ($c_member_count > 0) {
+        $jaaam = $sum_all_trans / $c_member_count;
+        $jaaam_pos = '';
+    } else {
+        $jaaam = 0;
+        $jaaam_pos = 'force_hide';
+    }
+
     echo '    
     <div class="card my_card">
         <table class="table">
@@ -1116,7 +1148,7 @@ function final_report($id)
             </tr>
             <tr class="bg_grey">
                 <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">میانگین هزینه هر نفر</td>
-                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($sum_all_trans / $c_member_count) . ' <span class="unit">' . $course_money_unit . '</span></td>
+                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($jaaam) . ' <span class="unit">' . $course_money_unit . '</span></td>
             </tr>
         </table>
     </div>
@@ -1132,7 +1164,7 @@ function final_report($id)
     echo $report . '</table>
     <input type="text" id="users_sum_debt" value="' . sep3(abs($sum_debt_all_users)) . '" class="hide"/>
     </div>
-        <table class="table">
+        <table class="table ' . $jaaam_pos . '">
             <tr class="">
                 <td>
                     <button class="btn btn-dark w-100" onclick="DownloadReport(' . $id . ')">' . $download . ' ایجاد گزارش</button>
@@ -1254,9 +1286,11 @@ function final_report1($id)
             $final_pos = 'بدهکار';
         }
 
+        $k = $j + 1;
+
         $report .=  '
         <tr class="bt">
-            <td class="td_title_ text-primary text-center ">' . $j + 1 . '</td>
+            <td class="td_title_ text-primary text-center ">' . $k . '</td>
             <td class="td_title_ text-primary text-center ">' . $person_name . '</td>
             <td class="td_title_ text-primary text-center ">' . sep3($buyer_cost) . '</td>
             <td class="td_title_ text-primary text-center ">' . sep3($p_cost) . '</td>
@@ -1265,7 +1299,9 @@ function final_report1($id)
             <td class="td_title_ text-primary text-center  d-rtl">' . sep3(abs($buyer_cost - $p_cost + $varizi - $daryafti))  . '</td>
             <td class="td_title_ text-primary text-center  d-rtl">' . $final_pos  . '</td>
         </tr>
-        <tr><td colspan="7" class="empty_tr"></td></tr>';
+        <tr>
+            <td colspan="8" class="empty_tr"></td>
+        </tr>';
     }
 
     echo '    
@@ -2394,4 +2430,23 @@ function SELECT_payment_users($selected_course, $person_type)
             ';
     }
     return $people_list;
+}
+
+
+function mors($aray)
+{
+    $mors_string = '';
+    $e = explode(",", $aray);
+    for ($i = 0; $i < count($e); $i++) {
+        $str = $e[$i];
+        $x = Query("SELECT * FROM `mors` WHERE `alpha_f` = '$str'");
+        $n = mysqli_num_rows($x);
+        if ($n > 0) {
+            $fet = mysqli_fetch_assoc($x);
+            $mors_string .= $fet['alpha_m'] . ","; //strrev($fet['alpha_m']);
+        } else {
+            $mors_string .= '0';
+        }
+    }
+    return $mors_string;
 }

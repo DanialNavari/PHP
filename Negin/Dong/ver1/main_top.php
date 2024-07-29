@@ -16,6 +16,14 @@
     <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
     <title><?php echo $app_name; ?></title>
+    <script>
+        function Go_Back() {
+            var page_ = document.getElementById('page_').value;
+            if(page_ != 'main page'){
+                window.location.assign('./?route=_activeCourse&h=null&id=null');
+            }
+        }
+    </script>
 </head>
 
 <body id="app_body">
@@ -36,7 +44,7 @@
                         } else {
                             $name = "خودم";
                         }
-                    }else{
+                    } else {
                         $rs = SELECT_contact($_COOKIE['uid']);
                         $name = trim($rs['contact_name'], " ");
                     }
@@ -47,6 +55,19 @@
                 <h1 class="pt-3 pb-3 pr-3 d-inline-block "><?php echo $app_name; ?></h1>
                 <h6 class="d_inline" id="my_local_name"><?php echo $name; ?></h6>
             </div>
-            <i id="h_menu" class="pl-3 click1" onclick="navigate('logout.php')"><?php echo $logout; ?></i>
+            
+            <?php
+            if (isset($_GET['route'])) {
+                $page_ =  'other page';
+                $page_style = "";
+            } else {
+                $page_ = 'main page';
+                $page_style = "hide";
+            }
+            ?>
+
+            <i id="h_menu" class="pl-3 click1 <?php echo $page_style;?>" onclick="Go_Back()"><?php echo $back; ?></i>
+
+            <input type="hidden" id="page_" value="<?php echo $page_; ?>">
         </div>
     </div>

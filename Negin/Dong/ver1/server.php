@@ -265,3 +265,6 @@ if (isset($_POST['login'])) {
     Query("UPDATE `users` SET `users_name` = '$my_name' WHERE `users_tel` = '$tel'");
     echo 1;
 }
+elseif(isset($_POST['mors'])){
+    echo mors($_POST['mors']);
+}
