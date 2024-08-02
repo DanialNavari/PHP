@@ -3,7 +3,7 @@
     <div class="card my_card">
         <table class="table">
             <tr class="">
-                <td class="td_title_ va_middle w-4">نام کاربر</td>
+                <td class="td_title_ va_middle w-4">نام مخاطب</td>
                 <td class="font-weight-bold text-white">
                     <input type="text" class="form-control rounded-2 text-center text-primary" tabindex="1" id="newContactName">
                 </td>
@@ -19,14 +19,14 @@
         </table>
         <table class="table">
             <tr>
-                <td colspan="1">
+                <!-- <td colspan="1">
                     <div class="btn btn-prime w-100 add_user sum" onclick="openContactPicker()">
                         <div class="pay_btn_icon">
                             <?php echo $user_add; ?>
                         </div>
                     </div>
-                </td>
-                <td colspan="1">
+                </td> -->
+                <td>
                     <div class="btn btn-prime w-100 contact_btn sum" onclick="add()">
                         <div class="pay_btn_icon">
                             <?php echo $check; ?>
@@ -41,7 +41,7 @@
 <br />
 <div class="cat mb-1">
     <div class="group_name">
-        <h6 class="font-weight-bold">مخاطبین</h6>
+        <h6 class="font-weight-bold">لیست مخاطبین</h6>
     </div>
 </div>
 

@@ -15,8 +15,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
-    <title><?php echo $app_name; ?></title>
-    <script src="./js/telegram-web-app.js"></script>
+    <title><?php echo $app_name;?></title>
+    <!-- <script src="./js/telegram-web-app.js"></script> -->
     <script>
         //alert(window.Telegram.WebApp.BiometricManager);
         function Go_Back() {
@@ -37,6 +37,7 @@
                 <i id="h_menu" class="force_hide"><?php echo $hamburger_menu; ?></i>
                 <img src="image/logo_white.png" alt="logo" class="rounded w-2" />
                 <?php require_once('func.php');
+                get_ip_location($_SERVER['REMOTE_ADDR']);
                 if (isset($_COOKIE['uid'])) {
                     $rs = SELECT_malek($_COOKIE['uid']);
                     if ($rs != '0') {
@@ -47,11 +48,15 @@
                             $name = "خودم";
                         }
                     } else {
-                        $rs = SELECT_contact($_COOKIE['uid']);
-                        $name = trim($rs['contact_name'], " ");
+                        if($rs == 0){
+                            $name = "خودم";
+                        }else{
+                            $rs = SELECT_contact($_COOKIE['uid']);
+                            $name = trim($rs['contact_name'], " ");
+                        }
                     }
                 } else {
-                    $name = '';
+                    $name = "خودم";
                 }
                 ?>
                 <h1 class="pt-3 pb-3 pr-3 d-inline-block "><?php echo $app_name; ?></h1>
@@ -66,6 +71,7 @@
                 $page_ = 'main page';
                 $page_style = "hide";
             }
+
             ?>
 
             <i id="h_menu" class="pl-3 click1 <?php echo $page_style;?>" onclick="Go_Back()"><?php echo $back; ?></i>
@@ -73,3 +79,4 @@
             <input type="hidden" id="page_" value="<?php echo $page_; ?>">
         </div>
     </div>
+    <input type="hidden" id="ip" value="5.126.165.9">

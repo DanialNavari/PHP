@@ -536,6 +536,8 @@ class Contact {
     var contact_name = $("#newContactName").val();
     var contact_tel = $("#newContactTel").val();
     if (contact_name.length > 0) {
+      $("#newContactName").attr("disabled", "disabled");
+      $("#newContactTel").attr("disabled", "disabled");
       $.ajax({
         data:
           "add_contact=ok&contact_name=" +
@@ -572,6 +574,8 @@ class Contact {
           }
         },
       });
+      $("#newContactName").removeAttr("disabled");
+      $("#newContactTel").removeAttr("disabled");
     } else {
       Toast(104);
       alert_border("newContactName");
@@ -1179,7 +1183,13 @@ function del_contacts(tel) {
 }
 
 function add() {
-  mokhatab = new Contact("add_new_contact_with_star");
+  var c_name_ = $("#newContactName").val();
+  var c_tel_ = $("#newContactTel").val();
+  if (c_name_.length > 2 && c_tel_ > 10) {
+    mokhatab = new Contact("add_new_contact_with_star");
+  } else {
+    Toast_msg("نام و شماره مخاطب را وارد کنید", "alertBox", 3000);
+  }
 }
 
 function change_values(input_id, text_id) {
@@ -1287,7 +1297,11 @@ function saveDates() {
 function edit_contacts(id) {
   esm = $("#c-" + id).text();
   tel = $("#t-" + id).text();
-
+  $(".users_box div").removeClass("bg_green");
+  $(".record").css("background", "#1473bd");
+  $(".user-" + id + "-box").removeClass("bg_blue");
+  $(".user-" + id + "-box").addClass("bg_green");
+  $(".user-" + id + "-box div").css("background", "transparent");
   $("#newContactName").val(esm);
   $("#newContactTel").val(tel);
 }

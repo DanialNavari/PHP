@@ -1,9 +1,43 @@
 <?php
 require_once('symbol.php');
 require_once('jdf.php');
-$app_name = 'دونگت';
+$app_name = 'دونگتو';
+$ip_part = [];
 
+// navarimachinary
+// function db()
+// {
+//     $db_host = 'localhost';
+//     $db_username = 'qndomtoj_dong';
+//     $db_password = '6Jz&yhG(Ez%y';
+//     $db_name = 'qndomtoj_Dong';
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
 
+// Dongeto.com
+// function db()
+// {
+//     $db_host = 'localhost';
+//     $db_username = 'dongetoc_dongeto';
+//     $db_password = 'KCZhgh54nKuegWsVvY8Q';
+//     $db_name = 'dongetoc_dongeto';
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
+
+function db()
+{
+    $db_host = 'localhost';
+    $db_username = 'root';
+    $db_password = '';
+    $db_name = 'dong';
+    date_default_timezone_set('Asia/Tehran');
+    $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+    mysqli_set_charset($GLOBALS['conn'], "utf8");
+}
 
 function Query($query)
 {
@@ -18,7 +52,12 @@ function ADD_log($id, $event, $page = "")
     $ip = $_SERVER['REMOTE_ADDR'];
     $device = $_SERVER['HTTP_USER_AGENT'];
     $zaman = date("Y-m-d H:i:s");
-    Query("INSERT INTO `log`(`log_id`,`log_uid`,`log_event`,`log_zaman`,`log_ip`,`log_device`,`log_page`) VALUES(NULL,'$id','$event','$zaman','$ip','$device','$page')");
+    get_ip_location($_SERVER['REMOTE_ADDR']);
+    $country = $GLOBALS['ip_part'][4];
+    $state = $GLOBALS['ip_part'][15];
+    $city = $GLOBALS['ip_part'][7];
+    $net = $GLOBALS['ip_part'][8];
+    Query("INSERT INTO `log`(`log_id`,`log_uid`,`log_event`,`log_zaman`,`log_ip`,`log_device`,`log_page`,`log_country`,`log_state`,`log_city`,`log_net`) VALUES(NULL,'$id','$event','$zaman','$ip','$device','$page','$country','$state','$city','$net')");
 }
 
 function ADD_user($tel)
@@ -35,19 +74,20 @@ function ADD_user($tel)
 function ADD_contact($tel, $name, $maker, $date)
 {
     db();
-    $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel' AND `contact_name` = '$name' AND `contact_maker` = '$maker'");
+    $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel' AND `contact_maker` = '$maker'");
     if ($result) {
         $num = mysqli_num_rows($result);
         if ($num > 0) {
+            ADD_log($tel, 'Add New Contact Exist', "contact");
             return 1;
         } else {
             Query("INSERT INTO `contacts`(`contact_id`,`contact_name`,`contact_tel`,`contact_maker`,`contact_date`) VALUES(NULL,'$name', '$tel', '$maker', '$date')");
             $id = mysqli_insert_id($GLOBALS['conn']);
-            ADD_log($id, 'Add New Contact');
+            ADD_log($id, 'Add New Contact Ok', "contact");
             return 2;
         }
     } else {
-        ADD_log($tel, 'Add New Contact');
+        ADD_log($tel, 'Add New Contact Failed', "contact");
         return 0;
     }
 }
@@ -1909,9 +1949,11 @@ function contact_list($tel)
             $ozv_res = SELECT_user($c_tel);
             if ($ozv_res == 0) {
                 $ozviat = 'color:#fff;';
+                $ozv_bg = '';
             } else {
                 //$ozviat = 'color:#ffd700;';
                 $ozviat = 'color:#fff;';
+                $ozv_bg = 'background: gold;';
             }
         }
 
@@ -1926,25 +1968,25 @@ function contact_list($tel)
 
         if ($c_tel != $tel) {
             $key_del = '<i onclick="del_contacts(' . $c_id . ')">' . $GLOBALS['del'] . '</i>';
-            $key_edit = '<i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>';
+            //$key_edit = '<i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>';
         } else {
             $key_del = '';
-            $key_edit = '<i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>';
+            //$key_edit = '<i onclick="edit_contacts(' . $c_id . ')">' . $GLOBALS['edit'] . '</i>';
         }
 
         $cont .= '
-        <div class="cat mb-2 contactBox" data="' . $c_name . ' ' . $c_tel . '">
+        <div class="cat mb-2 contactBox" data="' . $c_name . ' ' . $c_tel . '" onclick="edit_contacts(' . $c_id . ')">
             <div class="card my_card bg_blue user-' . $c_id . '-box">
                 <div class="record user-' . $c_id . '-name">
-                    <div class="user_info text-white border_none box_shadow_none">
-                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
+                    <div class="user_info text-white border_none box_shadow_none w-80">
+                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5" style="' . $ozv_bg . '">
                         <div class="star">
                             <span style="' . $ozviat . '" id="c-' . $c_id . '">' . $c_name . ' </span>
                             <a style="' . $ozviat . '" target="_blank" id="t-' . $c_id . '">' . $c_tel . '</a>
                         </div>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none">
-                        <i class="d-ltr">' . star($star_complete, $star_incomplete) . '</i>
+                        <i class="d-ltr"></i>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none">
                         <div class="star">
@@ -1952,7 +1994,7 @@ function contact_list($tel)
                                 
                             </div>
                             <div class="tools">
-                                ' . $key_del . ' ' . $key_edit . '
+                                ' . $key_del . '
                             </div>
                         </div>
                     </div>
@@ -2416,4 +2458,16 @@ function mors($aray)
         }
     }
     return $mors_string;
+}
+
+function get_ip_location($ip)
+{
+    $x = file_get_contents("http://ip-api.com/php/" . $ip);
+    $y = explode("{", $x);
+    $z = explode("}", $y[1]);
+    $q = explode(";", $z[0]);
+    for ($i = 0; $i < count($q); $i++) {
+        $p = explode(":", $q[$i]);
+        $GLOBALS['ip_part'][$p[1]] = $p[2];
+    }
 }

@@ -158,7 +158,7 @@ form#sms > input {
   padding: 1.5rem 0;
 }
 
-#download_link{
+#download_link {
   display: none;
 }
 
@@ -832,6 +832,10 @@ h6 {
   padding-top: 0.5rem;
 }
 
+.w-80 {
+  width: 80% !important;
+}
+
 .user_info1 {
   background: #01a7ea;
   border-bottom-right-radius: 0.5rem;
@@ -985,10 +989,11 @@ a:visited {
 
 .star {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: nowrap;
+  width: 100%;
 }
 
 svg.bi.bi-star-fill,

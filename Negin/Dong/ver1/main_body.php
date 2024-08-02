@@ -1,4 +1,4 @@
-<div class="row empty border_none"></div>
+<div class="row empty border_none" style="min-height: 0;"></div>
 <div class="cat">
     <div class="group_name">
         <h6 class="font-weight-bold">وضعیت</h6>
@@ -81,19 +81,19 @@
 
 <div class="cat">
     <div class="group_name">
-        <h6 class="font-weight-bold">پشتیبانی</h6>
+        <h6 class="font-weight-bold">راهنما</h6>
     </div>
     <div class="box_cat_parent">
-        <div class="box_cat" onclick="Toast_msg('پشتیبان تلگرام: @Dongeto', 'okBox', 4000)">
+        <div class="box_cat" onclick="window.location.assign('tg://resolve?domain=dongeto')">
             <div class="box_cat">
                 <div class="box d-flex mt-2 ">
                     <div class="box_icon"><img src="./image/telegram.svg" alt="bale"></div>
                     <div class="box_num text-danger"></div>
                 </div>
-                <div class="box_title">تلگرام</div>
+                <div class="box_title">پشتیبانی</div>
             </div>
         </div>
-        <div class="box_cat" onclick="navigate('logout.php')">
+        <div class="box_cat" onclick="window.location.assign('tg://resolve?domain=dongetobot')">
             <div class="box_cat">
                 <div class="box d-flex mt-2 ">
                     <div class="box_icon"><?php echo $GLOBALS['robot'];?></div>

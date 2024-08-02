@@ -113,7 +113,7 @@ if ($xx == 0) {
 
 </body>
 
-<div class="internet">
+<div class="internet force_hide">
     <img src="image/wifi.png" alt="internet" class="reounded" id="wifi_pos">
 </div>
 
@@ -122,9 +122,7 @@ if ($xx == 0) {
         <img src="image/no-wifi.png" alt="internet" class="reounded">
         <h4 id="diss_title">اینترنتت قطع شد!!!</h4>
         <br />
-        <div class="btn_">
-            <button class="btn btn-primary" onclick="checkDissconnect()">اتصال مجدد</button>
-        </div>
+        <button class="btn btn-primary" onclick="checkDissconnect()">اتصال مجدد</button>
     </div>
 </div>
 
@@ -135,7 +133,7 @@ if ($xx == 0) {
             document.getElementById("disconnect").style.visibility = "hidden";
             document.getElementById("app_body").style.visibility = "visible";
         } else {
-            document.getElementById("wifi_pos").src = "image/no-wifi.png";
+            //document.getElementById("wifi_pos").src = "image/no-wifi.png";
             document.getElementById("disconnect").style.visibility = "visible";
             document.getElementById("app_body").style.visibility = "hidden";
         }
@@ -144,11 +142,11 @@ if ($xx == 0) {
     function showOnlineStatu(event) {
         if (event == "online") {
             //$('#wifi_pos').attr('src', 'image/wifi.png');
-            document.getElementById("disconnect").style.visibility = "hidden";
+            //document.getElementById("disconnect").style.visibility = "hidden";
             document.getElementById("app_body").style.visibility = "visible";
         } else {
-            document.getElementById("wifi_pos").src = "image/no-wifi.png";
-            document.getElementById("disconnect").style.visibility = "visible";
+            //document.getElementById("wifi_pos").src = "image/no-wifi.png";
+            //document.getElementById("disconnect").style.visibility = "visible";
             document.getElementById("app_body").style.visibility = "hidden";
         }
     }
