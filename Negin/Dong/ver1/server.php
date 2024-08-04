@@ -1,4 +1,7 @@
 <?php
+
+use Sabberworm\CSS\Settings;
+
 require_once('func.php');
 
 if (isset($_POST['login'])) {
@@ -50,7 +53,7 @@ if (isset($_POST['login'])) {
             $resid = 4;
         }
     }
-    
+
     echo $resid;
 } elseif (isset($_POST['Object_contact'])) {
     $c_tel = $_POST['contact_tel'];
@@ -70,6 +73,16 @@ if (isset($_POST['login'])) {
         $my_name = $_POST['my_name'];
         $my_id = $_POST['my_id'];
         Query("UPDATE `contacts` SET `contact_name` = '$my_name' WHERE `contact_id` = '$my_id'");
+    }
+    if ($res > 0) {
+        $mem = explode(",", $members);
+        for ($i = 0; $i < count($mem) - 1; $i++) {
+            $find_user_tel = SELECT_user_by_id($mem[$i]);
+            $found_user_tel = $find_user_tel['contact_tel'];
+            $find_manager_name = SELECT_user($maker);
+            $found_manager_name = $find_manager_name['users_name'];
+            //sendSMSInviteCourse("$found_user_tel", "$course_name", "$found_manager_name", "$res");
+        }
     }
     echo $res;
 } elseif (isset($_POST['sep'])) {
@@ -265,7 +278,12 @@ if (isset($_POST['login'])) {
     Query("UPDATE `contacts` SET `contact_name` = '$my_name' WHERE `contact_tel` = '$tel' AND `contact_maker` = '$tel'");
     Query("UPDATE `users` SET `users_name` = '$my_name' WHERE `users_tel` = '$tel'");
     echo 1;
-}
-elseif(isset($_POST['mors'])){
+} elseif (isset($_POST['mors'])) {
     echo mors($_POST['mors']);
+} elseif (isset($_POST['getUserName'])) {
+    $x = SELECT_user_by_id($_POST['getUserName']);
+    echo $x['contact_name'];
+} elseif (isset($_POST['reportID'])) {
+    $x = get_settings($_COOKIE['uid']);
+    echo $x['course_default'];
 }

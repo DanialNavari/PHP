@@ -36,10 +36,10 @@ if (isset($_GET['id'])) {
                 <td class="td_title w-7">افراد حاضر در دوره</td>
                 <td class="font-weight-bold text-center" id="course_count" colspan="2"><?php echo $course_members; ?></td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td class="td_title w-7">افراد عضو سامانه</td>
                 <td class="font-weight-bold text-center" id="course_count" colspan="2"><?php echo $app_members; ?></td>
-            </tr>
+            </tr> -->
         </table>
         <div class="mb-5"></div>
         <div class="pay_btn pay_btn2" onclick="editNewCourse(<?php echo $_GET['id'];?>)">

@@ -15,13 +15,13 @@
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
-    <title><?php echo $app_name;?></title>
+    <title><?php echo $app_name; ?></title>
     <!-- <script src="./js/telegram-web-app.js"></script> -->
     <script>
         //alert(window.Telegram.WebApp.BiometricManager);
         function Go_Back() {
             var page_ = document.getElementById('page_').value;
-            if(page_ != 'main page'){
+            if (page_ != 'main page') {
                 window.location.assign('./?route=_activeCourse&h=null&id=null');
             }
         }
@@ -37,7 +37,9 @@
                 <i id="h_menu" class="force_hide"><?php echo $hamburger_menu; ?></i>
                 <img src="image/logo_white.png" alt="logo" class="rounded w-2" />
                 <?php require_once('func.php');
-                get_ip_location($_SERVER['REMOTE_ADDR']);
+                // if (isset($_SERVER['REMOTE_ADDR'])) {
+                //     get_ip_location($_SERVER['REMOTE_ADDR']);
+                // }
                 if (isset($_COOKIE['uid'])) {
                     $rs = SELECT_malek($_COOKIE['uid']);
                     if ($rs != '0') {
@@ -48,9 +50,9 @@
                             $name = "خودم";
                         }
                     } else {
-                        if($rs == 0){
+                        if ($rs == 0) {
                             $name = "خودم";
-                        }else{
+                        } else {
                             $rs = SELECT_contact($_COOKIE['uid']);
                             $name = trim($rs['contact_name'], " ");
                         }
@@ -62,7 +64,7 @@
                 <h1 class="pt-3 pb-3 pr-3 d-inline-block "><?php echo $app_name; ?></h1>
                 <h6 class="d_inline" id="my_local_name"><?php echo $name; ?></h6>
             </div>
-            
+
             <?php
             if (isset($_GET['route'])) {
                 $page_ =  'other page';
@@ -74,9 +76,11 @@
 
             ?>
 
-            <i id="h_menu" class="pl-3 click1 <?php echo $page_style;?>" onclick="Go_Back()"><?php echo $back; ?></i>
-
+            <div class="top_nav">
+                <i id="h_menu" class="pl-3 click1 <?php echo $page_style; ?>" onclick="Go_Back()"><?php echo $active_course_btn; ?></i>
+                <i id="h_menu" class="pl-3 click1 <?php echo $page_style; ?>" onclick="show_report()"><?php echo $final_report; ?></i>
+            </div>
             <input type="hidden" id="page_" value="<?php echo $page_; ?>">
         </div>
     </div>
-    <input type="hidden" id="ip" value="5.126.165.9">
+    <input type="hidden" id="ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">

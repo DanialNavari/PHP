@@ -46,17 +46,27 @@ function Query($query)
     return $result;
 }
 
-function ADD_log($id, $event, $page = "")
+function ADD_log($id, $event, $page = "", $ip = "")
 {
     db();
     $ip = $_SERVER['REMOTE_ADDR'];
     $device = $_SERVER['HTTP_USER_AGENT'];
     $zaman = date("Y-m-d H:i:s");
-    get_ip_location($_SERVER['REMOTE_ADDR']);
-    $country = $GLOBALS['ip_part'][4];
-    $state = $GLOBALS['ip_part'][15];
-    $city = $GLOBALS['ip_part'][7];
-    $net = $GLOBALS['ip_part'][8];
+    if ($ip == "" && isset($_SERVER['REMOTE_ADDR'])) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        get_ip_location($ip);
+        $country = $GLOBALS['ip_part'][4];
+        $state = $GLOBALS['ip_part'][15];
+        $city = $GLOBALS['ip_part'][7];
+        $net = $GLOBALS['ip_part'][8];
+    } else {
+        $ip = "";
+        $country = "";
+        $state = "";
+        $city = "";
+        $net = "";
+    }
+
     Query("INSERT INTO `log`(`log_id`,`log_uid`,`log_event`,`log_zaman`,`log_ip`,`log_device`,`log_page`,`log_country`,`log_state`,`log_city`,`log_net`) VALUES(NULL,'$id','$event','$zaman','$ip','$device','$page','$country','$state','$city','$net')");
 }
 
@@ -293,7 +303,7 @@ function Object_contact($name, $tel, $maker)
                     </div>
                 </div>
                 <div class="user_info text-white border_none box_shadow_none">
-                        <i class="d-ltr">' . star($star_complete, $star_incomplete) . '</i>
+                        <i class="d-ltr"></i>
                 </div>
                 <div class="user_info text-white border_none box_shadow_none">
                     <a href="tel://' . $tel . '" target="_blank" id="t-' . $contact_id . '">' . $tel . '</a>
@@ -301,6 +311,7 @@ function Object_contact($name, $tel, $maker)
             </div>
         </div>
     </div>';
+    //' . star($star_complete, $star_incomplete) . '
 }
 
 function Object_contact1($name, $tel, $course_id, $contac_id, $pos)
@@ -439,6 +450,9 @@ function active_transactions($course_id)
         $trans_fee = sep3($r['trans_fee']);
         $trans_date = explode(' ', $r['trans_date']);
         $trans_desc = $r['trans_desc'];
+        if($trans_desc == ""){
+            $trans_desc = "توضیحات : ندارد";
+        }
         $trans_person = $r['trans_person'];
         $trans_acc = $r['trans_acc'];
         $trans_del = $r['trans_del'];
@@ -566,6 +580,9 @@ function active_payments($course_id)
         $pay_fee = sep3($r['pay_fee']);
         $pay_date = $r['pay_date'];
         $pay_desc = $r['pay_desc'];
+        if ($pay_desc == "") {
+            $pay_desc = "توضیحات: ندارد";
+        }
         $pay_maker = $r['pay_maker'];
         $pay_del = $r['pay_del'];
         $bg_del = '';
@@ -749,6 +766,11 @@ function active_course($tel)
     $w = SELECT_course("$tel");
     $num = mysqli_num_rows($w);
     $GLOBALS['course_count'] = $num;
+
+    $first_default_course = '';
+    $other_course = '';
+    $c_defaults = '';
+
     for ($k = 0; $k < $num; $k++) {
         $r = mysqli_fetch_assoc($w);
         $c_id = $r['course_id'];
@@ -763,16 +785,6 @@ function active_course($tel)
         $course_manager = $rss['contact_name'];
         $course_manager_id = $rss['contact_id'];
 
-        $settings = get_settings($tel);
-        $c_default = $settings['course_default'];
-        if (intval($c_default) > 0) {
-            if ($c_default == $c_id) {
-                $c_default = 'checked';
-            }
-        } else {
-            $c_default = '';
-        }
-
         if ($c_manager != $tel) {
             $permit = 'force_hide';
         } else {
@@ -781,20 +793,28 @@ function active_course($tel)
 
         if ($c_disabled == null) {
             $tpr = '
-            <div class="end_course transactions font-weight-bold">
-                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
-                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
-                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
-            </div>
-            <div class="mb-1"></div>';
+                <div class="end_course transactions font-weight-bold">
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
+                </div>
+                <div class="mb-1"></div>';
+        } elseif ($c_disabled != null && $c_manager != $tel) {
+            $tpr = '
+                <div class="end_course transactions font-weight-bold force_hide">
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
+                </div>
+                <div class="mb-1"></div>';
         } else {
             $tpr = '
-            <div class="end_course transactions font-weight-bold force_hide">
-                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
-                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
-                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
-            </div>
-            <div class="mb-1"></div>';
+                <div class="end_course transactions font-weight-bold">
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
+                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
+                </div>
+                <div class="mb-1"></div>';
         }
 
         $c_money_unit = $r['course_money_unit'];
@@ -807,76 +827,99 @@ function active_course($tel)
             $sum_all_trans += $v['trans_fee'];
         }
 
-        echo '
-    <div class="card my_card" style="border: 1px solid #99bcdf;margin-bottom:1rem;">
-        <table class="table">
-            <tr class="">
-                <td class="td_title va_middle w-6">نام دوره</td>
-                <td class="font-weight-bold text-center" id="courseName' . $c_id . '">' . $c_name . '</td>
-                <td class="font-weight-bold text-center click ' . $permit . '" onclick="courses(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
-            </tr>
-            <tr>
-                <td class="td_title">تعداد افراد</td>
-                <td class="font-weight-bold text-center" id="course_count' . $c_id . '">' . $c_member . '</td>
-                <td class="font-weight-bold text-center click ' . $permit . '" onclick="navigate(\'?route=_editCC&h=null&id=' . $c_id . '\')">' . $GLOBALS["edit"] . '</td>
-            </tr>
-            <tr>
-                <td class="td_title tarikh">تاریخ شروع</td>
-                <td class="font-weight-bold text-center">
-                    <span id="start_from_fa' . $c_id . '">' . $c_start_date . '</span>
-                </td>
-                <td class="text-center click ' . $permit . '" onclick="setDates(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
-            </tr>
-            <tr>
-                <td class="td_title pl-0">محدودیت مالی</td>
-                <td class="font-weight-bold text-center ">
-                    <span id="moneyLimit' . $c_id . '">' . sep3($c_money_limit) . '</span> <span class="unit">' . $c_money_unit . '</span>
-                </td>
-                <td class="text-center click ' . $permit . '" onclick="moneyLimits(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
-            </tr>
-            <tr>
-                <td class="td_title pl-0">مدیر دوره</td>
-                <td class="font-weight-bold text-center">
-                    <span id="m.' . $c_id . '">' . $course_manager . '</span>
-                </td>
-                <td class="text-center click ' . $permit . '" onclick="setManager(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
-            </tr>
+        $settings = get_settings($tel);
+        $c_default = $settings['course_default'];
+        if (intval($c_default) > 0) {
+            if (intval($c_default) == intval($c_id)) {
+                $c_defaults = 'checked';
+            } else {
+                $c_defaults = '';
+            }
+        }
 
-        </table>
-        <div class="share_link font-weight-bold g_20">
-            <div class="inline_title td_title_ text-primary d-rtl">کل هزینه :</div>
-            <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
-        </div>
-        
-        <div class="share_link font-weight-bold">
-            <div class="inline_title">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" data-type="' . $c_default . '" role="switch" id="defaultCourse' . $c_id . '" ' . $c_default . ' onchange="chageSwitch(\'defaultCourse\',' . $c_id . ')">
-                    <label class="form-check-label" for="defaultCourse">دوره پیش فرض</label>
+
+        $box_course =  '
+        <div class="card my_card" style="border: 1px solid #99bcdf;margin-bottom:1rem;">
+            <table class="table">
+                <tr class="">
+                    <td class="td_title va_middle w-6">نام دوره</td>
+                    <td class="font-weight-bold text-center" id="courseName' . $c_id . '">' . $c_name . '</td>
+                    <td class="font-weight-bold text-center click ' . $permit . '" onclick="courses(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+                </tr>
+                <tr>
+                    <td class="td_title">تعداد افراد</td>
+                    <td class="font-weight-bold text-center" id="course_count' . $c_id . '">' . $c_member . '</td>
+                    <td class="font-weight-bold text-center click ' . $permit . '" onclick="navigate(\'?route=_editCC&h=null&id=' . $c_id . '\')">' . $GLOBALS["edit"] . '</td>
+                </tr>
+                <tr>
+                    <td class="td_title tarikh">تاریخ شروع</td>
+                    <td class="font-weight-bold text-center">
+                        <span id="start_from_fa' . $c_id . '">' . $c_start_date . '</span>
+                    </td>
+                    <td class="text-center click ' . $permit . '" onclick="setDates(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+                </tr>
+                <tr>
+                    <td class="td_title pl-0">محدودیت مالی</td>
+                    <td class="font-weight-bold text-center ">
+                        <span id="moneyLimit' . $c_id . '">' . sep3($c_money_limit) . '</span> <span class="unit">' . $c_money_unit . '</span>
+                    </td>
+                    <td class="text-center click ' . $permit . '" onclick="moneyLimits(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+                </tr>
+                <tr>
+                    <td class="td_title pl-0">مدیر دوره</td>
+                    <td class="font-weight-bold text-center">
+                        <span id="m.' . $c_id . '">' . $course_manager . '</span>
+                    </td>
+                    <td class="text-center click ' . $permit . '" onclick="setManager(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+                </tr>
+    
+            </table>
+            <div class="share_link font-weight-bold g_20">
+                <div class="inline_title td_title_ text-primary d-rtl">کل هزینه :</div>
+                <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
+            </div>
+            
+            <div class="share_link font-weight-bold">
+                <div class="inline_title">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" data-type="' . $c_defaults . '" role="switch" id="defaultCourse' . $c_id . '" ' . $c_defaults . ' onchange="chageSwitch(\'defaultCourse\',' . $c_id . ')">
+                        <label class="form-check-label" for="defaultCourse">دوره پیش فرض</label>
+                    </div>
+                </div>
+                <div class="inline_title ' . $permit . '">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" data-type="' . $c_disabled . '" role="switch" id="disabledCourse' . $c_id . '" ' . $c_disabled . ' onchange="chageSwitch(\'disabledCourse\', ' . $c_id . ')">
+                        <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
+                    </div>
                 </div>
             </div>
-            <div class="inline_title ' . $permit . '">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" data-type="' . $c_disabled . '" role="switch" id="disabledCourse' . $c_id . '" ' . $c_disabled . ' onchange="chageSwitch(\'disabledCourse\', ' . $c_id . ')">
-                    <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
+            <div class="permit_btn">
+                <div class="proofs fld ">
+                    ' . $tpr . '
+                </div>
+                <div class="proofs fld ' . $permit . '">
+                    <div class="end_course transactions font-weight-bold">
+                        <a class="btn btn-management w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: $c_name \n 🔸 تاریخ شروع: $c_start_date \n 🔸 مدیر گروه : ** $course_manager  ** \n ") . ' &url=https://Dongeto.com/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
+                        <button class="btn btn-management w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_of_course"] . ' اتمام دوره</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="permit_btn">
-            <div class="proofs fld ">
-                ' . $tpr . '
-            </div>
-            <div class="proofs fld ' . $permit . '">
-                <div class="end_course transactions font-weight-bold">
-                    <button class="btn btn-management w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_of_course"] . ' اتمام دوره</button>
-                    <a class="btn btn-management w-100 click1" href="tg://msg_url?text=' . urlencode("🔸 نام دوره: $c_name \n 🔸 تاریخ شروع: $c_start_date \n 🔸 مدیر گروه : ** $course_manager  ** \n ") . ' &url=https://danielnv.ir/Dong/courseRequest.php?id=' . $c_id . '"> ' . $GLOBALS["share"] . ' لینک دوره</a>
-                    <button class="btn btn-management w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    ';
+        ';
+
+        if (intval($c_default) > 0) {
+            if (intval($c_default) == intval($c_id)) {
+                $first_default_course = $box_course;
+            } else {
+                $other_course .= $box_course;
+            }
+        } else {
+            $other_course .= $box_course;
+        }
     }
+
+    echo $first_default_course . $other_course;
+    //<button class="btn btn-management w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
 }
 
 function UPDATE_course($field, $value, $course_id)
@@ -2468,6 +2511,26 @@ function get_ip_location($ip)
     $q = explode(";", $z[0]);
     for ($i = 0; $i < count($q); $i++) {
         $p = explode(":", $q[$i]);
-        $GLOBALS['ip_part'][$p[1]] = $p[2];
+        //$GLOBALS['ip_part'][$p[1]] = $p[2];
     }
+}
+
+function sendSMSInviteCourse($tel, $course_name, $course_manager, $course_id)
+{
+    require 'ippanel/vendor/autoload.php';
+    $apiKey = "WIsqaEu45JFhybtmDhwJqAlySO2DDanRt7F10rdo_5E=";
+    $client = new \IPPanel\Client($apiKey);
+
+    $patternVariables = [
+        "course_name" => $course_name,
+        "course_manager" => $course_manager,
+    ];
+    $rec = $tel;
+
+    $messageId = $client->sendPattern(
+        "nx5eglt0qa6352a",    // pattern code
+        "+983000505",      // originator
+        "$rec",  // recipient
+        $patternVariables,  // pattern values
+    );
 }

@@ -636,8 +636,8 @@ function saveNewCourse() {
     url: "server.php",
     success: function (response) {
       if (response > 0) {
-        //alert("دوره جدید با موفقیت ایجاد شد");
-        window.location.assign("./?route=_activeCourse&h=null");
+        //window.location.assign("./?route=_activeCourse&h=null");
+        Go_Back();
       }
     },
   });
@@ -1028,6 +1028,9 @@ function buyers(type_person) {
   }
 
   $(".variz").show();
+  window.setTimeout(function () {
+    $(".pay").attr("disabled", "disabled");
+  }, 200);
 }
 
 function realTimeSum(id) {
@@ -1055,15 +1058,36 @@ function setRecievePerson(code) {
   document.getElementById(uid).focus();
 }
 
+function reverse(s) {
+  return s.split("").reverse().join("");
+}
+
 function commafy(num) {
-  var valuee = $("#" + num).val();
-  var num_rep = valuee.replace(/,/g, "");
-  var nums = Number(num_rep).toLocaleString();
-  $("#" + num).val(nums);
+  // var valuee = $("#" + num).val();
+  // var num_rep = valuee.replace(/,/g, "");
+  // var nums = Number(num_rep).toLocaleString();
+  // var num_array = num_rep.split("");
+  // var num_length = num_array.length - 1;
+  // var final_num_sep = "";
+  // var sep_pos = 1;
+  // for (i = num_length; i < 0; i--) {
+  //   alert(num_array[i]);
+  //   if (sep_pos % 3 == 0) {
+  //     final_num_sep = final_num_sep + String(num_array[i]) + ",";
+  //   } else {
+  //     final_num_sep = final_num_sep + String(num_array[i]);
+  //   }
+  //   sep_pos += 1;
+  // }
+  // $("#asw").text(final_num_sep);
 
   chk = $("#buyforall").prop("checked");
   if (chk == true) {
     buy_for_all();
+
+    
+  } else {
+    $("#sum_variz").attr("disabled", "disabled");
   }
 }
 
@@ -1721,34 +1745,45 @@ function setContactToList(course_id, class_name) {
 }
 
 function addNewPayment1() {
+  var zaman = false;
   var trans_date = $("#start_from_fa").text();
+  if (trans_date == "****/**/**") {
+    setDate();
+    $("#savedate").click();
+    zaman = true;
+  } else {
+    zaman = true;
+  }
+
   var sum_all_sahm = $("#sum_all_sahm").val();
   var buyer_person = $("#buyer_person").val();
   var trans_desc = $("#trans_desc").val();
   var karbaran = $("#karbaran").val();
   var course_id = $(".course_id").text();
 
-  $.ajax({
-    data:
-      "add_new_payment=ok&trans_date=" +
-      trans_date +
-      "&money_limit=" +
-      sum_all_sahm +
-      "&karbaran=" +
-      karbaran +
-      "&trans_desc=" +
-      trans_desc +
-      "&buyer_person=" +
-      buyer_person,
-    type: "POST",
-    url: "server.php",
-    success: function (response) {
-      if (response == 1) {
-        //alert("پرداخت با موفقیت ثبت شد");
-        window.location.assign("./?route=__payments&h=0&id=" + course_id);
-      }
-    },
-  });
+  if (zaman == true) {
+    $.ajax({
+      data:
+        "add_new_payment=ok&trans_date=" +
+        trans_date +
+        "&money_limit=" +
+        sum_all_sahm +
+        "&karbaran=" +
+        karbaran +
+        "&trans_desc=" +
+        trans_desc +
+        "&buyer_person=" +
+        buyer_person,
+      type: "POST",
+      url: "server.php",
+      success: function (response) {
+        if (response == 1) {
+          //alert("پرداخت با موفقیت ثبت شد");
+          //window.location.assign("./?route=__payments&h=0&id=" + course_id);
+        }
+      },
+    });
+  }
 }
 
 function addNewPayment2() {
@@ -1861,6 +1896,21 @@ function show_change_my_name() {
   document.getElementById("set_name").style.visibility = "visible";
   $(".gray_layer").show();
   my_name_pos = -1;
+}
+
+function show_report() {
+  $.ajax({
+    data: "reportID=ok",
+    type: "POST",
+    url: "server.php",
+    success: function (response) {
+      if (response > 0) {
+        window.location.assign("./?route=___report&h=0&id=" + response);
+      } else {
+        alert("لطفا یک دوره پیش فرض مشخص کنید");
+      }
+    },
+  });
 }
 
 function change_my_name() {

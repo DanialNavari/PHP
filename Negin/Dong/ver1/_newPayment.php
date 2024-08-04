@@ -224,6 +224,10 @@
 </div>
 
 <div class="course_id"></div>
+<div class="user_id force_hide">
+    <?php $xx = SELECT_contact($_COOKIE['uid']);
+    echo trim($xx['contact_id']); ?>
+</div>
 <div class="cat mb-1 h-1"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -232,10 +236,6 @@
 <input type="hidden" value="<?php echo $_GET['id']; ?>" id="trans_id" />
 
 <script>
-    $(document).ready(function() {
-        $("#karbaran").val("");
-    });
-
     $('#zarib').hide();
     $('label').filter("[for='zarib']").hide();
     $('#mablagh').hide();
@@ -393,6 +393,23 @@
     }
 
     default_course_data("<?php echo $_COOKIE['uid']; ?>");
+
+    $(document).ready(function() {
+        $("#karbaran").val("");
+        var course_id = $(".course_id").html();
+        var user_id = $(".user_id").text();
+        $.ajax({
+            data: "getUserName=" + user_id,
+            type: "POST",
+            url: "server.php",
+            success: function(response) {
+                $("#consumer_name").text(response);
+                $("#buyer_person").val(user_id);
+                //setDate();
+                $("#savedate").click();
+            }
+        });
+    });
 </script>
 
 <?php
