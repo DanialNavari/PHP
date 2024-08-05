@@ -13,7 +13,7 @@
 </style>
 
 <div class="row empty">
-    واریزی جدید
+    ثبت واریزی
 </div>
 
 <div class="cat">
@@ -76,7 +76,7 @@
             </tr> -->
             <tr>
                 <td class="td_title w-7">جمع مبلغ پرداختی</td>
-                <td class="font-weight-bold text-center" colspan="2">
+                <td class="font-weight-bold text-center">
                     <span id="moneyLimits">0</span> <span class="unit">
                         <?php
                         if (isset($_COOKIE['selected_course'])) {
@@ -88,6 +88,7 @@
                         ?>
                     </span>
                 </td>
+                <td></td>
             </tr>
             <tr>
                 <td class="td_title va_middle">توضیحات</td>
@@ -203,7 +204,7 @@
         </div>
         <div class="popup_btn">
             <div class="end_course bg-white w-5" id="div_sabt">
-                <div class="btn btn-default click1 w-100" id="div_cal" onclick="focus_out()">ثبت</div>
+                <div class="btn btn-default click1 w-100" id="div_cal" onclick="focus_out('pay')">ثبت</div>
             </div>
             <div class="end_course bg-white w-5">
                 <div class="btn btn-warning click1 w-100" onclick="cancelManager()">بازگشت</div>

@@ -399,13 +399,18 @@ h6 {
   align-items: center;
 }
 
+.home_icon svg{
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+}
+
 .item_icon svg {
-  width: 2rem;
-  height: 1.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .item_title {
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color: #212529;
   font-weight: bold;
 }
@@ -1102,9 +1107,14 @@ input[radio] {
 }
 
 .bg_hover {
-  background-color: var(--menu-hover);
-  border-bottom: 2px solid #673ab763;
+  /* background-color: var(--menu-hover);
+  border-bottom: 2px solid #673ab763; */
   border-radius: 0;
+  color: #1473bd;
+}
+
+.bg_hover div {
+  color: #1473bd;
 }
 
 .bg_purple {
@@ -1362,8 +1372,12 @@ label {
   font-size: 0.8rem;
 }
 
-#my_name_value {
-  display: none;
+#mokhaatabin td:first-child {
+  width: 50vw;
+}
+
+.w-35-vw {
+  width: 35vw !important;
 }
 
 #ads {

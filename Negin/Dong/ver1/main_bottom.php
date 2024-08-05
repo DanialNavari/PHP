@@ -12,12 +12,7 @@ if ($xx == 0) {
 </div>
 
 <div class="rapid_access">
-    <div class="item_" onclick="page('d','.','home')" id="home">
-        <div class="item_circle">
-            <div class="item_icon"><?php echo $home; ?></div>
-        </div>
-        <div class="item_title">خانه</div>
-    </div>
+    
     <!-- <div class="item_" id="wallet">
         <div class="item_circle">
             <div class="item_icon"><?php echo $wallet; ?></div>
@@ -30,11 +25,18 @@ if ($xx == 0) {
         </div>
         <div class="item_title">مخاطبین</div>
     </div>
+    
     <div class="item_" onclick="page('r','_newCourse','course')" id="newCourse">
         <div class="item_circle">
             <div class="item_icon"><?php echo $active_course; ?></div>
         </div>
         <div class="item_title">دوره</div>
+    </div>
+    <div class="item_" onclick="page('d','.','home')" id="home">
+        <div class="item_circle">
+            <div class="item_icon home_icon"><?php echo $home; ?></div>
+        </div>
+        <div class="item_title">خانه</div>
     </div>
     <div class="item_ <?php echo $pos_btn; ?>" onclick="page('r','_newPayment','payments')" id="payments">
         <div class="item_circle">

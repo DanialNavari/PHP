@@ -13,7 +13,7 @@
 </style>
 
 <div class="row empty">
-    خرید جدید
+    ثبت خرید
 </div>
 
 <div class="cat">
@@ -62,8 +62,8 @@
                 <td class="text-center click" onclick="buyers('recieve')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
             <tr>
-                <td class="td_title">جمع مبلغ واریزی</td>
-                <td class="font-weight-bold text-center" colspan="2">
+                <td class="td_title w-35-vw">جمع مبلغ واریزی</td>
+                <td class="font-weight-bold text-center" colspan="1">
                     <span id="moneyLimits">0</span> <span class="unit">
                         <?php
                         if (isset($_COOKIE['selected_course'])) {
@@ -75,6 +75,7 @@
                         ?>
                     </span>
                 </td>
+                <td class="text-center click"></td>
             </tr>
             <!-- <tr class="force_hide">
                 <td class="td_title"></td>
@@ -201,7 +202,7 @@
         </div>
         <div class="popup_btn">
             <div class="end_course bg-white w-5" id="div_sabt">
-                <div class="btn btn-default click1 w-100" id="div_cal" onclick="focus_out()">ثبت</div>
+                <div class="btn btn-default click1 w-100" id="div_cal" onclick="focus_out('buy')">ثبت</div>
             </div>
             <div class="end_course bg-white w-5">
                 <div class="btn btn-warning click1 w-100" onclick="cancelManager()">بازگشت</div>
@@ -217,7 +218,7 @@
             ?>
             <div class="div_all">
                 <div class="div_summ_all">
-                    <h6>مبلغ خرید : </h6><input class="form-control w-9 d-ltr" type="text" id="sum_variz" onkeyup="commafy('sum_variz')">
+                    <h6>مبلغ خرید : </h6><input class="form-control w-9 d-ltr" type="tel" id="sum_variz" onkeyup="commafy('sum_variz')" onfocus="sum_focus_out('in')" onfocusout="sum_focus_out('out')" pattern="[0-9,]">
                     <h6><?php echo $money_unit; ?></h6>
                 </div>
                 <div class="div_share">
@@ -437,6 +438,7 @@
         if (chk == false) {
             $("#sum_variz").attr("disabled", "disabled");
             $(".pay").removeAttr("disabled");
+            $("#sum_variz").val("0");
         } else {
             $(".pay").attr("disabled", "disabled");
             $("#sum_variz").removeAttr("disabled");

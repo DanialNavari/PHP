@@ -4,40 +4,28 @@ require_once('jdf.php');
 $app_name = 'دونگتو';
 $ip_part = [];
 
-// navarimachinary
-// function db()
-// {
-//     $db_host = 'localhost';
-//     $db_username = 'qndomtoj_dong';
-//     $db_password = '6Jz&yhG(Ez%y';
-//     $db_name = 'qndomtoj_Dong';
-//     date_default_timezone_set('Asia/Tehran');
-//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//     mysqli_set_charset($GLOBALS['conn'], "utf8");
-// }
-
 // Dongeto.com
-// function db()
-// {
-//     $db_host = 'localhost';
-//     $db_username = 'dongetoc_dongeto';
-//     $db_password = 'KCZhgh54nKuegWsVvY8Q';
-//     $db_name = 'dongetoc_dongeto';
-//     date_default_timezone_set('Asia/Tehran');
-//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
-//     mysqli_set_charset($GLOBALS['conn'], "utf8");
-// }
-
 function db()
 {
     $db_host = 'localhost';
-    $db_username = 'root';
-    $db_password = '';
-    $db_name = 'dong';
+    $db_username = 'dongetoc_dongeto';
+    $db_password = 'KCZhgh54nKuegWsVvY8Q';
+    $db_name = 'dongetoc_dongeto';
     date_default_timezone_set('Asia/Tehran');
     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
     mysqli_set_charset($GLOBALS['conn'], "utf8");
 }
+
+// function db()
+// {
+//     $db_host = 'localhost';
+//     $db_username = 'root';
+//     $db_password = '';
+//     $db_name = 'dong';
+//     date_default_timezone_set('Asia/Tehran');
+//     $GLOBALS['conn'] = mysqli_connect($db_host, $db_username, $db_password, $db_name);
+//     mysqli_set_charset($GLOBALS['conn'], "utf8");
+// }
 
 function Query($query)
 {
@@ -498,16 +486,16 @@ function active_transactions($course_id)
 
         if ($trans_acc == null && is_null($trans_del) || $trans_acc == '' && is_null($trans_del)) {
             $trans_acc_pos = '
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="3">
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="4">
                 <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
             </td>
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
                 <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
             </td>
             ';
         } elseif ($trans_acc != null && $ma == 'ok' && is_null($trans_del) || $trans_acc != '' && $ma == 'ok' && is_null($trans_del)) {
             $trans_acc_pos = '
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
                 <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
             </td>
             ';
@@ -529,7 +517,7 @@ function active_transactions($course_id)
         }
 
         echo '
-    <div class="card my_card" style="' . $st . $bg_del . '">
+    <div class="card my_card" style="' . $st . $bg_del . '" onclick="toggle_shares(' . $trans_id . ')">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center">ردیف</td>
@@ -543,10 +531,10 @@ function active_transactions($course_id)
                 <td class="text-primary text-center">' . $trans_fee . '</td>
                 <td class="text-primary text-center">' . $trans_date[0] . '</td>
             </tr>
-            <tr class="bg_blue_nice font-weight-bold">
+            <tr class="bg_blue_nice font-weight-bold t' . $trans_id . ' force_hide">
                 <td class="td_title text_blue_very_dark text-right" colspan="5">' . $trans_desc . '</td>
             </tr>
-            <tr class="bg_secondary font-weight-bold">
+            <tr class="bg_secondary font-weight-bold t' . $trans_id . ' force_hide">
                 <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="5"> ' . $zinaf . '</td>
             </tr>
             <tr class="bg-default font-weight-bold">
@@ -2217,7 +2205,7 @@ function get_contact_box($course_id, $list_type)
                                 <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                                 <div class="star">
                                     <span class="karbar_name">' . $name . '</span>
-                                    <span><i>' . $star_unit . '</i> <i id="user_second_unit_' . $user . '">' . $star . '</i> ' . $sec_unit . '</span>
+                                    <span> <i id="user_second_unit_' . $user . '">' . $star . '</i> ' . $sec_unit . '</span>
                                 </div>
                             </div>
                             <div class="user_info text-white border_none box_shadow_none">
@@ -2342,7 +2330,7 @@ function pay_get_contact_share($pay_id, $pos)
                                     <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                                     <div class="star">
                                         <span class="karbar_name">' . $user_info_name . '</span>
-                                        <span><i>مبلغ : </i></span>
+                                        <span><i></i></span>
                                     </div>
                                 </div>
                                 <div class="user_info text-white border_none box_shadow_none">
@@ -2482,7 +2470,7 @@ function SELECT_payment_users($selected_course, $person_type)
             <div class="form-check popup_group P.' . $contact_id . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')" >
                 <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
                 <label class="form-check-label mr-2 ml-2 text-center w-100" for="v.' . $contact_id . '.' . $selected_course . '" id="l.' . $contact_id . '.' . $selected_course . '">' . $contact_name . '</label>
-                <input class="form-control text-left d-ltr pay mb-0-2" type="number" pattern="[0-9]" data-group="variz_fee" id="' . $contact_id . '" value="" onfocusout="check_val(' . $contact_id . ')"/>
+                <input class="form-control text-left d-ltr pay mb-0-2" type="tel" oninput="separate(' . $contact_id . ');updateVariz(' . $contact_id . ')" onchange="separate(' . $contact_id . ')" data-group="variz_fee" id="' . $contact_id . '" value="" onfocusout="check_val(' . $contact_id . ')"/>
             </div>
             ';
     }

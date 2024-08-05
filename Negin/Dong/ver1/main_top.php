@@ -9,7 +9,7 @@
     <link href="https://getbootstrap.com/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/5.1/assets/css/docs.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/main.css?v=<?php echo mt_rand(111111111, 999999999); ?>" />
     <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
@@ -22,6 +22,8 @@
         function Go_Back() {
             var page_ = document.getElementById('page_').value;
             if (page_ != 'main page') {
+                window.location.assign('./?route=_activeCourse&h=null&id=null');
+            }else{
                 window.location.assign('./?route=_activeCourse&h=null&id=null');
             }
         }
@@ -71,7 +73,7 @@
                 $page_style = "";
             } else {
                 $page_ = 'main page';
-                $page_style = "hide";
+                $page_style = "";
             }
 
             ?>
@@ -79,6 +81,7 @@
             <div class="top_nav">
                 <i id="h_menu" class="pl-3 click1 <?php echo $page_style; ?>" onclick="Go_Back()"><?php echo $active_course_btn; ?></i>
                 <i id="h_menu" class="pl-3 click1 <?php echo $page_style; ?>" onclick="show_report()"><?php echo $final_report; ?></i>
+                <i id="h_menu" class="pl-3 click1 <?php echo $page_style; ?>" onclick="window.location.reload()"><?php echo $refresh; ?></i>
             </div>
             <input type="hidden" id="page_" value="<?php echo $page_; ?>">
         </div>

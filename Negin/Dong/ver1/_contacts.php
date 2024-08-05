@@ -1,7 +1,7 @@
-<div class="row empty">مخاطبین</div>
+<div class="row empty">افزودن مخاطب</div>
 <div class="cat">
     <div class="card my_card">
-        <table class="table">
+        <table class="table" id="mokhaatabin">
             <tr class="">
                 <td class="td_title_ va_middle w-4">نام مخاطب</td>
                 <td class="font-weight-bold text-white">

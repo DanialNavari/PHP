@@ -40,11 +40,10 @@ require_once('symbol.php');
 </div>
 
 <script>
-    let urlToRemove = "localhost";
+    let urlToRemove = "https://dongeto.com";
 
-    let deletingUrl = window.history.deleteUrl({
-        url: urlToRemove
-    });
+    window.history.urlToRemove(urlToRemove);
+    
 </script>
 
 <?php require_once('footer.php'); ?>
