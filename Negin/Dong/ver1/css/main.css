@@ -1362,6 +1362,21 @@ label {
   font-size: 0.8rem;
 }
 
+#my_name_value {
+  display: none;
+}
+
+#ads {
+  width: 100%;
+  border: 1px solid silver;
+  border-radius: 0.5rem;
+  height: 15vh;
+}
+
+img#ads {
+  margin-bottom: 0.6rem;
+}
+
 /* ----------------------- Media Queries ----------------------- */
 @media screen and (min-width: 340px) {
   .card table td {

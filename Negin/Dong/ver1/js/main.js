@@ -1013,16 +1013,29 @@ function buyers(type_person) {
             chk = "v." + idd;
             //var valu = str_detail[1]; //Number(str_detail[1]).toLocaleString();
             //$("#" + str_detail[0]).val(valu);
-            if (parseInt(pay_fee) > 0) {
-              var element = document.getElementById("l." + idd);
-              element.classList.add("set_debt_user");
-              document.getElementById("l." + idd).style.visibility = "visible";
-              document.getElementById(pay_to).value = pay_fee;
-              document.getElementById(str_detail[0]).style.visibility =
-                "visible";
-            }
+            //if (parseInt(pay_fee) > 0) {
+            var element = document.getElementById("l." + idd);
+            element.classList.add("set_debt_user");
+            document.getElementById("l." + idd).style.visibility = "visible";
+            //document.getElementById(pay_to).value = pay_fee;
+            document.getElementById(str_detail[0]).style.visibility = "visible";
+            //}
           }
+          $("input").css("visibility", "visible");
         }
+
+        var nafarat = $(".contacts input");
+        var tedad_nafarat = nafarat.length - 1;
+        for (var o_count = 0; o_count < tedad_nafarat; o_count++) {
+          O_count = o_count + 1;
+          var idds = $(".cat:nth-child(" + O_count + ") input").attr("id");
+          var megh = $(".cat:nth-child(" + O_count + ") input").val();
+          idd_num = idds.split("-");
+          new_idd = idd_num[1];
+          var meghd = commafy__(megh);
+          $("#" + new_idd).val(meghd);
+        }
+        document.getElementById("my_name_value").style.visibility = "hidden";
       },
     });
   }
@@ -1084,8 +1097,6 @@ function commafy(num) {
   chk = $("#buyforall").prop("checked");
   if (chk == true) {
     buy_for_all();
-
-    
   } else {
     $("#sum_variz").attr("disabled", "disabled");
   }
@@ -1095,6 +1106,11 @@ function commafy_(num) {
   var num_rep = num.replace(/,/g, "");
   var nums = Number(num_rep).toLocaleString();
   return nums;
+}
+
+function commafy__(num) {
+  var num_rep = num.replace(/,/g, "");
+  return num_rep;
 }
 
 function focus_out() {
@@ -1118,11 +1134,11 @@ function focus_out() {
     debt_ += deb;
     final_string += child_id + ":" + deb + ",";
 
-    if (deb > 1) {
-      $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "visible");
-    } else {
-      $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "hidden");
-    }
+    // if (deb > 1) {
+    //   $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "visible");
+    // } else {
+    //   $(".popup_group:nth-child(" + i + ") .pay").css("visibility", "hidden");
+    // }
   }
 
   var total = $("#sum_variz").text();
@@ -1779,7 +1795,7 @@ function addNewPayment1() {
       success: function (response) {
         if (response == 1) {
           //alert("پرداخت با موفقیت ثبت شد");
-          //window.location.assign("./?route=__payments&h=0&id=" + course_id);
+          window.location.assign("./?route=__payments&h=0&id=" + course_id);
         }
       },
     });
@@ -1958,3 +1974,7 @@ function download_btn() {
   $(".gray_layer").hide();
   $(".please_wait").hide();
 }
+
+$(".del_table").click(function () {
+  $(".del_table").hide();
+});

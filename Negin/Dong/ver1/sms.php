@@ -38,6 +38,10 @@ echo $pos;
         <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow" onclick="check_code()">تایید کد</button>
     </div>
 
+    <div class="text-center mt-5 full_width px-2">
+        <img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads">
+    </div>
+
     <div class="alertBox">
         <div class="alert alert-danger alert-dismissible fade show sum1" role="alert">
             <?php echo $alert; ?>

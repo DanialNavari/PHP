@@ -450,7 +450,7 @@ function active_transactions($course_id)
         $trans_fee = sep3($r['trans_fee']);
         $trans_date = explode(' ', $r['trans_date']);
         $trans_desc = $r['trans_desc'];
-        if($trans_desc == ""){
+        if ($trans_desc == "") {
             $trans_desc = "توضیحات : ندارد";
         }
         $trans_person = $r['trans_person'];
@@ -591,9 +591,11 @@ function active_payments($course_id)
         if (is_null($pay_del)) {
             $bg_del = "";
             $del_row = "";
+            $table_style = "real_table";
         } else {
             $bg_del = "filter: hue-rotate(120deg) blur(0.8px)";
             $del_row = "<tr><td colspan='4' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد</td></tr>";
+            $table_style = "del_table";
         }
 
         $user_buyer_info = SELECT_user_by_id($pay_from);
@@ -609,12 +611,15 @@ function active_payments($course_id)
         if ($buyer_codes == $c_manager && $bg_del == "") {
             $permit1 = '';
             $permit2 = '';
-        } elseif ($buyer_codes == $z_id && $bg_del == "") {
+        } elseif ($buyer_codes == $_COOKIE['uid'] && $bg_del == "") {
             $permit1 = '';
-            $permit2 = '';
+            $permit2 = 'force_hide';
         } elseif ($_COOKIE['uid'] == $c_manager && $bg_del == "") {
             $permit1 = '';
             $permit2 = '';
+        } elseif ($z_id == $pay_to && $bg_del == "") {
+            $permit1 = '';
+            $permit2 = 'force_hide';
         } else {
             $permit1 = 'force_hide';
             $permit2 = 'force_hide';
@@ -633,7 +638,7 @@ function active_payments($course_id)
         }
 
         echo '
-    <div class="card my_card" style="' . $st . $bg_del . '">
+    <div class="card my_card ' . $table_style . '" style="' . $st . $bg_del . '">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
                 <td class="text-white text-center">واریز کننده</td>
@@ -2216,7 +2221,7 @@ function get_contact_box($course_id, $list_type)
                                 </div>
                             </div>
                             <div class="user_info text-white border_none box_shadow_none">
-                                <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')" disabled>
+                                <input type="text" class="form-control text-center h-1-8 sum font-weight-bold " value="0" id="user-' . $user . '" onclick="checkValue(' . $user . ')" onfocusout="checkValue1(' . $user . ')" disabled>
                             </div>
                         </div>
                     </div>
