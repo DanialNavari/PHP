@@ -111,6 +111,14 @@ function SELECT_user_by_id($uid)
     return $r;
 }
 
+function SELECT_user_by_tel($uid)
+{
+    db();
+    $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$uid'");
+    $r = mysqli_fetch_assoc($result);
+    return $r;
+}
+
 function SELECT_course($tel)
 {
     db();
@@ -593,10 +601,17 @@ function active_payments($course_id)
             $bg_del = "";
             $del_row = "";
             $table_style = "real_table";
+            $khodam = "0";
         } else {
             $bg_del = "filter: hue-rotate(120deg) blur(0.8px)";
             $del_row = "<tr><td colspan='4' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد</td></tr>";
             $table_style = "del_table";
+            $del_ex = explode(",", $pay_del);
+            if ($_COOKIE['uid'] == $del_ex[0]) {
+                $khodam = "1";
+            } else {
+                $khodam = "0";
+            }
         }
 
         $user_buyer_info = SELECT_user_by_id($pay_from);
@@ -638,7 +653,8 @@ function active_payments($course_id)
             $st = '';
         }
 
-        echo '
+        if ($khodam == 0) {
+            echo '
     <div class="card my_card ' . $table_style . '" style="' . $st . $bg_del . '" onclick="toggle_shares(' . $pay_id . ')">
         <table class="table">
             <tr class="bg_blue_very_dark font-weight-bold">
@@ -671,6 +687,7 @@ function active_payments($course_id)
         </table>
     </div>
     ';
+        }
     }
 }
 
@@ -2062,14 +2079,14 @@ function MY_DEBT($tel, $pos)
     $user_use = 0;
     $user_give = 0;
 
-    $res = SELECT_contact($tel);
-    $c_id = $res['contact_id'];
-    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $c_id . ":%' OR `trans_person` LIKE '%," . $c_id . ":%'");
+    // $res = SELECT_contact($tel);
+    // $c_id = $res['contact_id'];
+    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' OR `trans_person` LIKE '%," . $tel . ":%'");
     $num = mysqli_num_rows($r);
 
     for ($i = 0; $i < $num; $i++) {
         $fetch = mysqli_fetch_assoc($r);
-        if ($fetch['trans_buyer'] == $c_id) {
+        if ($fetch['trans_buyer'] == $tel) {
             $user_use += $fetch['trans_fee'];
         }
 
@@ -2078,20 +2095,20 @@ function MY_DEBT($tel, $pos)
         for ($j = 0; $j < count($trans_person) - 1; $j++) {
             $trans_detail = explode(':', $trans_person[$j]);
             $id = $trans_detail[0];
-            if ($c_id == $id) {
+            if ($tel == $id) {
                 $user_sahm += $trans_detail[1];
             }
         }
     }
 
-    $p = Query("SELECT * FROM `payments` WHERE `pay_from` = '" . $c_id . "' AND `pay_del` IS NULL");
+    $p = Query("SELECT * FROM `payments` WHERE `pay_from` = '" . $tel . "' AND `pay_del` IS NULL");
     $nums = mysqli_num_rows($p);
     for ($l = 0; $l < $nums; $l++) {
         $fet = mysqli_fetch_assoc($p);
         $user_pay += $fet['pay_fee'];
     }
 
-    $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $c_id . "' AND `pay_del` IS NULL");
+    $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL");
     $numsa = mysqli_num_rows($pa);
     for ($la = 0; $la < $numsa; $la++) {
         $feta = mysqli_fetch_assoc($pa);

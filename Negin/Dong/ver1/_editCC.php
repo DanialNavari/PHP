@@ -11,7 +11,7 @@ if (isset($_GET['id'])) {
 
     for ($i = 0; $i < $course_members; $i++) {
         $member_id = $course_member[$i];
-        $rs = SELECT_user_by_id($member_id);
+        $rs = SELECT_user_by_tel($member_id);
         $tel = $rs['contact_tel'];
         $result = Query("SELECT * FROM `users` WHERE `users_tel` = '$tel'");
         $num = mysqli_num_rows($result);
