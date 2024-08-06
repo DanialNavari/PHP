@@ -106,7 +106,7 @@
 
 <div class="cat mb-2">
     <div class="group_name">
-        <h6 class="font-weight-bold">دریافت کنندگان</h6>
+        <h6 class="font-weight-bold">مصرف کنندگان</h6>
     </div>
 </div>
 
@@ -445,11 +445,3 @@
         }
     });
 </script>
-
-<?php
-if (isset($_COOKIE['selected_course'])) {
-} else {
-    echo '<script>window.location.reload();</script>';
-}
-
-?>

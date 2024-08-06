@@ -39,7 +39,7 @@ echo $pos;
     </div>
 
     <div class="text-center mt-5 full_width px-2">
-        <img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads">
+        <img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads" class="img-responsive">
     </div>
 
     <div class="alertBox">
@@ -64,35 +64,38 @@ echo $pos;
     countDown(100);
     $("#c4").focus();
 
-    if ('OTPCredential' in window) {
-        window.addEventListener('DOMContentLoaded', e => {
-            const input = document.querySelector('input[autocomplete="one-time-code"]');
-            if (!input) return;
-            const ac = new AbortController();
-            const form = input.closest('form');
-            if (form) {
-                form.addEventListener('submit', e => {
-                    ac.abort();
-                });
-            }
-            navigator.credentials.get({
-                otp: {
-                    transport: ['sms']
-                },
-                signal: ac.signal
-            }).then(otp => {
-                input.value = otp.code;
-                x = document.getElementById("otp_code").value;
-                xx = x.split("");
-                document.getElementById("c4").value = xx[0];
-                document.getElementById("c3").value = xx[1];
-                document.getElementById("c2").value = xx[2];
-                document.getElementById("c1").value = xx[3];
-                if (form) form.submit();
-            }).catch(err => {
-                alert(err);
-                console.log(err);
-            });
-        });
-    }
+    // if ('OTPCredential' in window) {
+    //     window.addEventListener('DOMContentLoaded', e => {
+    //         const input = document.querySelector('input[autocomplete="one-time-code"]');
+    //         if (!input) return;
+    //         const ac = new AbortController();
+    //         const form = input.closest('form');
+    //         if (form) {
+    //             form.addEventListener('submit', e => {
+    //                 ac.abort();
+    //             });
+    //         }
+    //         navigator.credentials.get({
+    //             otp: {
+    //                 transport: ['sms']
+    //             },
+    //             signal: ac.signal
+    //         }).then(otp => {
+    //             input.value = otp.code;
+    //             x = document.getElementById("otp_code").value;
+    //             xx = x.split("");
+    //             document.getElementById("c4").value = xx[0];
+    //             document.getElementById("c3").value = xx[1];
+    //             document.getElementById("c2").value = xx[2];
+    //             document.getElementById("c1").value = xx[3];
+    //             if (form) form.submit();
+    //         }).catch(err => {
+    //             alert(err);
+    //             console.log(err);
+    //         });
+    //     });
+    // }
 </script>
+<?php
+$vcode = mt_rand(1000, 9999);
+?>

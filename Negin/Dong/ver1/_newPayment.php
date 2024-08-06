@@ -412,11 +412,3 @@
         });
     });
 </script>
-
-<?php
-if (isset($_COOKIE['selected_course'])) {
-} else {
-    echo '<script>window.location.reload();</script>';
-}
-
-?>

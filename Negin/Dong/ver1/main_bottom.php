@@ -1,9 +1,18 @@
 <?php
 $xx = default_course($_COOKIE['uid']);
+$menu_contact = "";
+$menu_buy = "";
+$menu_course = "";
+$menu_home = "";
+$menu_pay = "";
+$pattern = "";
+
 if ($xx == 0) {
     $pos_btn = 'force_hide';
+    $pattern = $menu_contact . $menu_home . $menu_course;
 } else {
     $pos_btn = '';
+    $pattern = $menu_contact . $menu_course . $menu_home . $menu_pay . $menu_buy;
 }
 ?>
 <!-- space from bottom -->
@@ -12,47 +21,59 @@ if ($xx == 0) {
 </div>
 
 <div class="rapid_access">
-    
-    <!-- <div class="item_" id="wallet">
+    <?php
+    $menu_home = '
+    <div class="item_" onclick="page(\'d\',\'.\',\'home\')" id="home">
         <div class="item_circle">
-            <div class="item_icon"><?php echo $wallet; ?></div>
-        </div>
-        <div class="item_title">کیف پول</div>
-    </div> -->
-    <div class="item_" onclick="page('r','_contacts','contact')" id="contact">
-        <div class="item_circle">
-            <div class="item_icon"><?php echo $contacts; ?></div>
-        </div>
-        <div class="item_title">مخاطبین</div>
-    </div>
-    
-    <div class="item_" onclick="page('r','_newCourse','course')" id="newCourse">
-        <div class="item_circle">
-            <div class="item_icon"><?php echo $active_course; ?></div>
-        </div>
-        <div class="item_title">دوره</div>
-    </div>
-    <div class="item_" onclick="page('d','.','home')" id="home">
-        <div class="item_circle">
-            <div class="item_icon home_icon"><?php echo $home; ?></div>
+            <div class="item_icon home_icon">' . $home . '</div>
         </div>
         <div class="item_title">خانه</div>
-    </div>
-    <div class="item_ <?php echo $pos_btn; ?>" onclick="page('r','_newPayment','payments')" id="payments">
+    </div>';
+
+    $menu_contact = '
+    <div class="item_" onclick="page(\'r\',\'_contacts\',\'contact\')" id="contact">
         <div class="item_circle">
-            <div class="item_icon"><?php echo $payment; ?></div>
+            <div class="item_icon">' . $contacts . '</div>
+        </div>
+        <div class="item_title">مخاطبین</div>
+    </div>';
+
+
+    $menu_course = '
+    <div class="item_" onclick="page(\'r\',\'_newCourse\',\'course\')" id="newCourse">
+        <div class="item_circle">
+            <div class="item_icon">' . $active_course . '</div>
+        </div>
+        <div class="item_title">دوره</div>
+    </div>';
+
+    $menu_pay = '
+    <div class="item_ ' . $pos_btn . '" onclick="page(\'r\',\'_newPayment\',\'payments\')" id="payments">
+        <div class="item_circle">
+            <div class="item_icon">' . $payment . '</div>
         </div>
         <div class="item_title">پرداخت</div>
-    </div>
-    <div class="item_ <?php echo $pos_btn; ?>" onclick="page('r','_newTransaction','transaction')" id="transaction">
+    </div>';
+
+    $menu_buy = '
+    <div class="item_ ' . $pos_btn . '" onclick="page(\'r\',\'_newTransaction\',\'transaction\')" id="transaction">
         <div class="item_circle">
-            <div class="item_icon"><?php echo $bag_plus; ?></div>
+            <div class="item_icon">' . $bag_plus . '</div>
         </div>
         <div class="item_title">خرید</div>
-    </div>
-</div>
+        </div>';
+
+    if ($xx == 0) {
+        $pattern = $menu_contact . $menu_home . $menu_course;
+    } else {
+        $pattern = $menu_contact . $menu_course . $menu_home . $menu_pay . $menu_buy;
+    }
+
+    echo $pattern;
+    ?>
 
 </div>
+
 <!-- end of container -->
 
 <?php if (isset($_GET['h'])) {

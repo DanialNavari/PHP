@@ -56,7 +56,7 @@
 <div class="h-1"></div>
 <div class="h-1"></div>
 
-<div class="cat mb-1">
+<!-- <div class="cat mb-1">
     <div class="group_name">
         <h6 class="font-weight-bold">اضافه کردن مخاطب جدید</h6>
     </div>
@@ -84,11 +84,11 @@
             </tr>
         </table>
     </div>
-</div>
+</div> -->
 
 <div class="cat mb-1">
     <div class="group_name">
-        <h6 class="font-weight-bold">افراد حاضر در دوره</h6>
+        <h6 class="font-weight-bold">لیست مخاطبین</h6>
     </div>
 </div>
 

@@ -17,7 +17,7 @@ require_once('symbol.php');
     </div>
 
     <div class="text-center mt-5 full_width px-2">
-        <img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads">
+        <img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads" class="img-responsive">
     </div>
 
     <div class="alertBox">

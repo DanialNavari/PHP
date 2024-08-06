@@ -182,6 +182,7 @@ function remove_from_course(id) {
 
 function add_user_to_course(id) {
   let user_id = "user-" + id;
+  let user_tel = $("#t-" + id).text();
   let user_esm = user_id + "-name";
   let user_box = user_id + "-box";
   let pos = $("." + user_box).hasClass("bg_green_dark");
@@ -198,7 +199,7 @@ function add_user_to_course(id) {
       '<div class="user_info bg_dark_blue text-white ' +
       user_id +
       '" data="' +
-      id +
+      user_tel +
       '" onclick="remove_from_course(' +
       id +
       ')"><div class="user_name td_title_ px_02 mx-auto">' +
@@ -957,6 +958,8 @@ function buyer(type_person) {
           edit_payment_pos = 1;
         }
         $("#my_name_value").hide();
+        var khodam = $("#khodam").val();
+        $(".P-" + khodam).hide();
       },
     });
   }
@@ -1767,43 +1770,47 @@ function setContactToList(course_id, class_name) {
 
 function addNewPayment1() {
   var zaman = false;
-  var trans_date = $("#start_from_fa").text();
-  if (trans_date == "****/**/**") {
-    setDate();
-    $("#savedate").click();
-    zaman = true;
-  } else {
-    zaman = true;
-  }
-
-  var sum_all_sahm = $("#sum_all_sahm").val();
-  var buyer_person = $("#buyer_person").val();
   var trans_desc = $("#trans_desc").val();
-  var karbaran = $("#karbaran").val();
-  var course_id = $(".course_id").text();
+  if (trans_desc.length > 3) {
+    var trans_date = $("#start_from_fa").text();
+    if (trans_date == "****/**/**") {
+      setDate();
+      $("#savedate").click();
+      zaman = true;
+    } else {
+      zaman = true;
+    }
 
-  if (zaman == true) {
-    $.ajax({
-      data:
-        "add_new_payment=ok&trans_date=" +
-        trans_date +
-        "&money_limit=" +
-        sum_all_sahm +
-        "&karbaran=" +
-        karbaran +
-        "&trans_desc=" +
-        trans_desc +
-        "&buyer_person=" +
-        buyer_person,
-      type: "POST",
-      url: "server.php",
-      success: function (response) {
-        if (response == 1) {
-          //alert("پرداخت با موفقیت ثبت شد");
-          window.location.assign("./?route=__payments&h=0&id=" + course_id);
-        }
-      },
-    });
+    var sum_all_sahm = $("#sum_all_sahm").val();
+    var buyer_person = $("#buyer_person").val();
+    var karbaran = $("#karbaran").val();
+    var course_id = $(".course_id").text();
+
+    if (zaman == true) {
+      $.ajax({
+        data:
+          "add_new_payment=ok&trans_date=" +
+          trans_date +
+          "&money_limit=" +
+          sum_all_sahm +
+          "&karbaran=" +
+          karbaran +
+          "&trans_desc=" +
+          trans_desc +
+          "&buyer_person=" +
+          buyer_person,
+        type: "POST",
+        url: "server.php",
+        success: function (response) {
+          if (response == 1) {
+            //alert("پرداخت با موفقیت ثبت شد");
+            window.location.assign("./?route=__payments&h=0&id=" + course_id);
+          }
+        },
+      });
+    }
+  } else {
+    alert("لطفا توضیحات واریزی را وارد کنید");
   }
 }
 

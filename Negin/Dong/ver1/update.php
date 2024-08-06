@@ -5,7 +5,7 @@ require_once("main_top.php");
 <div class="row empty"></div>
 <div class="cat">
     <div class="card my_card px_1 text-center text-primary">
-        <h4>لطفا با گوشی همراه وارد شوید</h4>
+        <h4>برنامه در حال به روز رسانی است</h4>
     </div>
 </div>
 

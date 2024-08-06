@@ -355,7 +355,7 @@ h6 {
 }
 
 .rapid_access {
-  padding: 0.5rem;
+  padding: 0.2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -367,7 +367,6 @@ h6 {
   background: #fff;
   width: 100vw;
   right: 0;
-  min-height: 71px;
   box-shadow: 0px -1px 3px 0px silver;
 }
 
@@ -390,7 +389,6 @@ h6 {
 
 .item_circle {
   width: 2.5rem;
-  height: 2.5rem;
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
@@ -399,9 +397,10 @@ h6 {
   align-items: center;
 }
 
-.home_icon svg{
-  width: 2.5rem !important;
-  height: 2.5rem !important;
+.home_icon svg {
+  width: 2rem !important;
+  height: 2rem !important;
+  color: #075795;
 }
 
 .item_icon svg {
@@ -1114,7 +1113,17 @@ input[radio] {
 }
 
 .bg_hover div {
-  color: #1473bd;
+  color: #008cf9;
+}
+
+.row_span {
+  transform: rotate(270deg);
+  vertical-align: middle !important;
+}
+
+span.td_title_{
+  display: block;
+  margin-top: 0.3rem;
 }
 
 .bg_purple {

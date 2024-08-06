@@ -74,16 +74,16 @@ if (isset($_POST['login'])) {
         $my_id = $_POST['my_id'];
         Query("UPDATE `contacts` SET `contact_name` = '$my_name' WHERE `contact_id` = '$my_id'");
     }
-    if ($res > 0) {
-        $mem = explode(",", $members);
-        for ($i = 0; $i < count($mem) - 1; $i++) {
-            $find_user_tel = SELECT_user_by_id($mem[$i]);
-            $found_user_tel = $find_user_tel['contact_tel'];
-            $find_manager_name = SELECT_user($maker);
-            $found_manager_name = $find_manager_name['users_name'];
-            //sendSMSInviteCourse("$found_user_tel", "$course_name", "$found_manager_name", "$res");
-        }
-    }
+    // if ($res > 0) {
+    //     $mem = explode(",", $members);
+    //     for ($i = 0; $i < count($mem) - 1; $i++) {
+    //         $find_user_tel = SELECT_user_by_id($mem[$i]);
+    //         $found_user_tel = $find_user_tel['contact_tel'];
+    //         $find_manager_name = SELECT_user($maker);
+    //         $found_manager_name = $find_manager_name['users_name'];
+    //         //sendSMSInviteCourse("$found_user_tel", "$course_name", "$found_manager_name", "$res");
+    //     }
+    // }
     echo $res;
 } elseif (isset($_POST['sep'])) {
     echo sep3($_POST['sep']);
