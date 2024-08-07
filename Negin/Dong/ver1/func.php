@@ -2539,11 +2539,3 @@ function sendSMSInviteCourse($tel, $course_name, $course_manager, $course_id)
         $patternVariables,  // pattern values
     );
 }
-
-function get_info()
-{
-    $x = Query("SELECT * FROM `settings` WHERE `uid` = 'app'");
-    $y = mysqli_fetch_assoc($x);
-    $pos = $y['course_default'];
-    return $pos;
-}

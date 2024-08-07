@@ -1,6 +1,7 @@
 <meta charset="utf-8" />
 <?php
 // ---------------------------------------------------
+include('db.php');
 include('func.php');
 
 //-------------Set teleg for PHP-------------------------------	
@@ -30,6 +31,7 @@ $date_fa = gregorian_to_jalali(date('Y'), date('m'), date('d'), '/');
 $user_info = check_user("$user_id", "$user_n", "$user_f", "$user_l", "$date_fa");
 $pos = $user_info['pos'];
 $admin = $user_info['role'];
+$plus_off = 10;
 
 if ($text == '❌ بازگشت') {
     SendMessage("$user_id", "خوش آمدید", $key_start_manager);
@@ -43,7 +45,7 @@ if ($text == '❌ بازگشت') {
         } elseif ($pos == 0 && $text == '/start') {
             SendMessage("$user_id", "خوش آمدید", $key_start_manager);
             UPDATE('users', 'pos', '0', "$user_id");
-        } else if ($pos == 0 && $text == '🙋‍♀️ مشتری جدید') {
+        } else if ($pos == 0 && $text == "🙋‍♀️ استعلام مشتری") {
             // --------- ثبت اطلاعات مشتری ---------
             SendMessage("$user_id", "موبایل مشتری جدید را وارد کنید", $key_return);
             UPDATE('users', 'pos', '1.1', "$user_id");
@@ -53,6 +55,20 @@ if ($text == '❌ بازگشت') {
                 $q = Query("SELECT * FROM `customers` WHERE `mobile` = '$text'");
                 $num = mysqli_num_rows($q);
                 if ($num > 0) {
+                    $row = mysqli_fetch_assoc($q);
+                    $rs = Query("SELECT COUNT(id) AS count FROM `refer` WHERE `mobile` = '$text'");
+                    $rowss = mysqli_fetch_assoc($rs);
+                    $refer = $rowss['count'];
+                    $r = Query("SELECT SUM(off) AS sum FROM `refer` WHERE `mobile` = '$text'");
+                    $rows = mysqli_fetch_assoc($r);
+                    $sum = $rows['sum'];
+                    $birthday = substr($row['birthday'], 0, 4) . '/' . substr($row['birthday'], 4, 2) . '/' . substr($row['birthday'], 6, 2);
+                    $f_string = "نام: *" . $row['esm'] . "*\nموبایل: *" . $text . "*\nتاریخ تولد: *" . $birthday . "*\nتاریخ عضویت: *" . $row['date'] . "*\nذخیره تخفیف: *$sum%*\nتعداد مراجعه: *$refer*\n🌹🌹🌹🌹🌹\n";
+                    UPDATE('users', 'cach', $text, "$user_id");
+                    SendMessage("$user_id", urlencode($f_string), $key_off_use, "MarkdownV2");
+                    $ttx = "با تخفیف هات چیکار می کنی؟";
+                    SendMessage("$user_id", $ttx, $key_off_use, "MarkdownV2");
+                    UPDATE('users', 'pos', '1.5', "$user_id");
                 } else {
                     UPDATE('users', 'cach', $text . ",", $user_id);
                     SendMessage("$user_id", "نام مشتری جدید را وارد کنید", $key_return);
@@ -85,8 +101,34 @@ if ($text == '❌ بازگشت') {
             UPDATE('users', 'pos', '0', "$user_id");
             UPDATE('users', 'cach', '', "$user_id");
         } elseif ($pos == '0' && $text == "📜 لیست مشتریان") {
-            $x = customer_list();
-            SendMessage("$user_id", urlencode($x), $key_start_manager, "MarkdownV2");
+            //$x = customer_list();
+            SendMessage("$user_id", urlencode("[برای دانلود اطلاعات مشتریان به صورت اکسل روی لینک کلیک کنید](https://skincarefaezeh.ir/excel.php)"), $key_start_manager, "MarkdownV2");
+        } elseif ($pos == '1.5') {
+            $ReadCach = ReadCach($user_id);
+            $cach = $ReadCach['cach'];
+            if ($text == "💸 استفاده از تخفیف") {
+                $r = Query("SELECT SUM(off) AS sum FROM `refer` WHERE `mobile` = '$cach'");
+                $rows = mysqli_fetch_assoc($r);
+                $sum = $rows['sum'];
+                if ($sum > 0) {
+                    $sum_neg = $sum * -1;
+                    ADD_new_refer("$cach", "$date_fa", date("H:i:s"), "$sum_neg", "$user_id");
+                    SendMessage("$user_id", "🥺ذخیره تخفیف شما صفر شد🥺", $key_start_manager);
+                    UPDATE('users', 'pos', '0', "$user_id");
+                    UPDATE('users', 'cach', '', "$user_id");
+                } else {
+                    SendMessage("$user_id", "⛔️شما ذخیره تخفیف ندارید⛔️", $key_off_use);
+                }
+            } elseif ($text == "💰 ذخیره کردن تخفیف") {
+                $r = Query("SELECT SUM(off) AS sum FROM `refer` WHERE `mobile` = '$cach'");
+                $rows = mysqli_fetch_assoc($r);
+                $sum = $rows['sum'] + $plus_off;
+                ADD_new_refer("$cach", "$date_fa", date("H:i:s"), "$plus_off", "$user_id");
+                SendMessage("$user_id", "🎉 ذخیره تخفیفات شد : $sum% 🎉", $key_start_manager);
+                UPDATE('users', 'pos', '0', "$user_id");
+                UPDATE('users', 'cach', '', "$user_id");
+            } elseif ($text == "🎁 ثبت کد تخفیف") {
+            }
         }
     } else {
     }

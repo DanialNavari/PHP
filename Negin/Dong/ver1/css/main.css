@@ -1398,6 +1398,7 @@ label {
 
 img#ads {
   margin-bottom: 0.6rem;
+  margin-top: 1rem;
 }
 
 /* ----------------------- Media Queries ----------------------- */
@@ -1448,5 +1449,8 @@ img#ads {
     top: 7rem;
     z-index: 9;
     right: 25vw;
+  }
+  #ads{
+    display: none;
   }
 }

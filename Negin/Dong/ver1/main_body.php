@@ -109,10 +109,27 @@
                     <div class="box_num text-danger"></div>
                 </div>
                 <div class="box_title">خروج</div>
-                
+
             </div>
         </div>
     </div>
 </div>
+<!-- <div class="cat">
+    <div class="group_name">
+    </div>
+    <div class="box_cat_parent">
+        <div class="box_cat">
+            <div class="box_cat">
+                <div class="box d-flex mt-2 w-100">
+                    <div class="box_icon">
+                        <a href="https://www.instagram.com/skincarefaezeh_n?igsh=MTg1MDN0cWh4a2hoMQ==" rel="nofollow"><img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads" class="img-responsive"></a>
+                    </div>
+                    <div class="box_num text-danger"></div>
+                </div>
+                <div class="box_title"></div>
+            </div>
+        </div>
+    </div>
+</div> -->
 
 <div class="cat mb-1 h-1"></div>

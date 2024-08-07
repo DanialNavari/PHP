@@ -13,12 +13,22 @@ $day = $year_number . '/' . $month_number . '/' . $day_number . ' - ' . $time;
 // ---------------------------------------------------
 // Keys
 $key_start_manager = ["keyboard" => [
-    ["📜 لیست مشتریان", "🙋‍♀️ مشتری جدید"],
+    ["📜 لیست مشتریان", "🙋‍♀️ استعلام مشتری"],
     ["👩‍👩‍👧‍👧 عاملین فروش", "🎉 کدهای تخفیف"],
+]];
+
+$key_off_use = ["keyboard" => [
+    ["💸 استفاده از تخفیف", "💰 ذخیره کردن تخفیف"],
+    ["🎁 ثبت کد تخفیف"],
+    ["❌ بازگشت"],
 ]];
 
 $key_return = ["keyboard" => [
     ["❌ بازگشت"],
+]];
+
+$key_return_no = ["keyboard" => [
+    ["❌ بازگشت","😔 ندارم"],
 ]];
 
 // ---------------------------------------------------
@@ -28,6 +38,7 @@ function Query($query)
     $x = mysqli_query($GLOBALS['conn'], "$query");
     return $x;
 }
+
 function SendMessage($user_id, $text, $reply_markup, $PM = "")
 {
     $rp = json_encode($reply_markup);
@@ -46,7 +57,7 @@ function check_user($user_id, $user_n, $user_f, $user_l, $date)
     $x = Query("SELECT * FROM `users` WHERE `uid` = '$user_id'");
     $num = mysqli_num_rows($x);
     if ($num > 0) {
-        Query("UPDATE `users` SET `user_name`='$user_n',`first_name`='$user_f',`last_name`='$user_l'");
+        Query("UPDATE `users` SET `user_name`='$user_n',`first_name`='$user_f',`last_name`='$user_l' WHERE `uid` = '$user_id'");
     } else {
         ADD_new_user($user_id, $user_n, $user_f, $user_l, $date);
         $x = Query("SELECT * FROM `users` WHERE `uid` = '$user_id'");
@@ -108,10 +119,17 @@ function customer_list()
         $rowss = mysqli_fetch_assoc($rs);
         $refer = $rowss['count'];
         $birthday = substr($row['birthday'], 0, 4) . '/' . substr($row['birthday'], 4, 2) . '/' . substr($row['birthday'], 6, 2);
-        $final_report .= "نام: *" . $row['esm'] . "*\nموبایل: *" . $mobile . "*\nتاریخ تولد: *" . $birthday . "*\nتاریخ عضویت: *" . $row['date'] . "*\nدرصد تخفیف: *$sum%*\nتعداد مراجعه: *$refer*\n🌹🌹🌹🌹🌹\n";
+        $final_report .= "نام: *" . $row['esm'] . "*\nموبایل: *" . $mobile . "*\nتاریخ تولد: *" . $birthday . "*\nتاریخ عضویت: *" . $row['date'] . "*\nذخیره تخفیف: *$sum%*\nتعداد مراجعه: *$refer*\n🌹🌹🌹🌹🌹\n";
     }
     $w = Query("SELECT COUNT(id) AS count FROM `refer` WHERE 1");
     $ww = mysqli_fetch_assoc($w);
     $www = $ww['count'];
     return "تعداد مشتریان: *" . $num . " نفر*\nتعداد کل مراجعات: *$www* مرتبه\n\n" . $final_report;
+}
+
+function ReadCach($uid)
+{
+    $q = Query("SELECT `cach` FROM `users` WHERE `uid` = '$uid'");
+    $r = mysqli_fetch_assoc($q);
+    return $r;
 }

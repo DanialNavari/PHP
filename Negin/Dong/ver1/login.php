@@ -17,7 +17,7 @@ require_once('symbol.php');
     </div>
 
     <div class="text-center mt-5 full_width px-2">
-        <img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads" class="img-responsive">
+        <a href="https://www.instagram.com/skincarefaezeh_n?igsh=MTg1MDN0cWh4a2hoMQ==" rel="nofollow"><img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads" class="img-responsive"></a>
     </div>
 
     <div class="alertBox">
@@ -43,7 +43,6 @@ require_once('symbol.php');
     let urlToRemove = "https://dongeto.com";
 
     window.history.urlToRemove(urlToRemove);
-    
 </script>
 
 <?php require_once('footer.php'); ?>
