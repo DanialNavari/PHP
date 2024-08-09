@@ -52,6 +52,11 @@ $key_referal_part2 = ["keyboard" => [
     ["❌ بازگشت",]
 ], 'resize_keyboard' => true,];
 
+$key_sub_collect = ["keyboard" => [
+    ["3.سایر", "2.سالن", "1.فائزه"],
+    ["❌ بازگشت",]
+], 'resize_keyboard' => true,];
+
 $key_referal_list = ["keyboard" => [], 'resize_keyboard' => true,];
 // ---------------------------------------------------
 // Functions
@@ -99,9 +104,9 @@ function UPDATE($table, $key, $value, $uid)
     $x = Query("UPDATE `$table` SET `$key` = '$value' WHERE `uid` = '$uid'");
 }
 
-function ADD_new_customer($name, $mobile, $birthday, $date, $uid, $referer)
+function ADD_new_customer($name, $mobile, $birthday, $date, $uid, $referer, $ref_code)
 {
-    $query = Query("INSERT INTO `customers`(`id`,`esm`,`mobile`,`birthday`,`date`,`recorder`,`referer`) VALUES(NULL,'$name','$mobile','$birthday','$date','$uid','$referer')");
+    $query = Query("INSERT INTO `customers`(`id`,`esm`,`mobile`,`birthday`,`date`,`recorder`,`referer`,`subcollect`) VALUES(NULL,'$name','$mobile','$birthday','$date','$uid','$referer','$ref_code')");
     $id = mysqli_insert_id($GLOBALS['conn']);
     return $id;
 }
@@ -133,7 +138,7 @@ function SMS($user_name, $percent, $user_tel)
         'percent' => "$percent",
     );
     $data = http_build_query($postRequest);
-    $getUrl = $url."?".$data;
+    $getUrl = $url . "?" . $data;
 
     curl_setopt($ch, CURLOPT_URL, $getUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -284,7 +289,8 @@ function get_customers_ref($code)
     $final .= "تعداد مشتری: *$m نفر*\n🔹🔹🔹🔹\n";
     for ($i = 0; $i < $m; $i++) {
         $n = mysqli_fetch_assoc($q);
-        $final .= "نام: *" . $n['esm'] . "*\nموبایل: *" . $n['mobile'] . "*\nت ت: *" . $n['birthday'] . "*\nت عضویت: *" . $n['date'] . "*\n🔸🔸🔸🔸\n";
+        $birthday = substr($n['birthday'], 0, 4) . "/" . substr($n['birthday'], 4, 2) . "/" . substr($n['birthday'], 6, 2);
+        $final .= "نام: *" . $n['esm'] . "*\nموبایل: *" . $n['mobile'] . "*\nت ت: *" . $birthday . "*\nت عضویت: *" . $n['date'] . "*\n🔸🔸🔸🔸\n";
     }
     return $final;
 }
@@ -303,3 +309,4 @@ function tasviye($code, $date)
     $card = $f['card'];
     return "نام: *$esm*\nموبایل: *$mobile*\nمبلغ: *$cash*\nتاریخ: *$date($time)*\nکارت: *$card*\n🌹🌹🌹🌹";
 }
+

@@ -67,15 +67,25 @@ if ($read_cach_first['cach'] == 'first') {
                 $q = Query("SELECT * FROM `customers` WHERE `mobile` LIKE '$text'");
                 $num = mysqli_num_rows($q);
                 if ($num > 0) {
+                    $subcollect_list = ["3" => "سایر", "2" => "سالن", "1" => "فائزه"];
                     $row = mysqli_fetch_assoc($q);
+                    $refer_user = $row['referer'];
+                    $subcollect = $row['subcollect'];
+
+                    $rx = Query("SELECT * FROM `referal` WHERE `code` ='$refer_user'");
+                    $rx_row = mysqli_fetch_assoc($rx);
+                    $rx_ref = $rx_row['esm'];
+
                     $rs = Query("SELECT COUNT(id) AS count FROM `refer` WHERE `mobile` = '$text'");
                     $rowss = mysqli_fetch_assoc($rs);
                     $refer = $rowss['count'];
+
                     $r = Query("SELECT SUM(off) AS sum FROM `refer` WHERE `mobile` = '$text'");
                     $rows = mysqli_fetch_assoc($r);
                     $sum = $rows['sum'];
                     $birthday = substr($row['birthday'], 0, 4) . '/' . substr($row['birthday'], 4, 2) . '/' . substr($row['birthday'], 6, 2);
-                    $f_string = "نام: *" . $row['esm'] . "*\nموبایل: *" . $text . "*\nتاریخ تولد: *" . $birthday . "*\nتاریخ عضویت: *" . $row['date'] . "*\nذخیره تخفیف: *$sum%*\nتعداد مراجعه: *$refer*\n🌹🌹🌹🌹🌹\n";
+                    $f_string = "نام: *" . $row['esm'] . "*\nموبایل: *" . $text . "*\nتاریخ تولد: *" . $birthday . "*\nتاریخ عضویت: *" . $row['date'] . "*\nذخیره تخفیف: *$sum%*\nتعداد مراجعه: *$refer*\nمعرف: *$rx_ref*\nزیر مجموعه: *$subcollect_list[$subcollect]*\n🌹🌹🌹🌹🌹\n";
+
                     UPDATE('users', 'cach', $text, "$user_id");
                     SendMessage("$user_id", urlencode($f_string), $key_off_use, "MarkdownV2");
                     $ttx = "با تخفیف هات چیکار می کنی؟";
@@ -108,51 +118,54 @@ if ($read_cach_first['cach'] == 'first') {
             SendMessage("$user_id", "عامل فروش(معرف) را انتخاب کنید", $key_referal_list);
             UPDATE('users', 'pos', '1.41', "$user_id");
         } elseif ($pos == '1.41') {
+            $fe = explode(".", $text);
+            $ref = $fe[0];
+            UPDATE_cach("$ref,", "$user_id");
+            SendMessage("$user_id", "زیر مجموعه را تعیین کنید", $key_sub_collect);
+            UPDATE('users', 'pos', '1.42', "$user_id");
+        } elseif ($pos == "1.42") {
             $fet = ReadCach($user_id);
             $cach = explode(",", $fet['cach']);
             $fe = explode(".", $text);
-            $referal_code = $fe[0];
+            $ref_code = $fe[0];
             $check_referal = Query("SELECT * FROM `customers` WHERE `mobile` = '$cach[0]'");
             $check_referal_num = mysqli_num_rows($check_referal);
-            if ($check_referal_num > 0) {
-                $msg = "بابت مراجعه مجدد مشتری: $cach[1] با شماره موبایل: $cach[0]";
-                ADD_new_transaction("$referal_code", "$date_fa", "$other_refer_fee", "$msg", "$user_id");
-                SMS($cach[1], $cach[3], $cach[0]);
-            } else {
-                $user_esm = $cach[1];
-                $user_percent = $cach[3];
-                $user_tel = $cach[0];
-                $msg = "بابت عضویت مشتری: $cach[1] با شماره موبایل: $cach[0]";
-                ADD_new_transaction("$referal_code", "$date_fa", "$first_refer_fee", $msg, "$user_id");
-                SMS("$user_esm", "$user_percent", "$user_tel");
-            }
-            ADD_new_customer($cach[1], $cach[0], $cach[2], $date_fa, $user_id, $referal_code);
+
+            $user_esm = $cach[1];
+            $user_percent = $cach[3];
+            $user_tel = $cach[0];
+            $referal_code = $cach[4];
+            $msg = "بابت عضویت مشتری: $cach[1] با شماره موبایل: $cach[0]";
+
+            ADD_new_transaction("$referal_code", "$date_fa", "$first_refer_fee", $msg, "$user_id");
+            ADD_new_customer($cach[1], $cach[0], $cach[2], $date_fa, $user_id, $referal_code, $ref_code);
             ADD_new_refer($cach[0], $date_fa, date('H:i:s'), $cach[3], $user_id);
             SendMessage("$user_id", "🎉اطلاعات مشتری جدید با موفقیت ذخیره شد🎉", $key_start_manager);
+            SMS("$user_esm", "$user_percent", "$user_tel");
+
             UPDATE('users', 'pos', '0', "$user_id");
             UPDATE('users', 'cach', '', "$user_id");
         } elseif ($pos == '0' && $text == "📜 اطلاعات برنامه") {
             // EXCEL customers
-            $x = file_get_contents("https://skincarefaezeh.ir/excel_customers.php");
-            $file = fopen("excel_customers.xls", "w") or die("Unable to open file!");;
-            $file_w = fwrite($file, $x);
-            fclose($file);
+            // $x = file_get_contents("https://skincarefaezeh.ir/excel_customers.php");
+            // $file = fopen("excel_customers.xls", "w") or die("Unable to open file!");;
+            // $file_w = fwrite($file, $x);
+            // fclose($file);
 
             // EXCEL refers
-            $x = file_get_contents("https://skincarefaezeh.ir/excel_refers.php");
-            $file = fopen("excel_refers.xls", "w") or die("Unable to open file!");;
-            $file_w = fwrite($file, $x);
-            fclose($file);
+            // $x = file_get_contents("https://skincarefaezeh.ir/excel_refers.php");
+            // $file = fopen("excel_refers.xls", "w") or die("Unable to open file!");;
+            // $file_w = fwrite($file, $x);
+            // fclose($file);
 
             // EXCEL promotion
-            $x = file_get_contents("https://skincarefaezeh.ir/excel_promotion.php");
-            $file = fopen("excel_promotion.xls", "w") or die("Unable to open file!");;
-            $file_w = fwrite($file, $x);
-            fclose($file);
+            // $x = file_get_contents("https://skincarefaezeh.ir/excel_promotion.php");
+            // $file = fopen("excel_promotion.xls", "w") or die("Unable to open file!");;
+            // $file_w = fwrite($file, $x);
+            // fclose($file);
 
-            SendMessage("$user_id", urlencode("[اطلاعات مشتریان](https://skincarefaezeh.ir/excel_customers.xls)"), $key_start_manager, "MarkdownV2");
-            SendMessage("$user_id", urlencode("[اطلاعات مراجعات](https://skincarefaezeh.ir/excel_refers.xls)"), $key_start_manager, "MarkdownV2");
-            SendMessage("$user_id", urlencode("[اطلاعات کد های تخفیف](https://skincarefaezeh.ir/excel_promotion.xls)"), $key_start_manager, "MarkdownV2");
+            SendMessage("$user_id", urlencode("[اطلاعات مشتریان](https://skincarefaezeh.ir/excel_customers.php)"), $key_start_manager, "MarkdownV2");
+            SendMessage("$user_id", urlencode("[اطلاعات زیر مجموعه ها](https://skincarefaezeh.ir/excel_subcollect.php)"), $key_start_manager, "MarkdownV2");
         } elseif ($pos == '1.5') {
             $ReadCach = ReadCach($user_id);
             $cach = $ReadCach['cach'];
