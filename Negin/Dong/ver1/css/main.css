@@ -620,10 +620,6 @@ h6 {
   font-size: 0.8rem !important;
 }
 
-#variz_konande {
-  /* display: none; */
-}
-
 #popup_trans_type {
   display: none;
   flex-direction: row;
