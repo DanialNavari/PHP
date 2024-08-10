@@ -1185,11 +1185,11 @@ function focus_out(halat) {
 }
 
 function check_val(id) {
-  var meghdar = $("#" + id).val();
+  var meghdar = $("#0" + id).val();
   var course_id = $(".course_id").text();
   var total_ = parseInt(meghdar.replace(/,/g, ""));
 
-  var id_ = "l." + id + "." + course_id;
+  var id_ = "l.0" + id + "." + course_id;
   var element = document.getElementById(id_);
 
   if (total_ > 0) {
@@ -1975,7 +1975,7 @@ $(".del_table").click(function () {
 function separate(id) {
   // const number = new Intl.NumberFormat('en-US', {style : "decimal" }).format(numb);
   // console.log(number)
-  numb = $("#" + id).val();
+  numb = $("#0" + id).val();
   let thisElementValue = numb;
 
   thisElementValue = thisElementValue.replace(/,/g, "");
@@ -2004,7 +2004,7 @@ function separate(id) {
   seperatedNumber = tmpSeperatedNumber.split("").reverse().join("");
   if (seperatedNumber[0] === ",")
     seperatedNumber = seperatedNumber.replace(",", "");
-  $("#" + id).val(seperatedNumber);
+  $("#0" + id).val(seperatedNumber);
 }
 
 function separate_(numb) {

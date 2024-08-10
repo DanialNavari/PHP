@@ -64,7 +64,7 @@
                 }
                 ?>
                 <h1 class="pt-3 pb-3 pr-3 d-inline-block "><?php echo $app_name; ?></h1>
-                <h6 class="d_inline" id="my_local_name"><?php echo $name; ?></h6>
+                <h6 class="" id="my_local_name"><?php echo $name; ?></h6>
             </div>
 
             <?php

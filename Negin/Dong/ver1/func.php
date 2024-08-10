@@ -327,7 +327,7 @@ function Object_contact1($name, $tel, $course_id, $contac_id, $pos)
                         <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                         <div class="star w-100">
                             <span style="' . $pro . '" class="karbar_name">' . $name . '</span>
-                            <a target="_blank" style="' . $pro . '">' . $tel . '</a>    
+                            <a target="_blank" style="' . $pro . '" id="t-' . $contac_id . '">' . $tel . '</a>    
                         </div>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none" >
@@ -416,135 +416,127 @@ function active_transactions($course_id)
 
     $z = SELECT_contact($_COOKIE['uid']);
     $z_id = $z['contact_id'];
+    if ($num > 0) {
+        for ($i = 0; $i < $num; $i++) {
+            $r = mysqli_fetch_assoc($w);
+            $trans_id = $r['trans_id'];
+            $trans_buyer = $r['trans_buyer'];
+            $trans_recorder = $r['trans_recorder'];
+            $trans_fee = sep3($r['trans_fee']);
+            $trans_date = explode(' ', $r['trans_date']);
+            $trans_desc = $r['trans_desc'];
+            if ($trans_desc == "") {
+                $trans_desc = "توضیحات : ندارد";
+            }
+            $trans_person = $r['trans_person'];
+            $trans_acc = $r['trans_acc'];
+            $trans_del = $r['trans_del'];
+            $trans_recorder = $r['trans_recorder'];
+            $trans_create = $r['trans_create'];
 
+            $user_buyer_info = SELECT_user_by_tel($trans_buyer);
+            $buyer_name = $user_buyer_info['contact_name'];
+            $user_codes = $user_buyer_info['contact_tel'];
 
-    for ($i = 0; $i < $num; $i++) {
-        $r = mysqli_fetch_assoc($w);
-        $trans_id = $r['trans_id'];
-        $trans_buyer = $r['trans_buyer'];
-        $trans_recorder = $r['trans_recorder'];
-        $trans_fee = sep3($r['trans_fee']);
-        $trans_date = explode(' ', $r['trans_date']);
-        $trans_desc = $r['trans_desc'];
-        if ($trans_desc == "") {
-            $trans_desc = "توضیحات : ندارد";
+            $user_recorder_info = SELECT_user_by_id($trans_recorder);
+            $recorder_name = $user_recorder_info['contact_name'];
+
+            $zinaf = '';
+            $sep_colon = explode(',', $trans_person);
+            $tedad = count($sep_colon) - 1;
+
+            for ($k = 0; $k < $tedad; $k++) {
+                $sep_tp = explode(':', $sep_colon[$k]);
+                $user_buyer_info1 = SELECT_user_by_tel($sep_tp[0]);
+                $zinaf .= "<span class='td_title_'>" . $user_buyer_info1['contact_name'] . "(" . sep3($sep_tp[1]) . " " . $money_unit . ")</span>";
+            }
+
+            // conditions for show edit and del button
+            if ($trans_buyer == $_COOKIE['uid']) {
+                $permit1 = "";
+                $permit2 = "";
+            } elseif ($c_manager == $_COOKIE['uid']) {
+                $permit1 = "";
+                $permit2 = "";
+            } else {
+                $permit1 = "force_hide";
+                $permit2 = "force_hide";
+            }
+
+            if ($i == $num - 1) {
+                $st = 'margin-bottom: 6rem;';
+            } else {
+                $st = '';
+            }
+
+            if ($trans_acc == null && is_null($trans_del) || $trans_acc == '' && is_null($trans_del)) {
+                $trans_acc_pos = '
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
+                    <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
+                </td>
+                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
+                    <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+                </td>
+                ';
+            } else {
+                $trans_acc_pos = '';
+            }
+
+            $l = $i + 1;
+
+            $bg_del = '';
+            $del_row = '';
+
+            if (is_null($trans_del)) {
+                $bg_del = "";
+                $del_row = "";
+            } else {
+                $bg_del = "filter: hue-rotate(120deg)";
+                $del_row = "<tr><td colspan='5' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد مـــدیـــر</td></tr>";
+            }
+
+            $del_info_ = explode(",", $trans_del);
+            $user_recorder_info = SELECT_user_by_tel($trans_recorder);
+            $user_recorder_tel = $user_recorder_info['contact_tel'];
+            $user_recorder_name = $user_recorder_info['contact_name'];
+            $record_date = explode(" ", $trans_create);
+            $record_tarikh = explode("-", $record_date[0]);
+            $record_date_convert = gregorian_to_jalali($record_tarikh[0], $record_tarikh[1], $record_tarikh[2], "/");
+
+            if ($trans_del == null || $del_info_[0] != $user_recorder_tel) {
+                echo '
+                <div class="card my_card" style="' . $st . $bg_del . '" onclick="toggle_shares(' . $trans_id . ')">
+                    <table class="table">
+                        <tr class="bg_blue_very_dark font-weight-bold">
+                            <td class="text-white text-center">توضیحات</td>
+                            <td class="text-white text-center">مبلغ(ريال)</td>
+                            <td class="text-white text-center">تاریخ</td>
+                        </tr>
+                        <tr class="bg-white font-weight-bold">
+                            <td class="text-primary text-center">' . $trans_desc . '</td>
+                            <td class="text-primary text-center">' . $trans_fee . '</td>
+                            <td class="text-primary text-center">' . $trans_date[0] . '</td>
+                        </tr>
+                        <tr class="bg_blue_nice font-weight-bold t' . $trans_id . ' force_hide">
+                            <td class="td_title text_blue_very_dark text-right" colspan="5">خرید کننده : ' . $buyer_name . '</td>
+                        </tr>
+                        <tr class="bg_secondary font-weight-bold t' . $trans_id . ' force_hide">
+                            <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="5"> ' . $zinaf . '</td>
+                        </tr>
+                        <tr class="bg_secondary font-weight-bold t' . $trans_id . ' force_hide">
+                            <td class="td_title text_blue_very_dark text-right d-ltr" colspan="5"> ثبت کننده : ' . $user_recorder_name . ' (' .  $record_date[1] . '- ' . $record_date_convert . ')</td>
+                        </tr>
+                        <tr class="bg-default font-weight-bold">
+                            ' . $trans_acc_pos . '
+                        </tr>
+                        ' . $del_row . '
+                    </table>
+                </div>
+                ';
+            }
         }
-        $trans_person = $r['trans_person'];
-        $trans_acc = $r['trans_acc'];
-        $trans_del = $r['trans_del'];
-        $trans_recorder = $r['trans_recorder'];
-        $trans_create = $r['trans_create'];
-
-        $user_buyer_info = SELECT_user_by_id($trans_buyer);
-        $buyer_name = $user_buyer_info['contact_name'];
-        $user_codes = $user_buyer_info['contact_tel'];
-
-        $user_recorder_info = SELECT_user_by_id($trans_recorder);
-        $recorder_name = $user_recorder_info['contact_name'];
-
-        $zinaf = '';
-        $sep_colon = explode(',', $trans_person);
-        $tedad = count($sep_colon) - 1;
-
-        for ($k = 0; $k < $tedad; $k++) {
-            $sep_tp = explode(':', $sep_colon[$k]);
-            $user_buyer_info1 = SELECT_user_by_id($sep_tp[0]);
-            $zinaf .= "<span class='td_title_'>" . $user_buyer_info1['contact_name'] . "(" . sep3($sep_tp[1]) . " " . $money_unit . ")</span>";
-        }
-
-        if ($user_codes == $c_manager) {
-            $permit1 = '';
-            $permit2 = '';
-            $ma = 'ok';
-        } elseif ($trans_buyer == $z_id) {
-            $permit1 = '';
-            $permit2 = '';
-        } elseif ($_COOKIE['uid'] == $c_manager) {
-            $permit1 = '';
-            $permit2 = '';
-            $ma = 'ok';
-        } else {
-            $permit1 = 'force_hide';
-            $permit2 = 'force_hide';
-        }
-
-        if ($i == $num - 1) {
-            $st = 'margin-bottom: 6rem;';
-        } else {
-            $st = '';
-        }
-
-        if ($trans_acc == null && is_null($trans_del) || $trans_acc == '' && is_null($trans_del)) {
-            $trans_acc_pos = '
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
-                <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
-            </td>
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
-                <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
-            </td>
-            ';
-        } elseif ($trans_acc != null && $ma == 'ok' && is_null($trans_del) || $trans_acc != '' && $ma == 'ok' && is_null($trans_del)) {
-            $trans_acc_pos = '
-            <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
-                <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
-            </td>
-            ';
-        } else {
-            $trans_acc_pos = '';
-        }
-
-        $l = $i + 1;
-
-        $bg_del = '';
-        $del_row = '';
-
-        if (is_null($trans_del)) {
-            $bg_del = "";
-            $del_row = "";
-        } else {
-            $bg_del = "filter: hue-rotate(120deg)";
-            $del_row = "<tr><td colspan='5' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد مـــدیـــر</td></tr>";
-        }
-
-        $del_info_ = explode(",", $trans_del);
-        $user_recorder_info = SELECT_user_by_id($trans_recorder);
-        $user_recorder_tel = $user_recorder_info['contact_tel'];
-        $user_recorder_name = $user_recorder_info['contact_name'];
-        $record_date = explode(" ", $trans_create);
-        $record_tarikh = explode("-", $record_date[0]);
-        $record_date_convert = gregorian_to_jalali($record_tarikh[0], $record_tarikh[1], $record_tarikh[2], "/");
-
-        if ($trans_del == null || $del_info_[0] != $user_recorder_tel) {
-            echo '
-            <div class="card my_card" style="' . $st . $bg_del . '" onclick="toggle_shares(' . $trans_id . ')">
-                <table class="table">
-                    <tr class="bg_blue_very_dark font-weight-bold">
-                        <td class="text-white text-center">توضیحات</td>
-                        <td class="text-white text-center">مبلغ(ريال)</td>
-                        <td class="text-white text-center">تاریخ</td>
-                    </tr>
-                    <tr class="bg-white font-weight-bold">
-                        <td class="text-primary text-center">' . $trans_desc . '</td>
-                        <td class="text-primary text-center">' . $trans_fee . '</td>
-                        <td class="text-primary text-center">' . $trans_date[0] . '</td>
-                    </tr>
-                    <tr class="bg_blue_nice font-weight-bold t' . $trans_id . ' force_hide">
-                        <td class="td_title text_blue_very_dark text-right" colspan="5">خرید کننده : ' . $buyer_name . '</td>
-                    </tr>
-                    <tr class="bg_secondary font-weight-bold t' . $trans_id . ' force_hide">
-                        <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="5"> ' . $zinaf . '</td>
-                    </tr>
-                    <tr class="bg_secondary font-weight-bold t' . $trans_id . ' force_hide">
-                        <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="5"> ثبت کننده : ' . $user_recorder_name . ' (' .  $record_date[1] . '- ' . $record_date_convert . ')</td>
-                    </tr>
-                    <tr class="bg-default font-weight-bold">
-                        ' . $trans_acc_pos . '
-                    </tr>
-                    ' . $del_row . '
-                </table>
-            </div>
-            ';
-        }
+    } else {
+        echo "هیچ خریدی پیدا نشد";
     }
 }
 
@@ -559,115 +551,118 @@ function active_payments($course_id)
     $z = SELECT_contact($_COOKIE['uid']);
     $z_id = $z['contact_id'];
 
+    if ($num > 0) {
+        for ($i = 0; $i < $num; $i++) {
+            $r = mysqli_fetch_assoc($w);
+            $pay_id = $r['pay_id'];
+            $pay_from = $r['pay_from'];
+            $pay_maker = $r['pay_maker'];
+            $pay_to = $r['pay_to'];
+            $pay_fee = sep3($r['pay_fee']);
+            $pay_date = $r['pay_date'];
+            $pay_desc = $r['pay_desc'];
+            if ($pay_desc == "") {
+                $pay_desc = "توضیحات: ندارد";
+            }
+            $pay_maker = $r['pay_maker'];
+            $pay_del = $r['pay_del'];
+            $bg_del = '';
+            $del_row = '';
 
-    for ($i = 0; $i < $num; $i++) {
-        $r = mysqli_fetch_assoc($w);
-        $pay_id = $r['pay_id'];
-        $pay_from = $r['pay_from'];
-        $pay_maker = $r['pay_maker'];
-        $pay_to = $r['pay_to'];
-        $pay_fee = sep3($r['pay_fee']);
-        $pay_date = $r['pay_date'];
-        $pay_desc = $r['pay_desc'];
-        if ($pay_desc == "") {
-            $pay_desc = "توضیحات: ندارد";
-        }
-        $pay_maker = $r['pay_maker'];
-        $pay_del = $r['pay_del'];
-        $bg_del = '';
-        $del_row = '';
-
-        if (is_null($pay_del)) {
-            $bg_del = "";
-            $del_row = "";
-            $table_style = "real_table";
-            $khodam = "0";
-        } else {
-            $bg_del = "filter: hue-rotate(120deg) blur(0.8px)";
-            $del_row = "<tr><td colspan='4' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد</td></tr>";
-            $table_style = "del_table";
-            $del_ex = explode(",", $pay_del);
-            if ($_COOKIE['uid'] == $del_ex[0]) {
-                $khodam = "1";
-            } else {
+            if (is_null($pay_del)) {
+                $bg_del = "";
+                $del_row = "";
+                $table_style = "real_table";
                 $khodam = "0";
+            } else {
+                $bg_del = "filter: hue-rotate(120deg) blur(0.8px)";
+                $del_row = "<tr><td colspan='4' class='text-center font-weight-bold'>عـــدم تــــایــــیــــد</td></tr>";
+                $table_style = "del_table";
+                $del_ex = explode(",", $pay_del);
+                if ($_COOKIE['uid'] == $del_ex[0]) {
+                    $khodam = "1";
+                } else {
+                    $khodam = "0";
+                }
+            }
+
+            $user_buyer_info = SELECT_user_by_tel($pay_from);
+            $buyer_name = $user_buyer_info['contact_name'];
+            $buyer_codes = $user_buyer_info['contact_tel'];
+
+            $user_giver_info = SELECT_user_by_tel($pay_to);
+            $giver_name = $user_giver_info['contact_name'];
+
+            $user_recorder_info = SELECT_user_by_tel($pay_maker);
+            $recorder_name = $user_recorder_info['contact_name'];
+
+            // conditions for show edit and del button
+            if ($pay_from == $_COOKIE['uid']) {
+                $permit1 = "";
+                $permit2 = "";
+            } elseif ($pay_to == $_COOKIE['uid']) {
+                $permit1 = "force_hide";
+                $permit2 = "force_hide";
+            } elseif ($c_manager == $_COOKIE['uid']) {
+                $permit1 = "";
+                $permit2 = "";
+            } else {
+                $permit1 = "force_hide";
+                $permit2 = "force_hide";
+            }
+
+            $create = $r['pay_create'];
+            $create_x = explode(' ', $create);
+            $saat = $create_x[1];
+            $geo_date = explode('-', $create_x[0]);
+            $geo_tarikh = gregorian_to_jalali($geo_date[0], $geo_date[1], $geo_date[2], '/');
+
+            if ($i == $num - 1) {
+                $st = 'margin-bottom: 6rem;';
+            } else {
+                $st = '';
+            }
+
+            if ($khodam == 0) {
+                echo '
+                    <div class="card my_card ' . $table_style . '" style="' . $st . $bg_del . '" onclick="toggle_shares(' . $pay_id . ')">
+                        <table class="table">
+                            <tr class="bg_blue_very_dark font-weight-bold">
+                                <td class="text-white text-center">پرداخت کننده</td>
+                                <td class="text-white text-center">توضیحات</td>
+                                <td class="text-white text-center">مبلغ(ريال)</td>
+                                <td class="text-white text-center">تاریخ</td>
+                            </tr>
+                            <tr class="bg-white font-weight-bold">
+                                <td class="text-primary text-center">' . $buyer_name . '</td>
+                                <td class="text-primary text-center">' . $pay_desc . '</td>
+                                <td class="text-primary text-center">' . $pay_fee . '</td>
+                                <td class="text-primary text-center">' . $pay_date . '</td>
+                            </tr>
+                            <tr class="bg_blue_nice font-weight-bold force_hide t' . $pay_id . '">
+                                <td class="td_title text_blue_very_dark text-right" colspan="4">دریافت کننده : ' . $giver_name . '</td>
+                            </tr>
+                            <tr class="bg_secondary font-weight-bold force_hide t' . $pay_id . '">
+                                <td class="td_title text_blue_very_dark text-right" colspan="4">ثبت کننده : ' . $recorder_name . ' (' . $saat . ' - ' . $geo_tarikh . ')</td>
+                            </tr>
+                            <tr class="bg-default font-weight-bold">
+                                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
+                                    <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editPayments&h=null&id=' . $pay_id . '\')">' . $GLOBALS['edit'] . '</button>
+                                </td>
+                                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
+                                    <button class="btn btn-prime-dark w-100 user_img" onclick="del_payment(' . $pay_id . ')">' . $GLOBALS['del'] . '</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>' . $del_row . '</td>
+                            </td>
+                        </table>
+                    </div>
+                ';
             }
         }
-
-        $user_buyer_info = SELECT_user_by_id($pay_from);
-        $buyer_name = $user_buyer_info['contact_name'];
-        $buyer_codes = $user_buyer_info['contact_tel'];
-
-        $user_giver_info = SELECT_user_by_id($pay_to);
-        $giver_name = $user_giver_info['contact_name'];
-
-        $user_recorder_info = SELECT_user_by_id($pay_maker);
-        $recorder_name = $user_recorder_info['contact_name'];
-
-        if ($buyer_codes == $c_manager && $bg_del == "") {
-            $permit1 = '';
-            $permit2 = '';
-        } elseif ($buyer_codes == $_COOKIE['uid'] && $bg_del == "") {
-            $permit1 = '';
-            $permit2 = 'force_hide';
-        } elseif ($_COOKIE['uid'] == $c_manager && $bg_del == "") {
-            $permit1 = '';
-            $permit2 = '';
-        } elseif ($z_id == $pay_to && $bg_del == "") {
-            $permit1 = '';
-            $permit2 = 'force_hide';
-        } else {
-            $permit1 = 'force_hide';
-            $permit2 = 'force_hide';
-        }
-
-        $create = $r['pay_create'];
-        $create_x = explode(' ', $create);
-        $saat = $create_x[1];
-        $geo_date = explode('-', $create_x[0]);
-        $geo_tarikh = gregorian_to_jalali($geo_date[0], $geo_date[1], $geo_date[2], '/');
-
-        if ($i == $num - 1) {
-            $st = 'margin-bottom: 6rem;';
-        } else {
-            $st = '';
-        }
-
-        if ($khodam == 0) {
-            echo '
-    <div class="card my_card ' . $table_style . '" style="' . $st . $bg_del . '" onclick="toggle_shares(' . $pay_id . ')">
-        <table class="table">
-            <tr class="bg_blue_very_dark font-weight-bold">
-                <td class="text-white text-center">پرداخت کننده</td>
-                <td class="text-white text-center">توضیحات</td>
-                <td class="text-white text-center">مبلغ(ريال)</td>
-                <td class="text-white text-center">تاریخ</td>
-            </tr>
-            <tr class="bg-white font-weight-bold">
-                <td class="text-primary text-right">' . $buyer_name . '</td>
-                <td class="text-primary text-right">' . $pay_desc . '</td>
-                <td class="text-primary text-right">' . $pay_fee . '</td>
-                <td class="text-primary text-right">' . $pay_date . '</td>
-            </tr>
-            <tr class="bg_blue_nice font-weight-bold force_hide t' . $pay_id . '">
-                <td class="td_title text_blue_very_dark text-right" colspan="4">دریافت کننده : ' . $giver_name . '</td>
-            </tr>
-            <tr class="bg_secondary font-weight-bold force_hide t' . $pay_id . '">
-                <td class="td_title text_blue_very_dark text-right" colspan="4">ثبت کننده : ' . $recorder_name . ' (' . $saat . ' - ' . $geo_tarikh . ')</td>
-            </tr>
-            <tr class="bg-default font-weight-bold">
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
-                    <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editPayments&h=null&id=' . $pay_id . '\')">' . $GLOBALS['edit'] . '</button>
-                </td>
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="2">
-                    <button class="btn btn-prime-dark w-100 user_img" onclick="del_payment(' . $pay_id . ')">' . $GLOBALS['del'] . '</button>
-                </td>
-            </tr>
-            ' . $del_row . '
-        </table>
-    </div>
-    ';
-        }
+    } else {
+        echo "هیچ پرداختی وجود ندارد";
     }
 }
 
@@ -1091,7 +1086,7 @@ function final_report($id)
     $sum_debt_all_users = 0;
     $best = 0;
     for ($j = 0; $j < $c_member_count; $j++) {
-        $person_info = SELECT_user_by_id($c_member[$j]);
+        $person_info = SELECT_user_by_tel($c_member[$j]);
         $person_name = $person_info['contact_name'];
         if (isset($trans_list[$c_member[$j]])) {
             $p_cost = $trans_list[$c_member[$j]];
@@ -2059,8 +2054,6 @@ function MY_DEBT($tel, $pos)
     $user_use = 0;
     $user_give = 0;
 
-    // $res = SELECT_contact($tel);
-    // $c_id = $res['contact_id'];
     $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' OR `trans_person` LIKE '%," . $tel . ":%'");
     $num = mysqli_num_rows($r);
 
@@ -2118,9 +2111,9 @@ function MY_DEBT($tel, $pos)
     }
 
     if ($pos == 'debt') {
-        return $debt;
+        return $debt - $user_give;
     } else if ($pos == 'req') {
-        return $req;
+        return $req + $user_pay;
     }
 }
 
@@ -2128,7 +2121,7 @@ function active_courses($maker, $pos)
 {
     $rs = SELECT_contact($maker);
     if ($rs != 0) {
-        $c_id = $rs['contact_id'];
+        $c_id = $rs['contact_tel'];
     }
 
     if ($pos == 'active') {
@@ -2184,7 +2177,7 @@ function get_contact_box($course_id, $list_type)
             $user = $c_id;
             $karbaran .= $user . ',';
 
-            $x = Query("SELECT * FROM `contacts` WHERE `contact_id` = '$c_id' AND `contact_active` = '1'");
+            $x = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$c_id' AND `contact_active` = '1'");
             $fetch = mysqli_fetch_assoc($x);
             $name = $fetch['contact_name'];
 
@@ -2234,10 +2227,11 @@ function get_contact_box($course_id, $list_type)
 
 function ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran, $type, $trans_desc, $recorder)
 {
-    $x = Query("INSERT INTO transactions(trans_buyer) VALUES($buyer)");
+    $x = Query('INSERT INTO transactions(`trans_buyer`) VALUES("' . $buyer . '")');
     $y = mysqli_insert_id($GLOBALS['conn']);
     $zaman = date("Y-m-d H:i:s");
-    UPDATE_trans($y, 'trans_recorder', "$recorder");
+    $recorders = $_COOKIE['uid'];
+    UPDATE_trans($y, 'trans_recorder', "$recorders");
     UPDATE_trans($y, 'trans_share_type', "$type");
     UPDATE_trans($y, 'trans_fee', "$money_limit");
     UPDATE_trans($y, 'trans_date', "$trans_date");
@@ -2260,7 +2254,8 @@ function ADD_new_payments($buyer, $selected_course, $trans_date, $money_limit, $
         }
 
         if ($pay_to != $buyer && $pay_fee > 0) {
-            $x = Query("INSERT INTO `payments`(`pay_from`) VALUES($buyer)");
+            $b = trim($buyer);
+            $x = Query('INSERT INTO `payments`(`pay_from`) VALUES("' . $b . '")');
             $y = mysqli_insert_id($GLOBALS['conn']);
             $zaman = date("Y-m-d H:i:s");
             UPDATE_payments($y, 'pay_to', "$pay_to");
@@ -2381,7 +2376,7 @@ function SELECT_manager($selected_course)
     $x = SELECT_course_id($selected_course);
     $members = explode(',', $x['course_member']);
     for ($i = 0; $i < count($members) - 1; $i++) {
-        $y = Query("SELECT * FROM contacts WHERE contact_id = " . $members[$i]);
+        $y = Query("SELECT * FROM `contacts` WHERE `contact_tel` = " . $members[$i]);
         $y_fet = mysqli_fetch_assoc($y);
         $contact_name = $y_fet['contact_name'];
         $contact_tel = $y_fet['contact_tel'];
@@ -2405,7 +2400,7 @@ function setManagerList($manager)
     $manager_info = explode('.', $manager);
     $manager_code = $manager_info[1];
     $course_code = $manager_info[2];
-    $q = Query("SELECT * FROM `contacts` WHERE `contact_id` = " . $manager_code . " AND `contact_active` = 1");
+    $q = Query("SELECT * FROM `contacts` WHERE `contact_tel` = " . $manager_code . " AND `contact_active` = 1");
     $c = mysqli_fetch_assoc($q);
     $contact_tel = $c['contact_tel'];
     $contact_name = $c['contact_name'];
@@ -2442,14 +2437,12 @@ function UPDATE_settings($uid, $key, $value)
     Query("UPDATE `settings` SET `$key` = '$value' WHERE `uid` = '$uid'");
 }
 
-
 function get_settings($tel)
 {
     $x = Query("SELECT * FROM `settings` WHERE `uid` = '$tel'");
     $fet = mysqli_fetch_assoc($x);
     return $fet;
 }
-
 
 function SELECT_payment_users($selected_course, $person_type)
 {
@@ -2465,7 +2458,8 @@ function SELECT_payment_users($selected_course, $person_type)
 
 
     for ($i = 0; $i < count($members) - 1; $i++) {
-        $y = Query("SELECT * FROM contacts WHERE contact_id = " . $members[$i]);
+        $my_tel = $_COOKIE['uid'];
+        $y = Query("SELECT * FROM `contacts` WHERE `contact_tel` = $members[$i]");
         $y_fet = mysqli_fetch_assoc($y);
         $contact_name = $y_fet['contact_name'];
         $contact_id = $members[$i];
@@ -2475,7 +2469,6 @@ function SELECT_payment_users($selected_course, $person_type)
         } elseif ($person_type == 'recieve') {
             $func = 'setRecievePerson';
         }
-
         $people_list .= '
             <div class="form-check popup_group P-' . $contact_id . '" onclick="' . $func . '(\'l.' . $contact_id . '.' . $selected_course . '\')" >
                 <input class="form-check-input" type="radio" name="variz" id="v.' . $contact_id . '.' . $selected_course . '" value="' . $contact_id . '">
@@ -2488,7 +2481,6 @@ function SELECT_payment_users($selected_course, $person_type)
     $people_list .= "<input type='hidden' id='khodam' value='" . $xxx_id . "'/>";
     return $people_list;
 }
-
 
 function mors($aray)
 {
@@ -2538,4 +2530,12 @@ function sendSMSInviteCourse($tel, $course_name, $course_manager, $course_id)
         "$rec",  // recipient
         $patternVariables,  // pattern values
     );
+}
+
+function UPDATE_ads($code)
+{
+    $y = Query("SELECT * FROM `ads` WHERE `id` = '$code'");
+    $f = mysqli_fetch_assoc($y);
+    $x = $f['click'] + 1;
+    $xx = Query("UPDATE `ads` SET `click` = '$x' WHERE `id` = '$code'");
 }

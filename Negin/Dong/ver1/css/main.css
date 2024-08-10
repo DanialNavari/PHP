@@ -318,6 +318,7 @@ h6 {
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
+  margin-left: 0.3rem;
 }
 
 .box {
@@ -348,6 +349,7 @@ h6 {
 .box_title {
   font-size: 0.7rem;
   color: #1d5da9;
+  margin-top: 0.3rem;
 }
 
 .cat {
@@ -442,7 +444,7 @@ h6 {
 
 /* Start of myDebt and myReq*/
 .my_card {
-  margin: 0 auto 0.3rem auto;
+  margin: 0 auto 1rem auto;
   border-radius: 0.4rem;
   position: relative;
   background-color: rgba(235, 246, 255, 0.5);
@@ -1117,7 +1119,7 @@ input[radio] {
   vertical-align: middle !important;
 }
 
-span.td_title_{
+span.td_title_ {
   display: block;
   margin-top: 0.3rem;
 }
@@ -1397,14 +1399,19 @@ img#ads {
   margin-top: 1rem;
 }
 
+
 /* ----------------------- Media Queries ----------------------- */
 @media screen and (min-width: 340px) {
   .card table td {
     font-size: 0.8rem;
   }
+
+  #my_local_name {
+    display: inline;
+  }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 319px) {
   .add_payments {
     left: 0%;
   }
@@ -1415,9 +1422,13 @@ img#ads {
     z-index: 9;
     right: 18vw;
   }
+
+  #my_local_name {
+    display: none;
+  }
 }
 
-@media screen and (min-width: 321px) and (max-width: 375px) {
+@media screen and (min-width: 320px) and (max-width: 375px) {
   .add_payments {
     left: 6%;
   }
@@ -1427,6 +1438,10 @@ img#ads {
     top: 7rem;
     z-index: 9;
     right: 22vw;
+  }
+
+  #my_local_name {
+    display: inline;
   }
 }
 
@@ -1446,7 +1461,12 @@ img#ads {
     z-index: 9;
     right: 25vw;
   }
-  #ads{
+
+  #ads {
     display: none;
+  }
+
+  #my_local_name {
+    display: inline;
   }
 }

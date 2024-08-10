@@ -95,7 +95,7 @@
                 </td>
             </tr>
         </table>
-        <input type="hidden" id="buyer" value="' . $trans_buyer_code . '" />
+        <input type="hidden" id="buyer" value="<?php echo $_COOKIE['uid']; ?>" />
 
     </div>
     <input type="hidden" id="trans_person" value="">
@@ -262,17 +262,24 @@
         $("#karbaran").val("");
         var course_id = $(".course_id").html();
         var user_id = $(".user_id").text();
-        $.ajax({
-            data: "getUserName=" + user_id,
-            type: "POST",
-            url: "server.php",
-            success: function(response) {
-                $("#consumer_name").text(response);
-                $("#buyer_person").val(user_id);
-                //setDate();
-                $("#savedate").click();
-            }
-        });
+        var response = $("#buyer").val();
+        var response_name = $("#my_local_name").text();
+        window.setTimeout(function() {
+            $("#consumer_name").text(response_name);
+            $("#buyer_person").val(response);
+            $("#savedate").click();
+        }, 500);
+        // $.ajax({
+        //     data: "getUserName=" + user_id,
+        //     type: "POST",
+        //     url: "server.php",
+        //     success: function(response) {
+        //         $("#consumer_name").text(response);
+        //         $("#buyer_person").val(user_id);
+        //         //setDate();
+        //         $("#savedate").click();
+        //     }
+        // });
     });
 
     $('#zarib').hide();

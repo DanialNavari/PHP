@@ -16,7 +16,7 @@ if (isset($_COOKIE['temp_tel'])) {
 }
 
 require_once('header.php');
-echo $pos;
+//echo $pos;
 ?>
 
 <div class="container">
@@ -38,9 +38,9 @@ echo $pos;
         <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow" onclick="check_code()">تایید کد</button>
     </div>
 
-    <div class="text-center mt-5 full_width px-2">
-        <a href="https://www.instagram.com/skincarefaezeh_n?igsh=MTg1MDN0cWh4a2hoMQ==" rel="nofollow"><img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads" class="img-responsive"></a>
-    </div>
+    <!-- <div class="text-center mt-5 full_width px-2">
+    <a href="ads.php?utm_source=login&utm_ads=1" rel="nofollow" target="_blank"><img src="./image/ads.jpg" alt="ads" srcset="./image/ads.jpg" id="ads" class="img-responsive"></a>
+    </div> -->
 
     <div class="alertBox">
         <div class="alert alert-danger alert-dismissible fade show sum1" role="alert">

@@ -88,7 +88,7 @@
 
 <div class="cat mb-1">
     <div class="group_name">
-        <h6 class="font-weight-bold">لیست مخاطبین</h6>
+        <h6 class="font-weight-bold">برای انتخاب مخاطبین دوره ، روی نام افراد کلیک کنید</h6>
     </div>
 </div>
 

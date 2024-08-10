@@ -215,7 +215,7 @@ if (isset($_POST['login'])) {
         $karbaran_coo = $karbaran;
     }
 
-    ADD_trans($buyer, $list_type, $selected_course, $trans_date, $money_limit, $karbaran_coo, $share_type, $trans_desc, $recorder);
+    ADD_trans("$buyer", $list_type, $selected_course, $trans_date, $money_limit, $karbaran_coo, $share_type, $trans_desc, $recorder);
     echo $selected_course;
 } elseif (isset($_POST['seps4'])) {
     echo seps4($_POST['seps4']);
@@ -237,9 +237,9 @@ if (isset($_POST['login'])) {
     $money_limit = $_POST['money_limit'];
     $karbaran = $_POST['karbaran'];
     $trans_desc = $_POST['trans_desc'];
-    $x = SELECT_contact($_COOKIE['uid']);
-    $recorder = $x['contact_id'];
-    $x = ADD_new_payments($buyer, $selected_course, "$trans_date", "$money_limit", "$karbaran", "$trans_desc", $recorder);
+    //$x = SELECT_contact($_COOKIE['uid']);
+    $recorder = $_COOKIE['uid']; //$x['contact_id'];
+    $x = ADD_new_payments("$buyer", $selected_course, "$trans_date", "$money_limit", "$karbaran", "$trans_desc", "$recorder");
     echo $x;
 } elseif (isset($_POST['setContactList'])) {
     echo get_contacts_in_course($_COOKIE['selected_course']);
@@ -283,6 +283,11 @@ if (isset($_POST['login'])) {
 } elseif (isset($_POST['getUserName'])) {
     $x = SELECT_user_by_id($_POST['getUserName']);
     echo $x['contact_name'];
+} elseif (isset($_POST['getUserNameTel'])) {
+    $tel = $_POST['getUserNameTel'];
+    $x = SELECT_user_by_tel("$tel");
+    $tels = $x['contact_name'];
+    echo "$tels";
 } elseif (isset($_POST['reportID'])) {
     $x = get_settings($_COOKIE['uid']);
     echo $x['course_default'];
