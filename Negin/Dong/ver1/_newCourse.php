@@ -124,7 +124,7 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">محدودیت مالی(ريال)</td>
             <td>
-                <input class="form-control sum font-weight-bold" type="number" id="feeLimit" />
+                <input class="form-control sum font-weight-bold" type="tel" pattern="[0-9,]" id="feeLimit" onkeyup="separate_id('feeLimit')"/>
             </td>
         </tr>
         <tr>

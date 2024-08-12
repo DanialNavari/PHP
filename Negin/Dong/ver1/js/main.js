@@ -162,7 +162,7 @@ $("#savedate").click(function () {
 });
 
 function remove_from_course(id) {
-  let user_id = "user-" + id;
+  let user_id = "user-0" + id;
   let user_esm = user_id + "-name";
   let user_tel = user_id + "-tel";
   let user_box = user_id + "-box";
@@ -181,8 +181,8 @@ function remove_from_course(id) {
 }
 
 function add_user_to_course(id) {
-  let user_id = "user-" + id;
-  let user_tel = $("#t-" + id).text();
+  let user_id = "user-0" + id;
+  let user_tel = $("#t-0" + id).text();
   let user_esm = user_id + "-name";
   let user_box = user_id + "-box";
   let pos = $("." + user_box).hasClass("bg_green_dark");
@@ -456,8 +456,9 @@ function change_value(input_id, text_id) {
   if (newData.length > 0) {
     if (text_id == "moneyLimit") {
       fee = $("#feeLimit").val();
+      var num_rep = fee.replace(/,/g, "");
       hazine = $("#sum_of_all_cost").text();
-      if (hazine > fee) {
+      if (hazine > num_rep) {
         Toast(107);
         $("#feeLimit").val("");
       } else {
@@ -1247,8 +1248,9 @@ function change_values(input_id, text_id) {
     if (text_id == "moneyLimit") {
       var course_id = $("#fee_code").val();
       fee = $("#feeLimit").val();
+      var num_rep = fee.replace(/,/g, "");
       hazine = $("#sum_of_all_cost" + course_id).text();
-      if (hazine > fee) {
+      if (hazine > num_rep) {
         Toast(107);
         $("#feeLimit").val("");
       } else {
@@ -1257,7 +1259,7 @@ function change_values(input_id, text_id) {
             "update_course=" +
             course_id +
             "&key=course_money_limit&value=" +
-            fee,
+            num_rep,
           url: "server.php",
           type: "POST",
           success: function (response) {
@@ -2043,6 +2045,12 @@ function separate_(numb) {
   if (seperatedNumber[0] === ",")
     seperatedNumber = seperatedNumber.replace(",", "");
   return seperatedNumber;
+}
+
+function separate_id(id) {
+  values = $("#" + id).val();
+  sep = separate_(values);
+  $("#" + id).val(sep);
 }
 
 function buy_for_all() {

@@ -255,6 +255,7 @@ function Object_contact($name, $tel, $maker)
     $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel' AND `contact_name` = '$name' AND `contact_maker` = '$maker'");
     $r = mysqli_fetch_assoc($result);
     $contact_id = $r['contact_id'];
+    $contact_tel = $r['contact_tel'];
 
     $result1 = SELECT_user("$tel");
     if ($result1 == 0) {
@@ -267,13 +268,13 @@ function Object_contact($name, $tel, $maker)
 
 
     return '
-    <div class="cat mb-1 contactBox" onclick="add_user_to_course(' . $contact_id . ')" data="' . $name . ' ' . $tel . '">
-        <div class="card my_card bg_blue user-' . $contact_id . '-box">
-            <div class="record user-' . $contact_id . '-name">
+    <div class="cat mb-1 contactBox" onclick="add_user_to_course(' . $contact_tel . ')" data="' . $name . ' ' . $tel . '">
+        <div class="card my_card bg_blue user-' . $contact_tel . '-box">
+            <div class="record user-' . $contact_tel . '-name">
                 <div class="user_info text-white border_none box_shadow_none">
                     <img src="image/user.png" alt="user" class="rounded-circle w-1-5">
                     <div class="star">
-                        <span style="' . $pro . '" class="karbar_name" id="c-' . $contact_id . '">' . $name . '</span>
+                        <span style="' . $pro . '" class="karbar_name" id="c-' . $contact_tel . '">' . $name . '</span>
                         <!--<i class="d-ltr">' . star($star_complete, $star_incomplete) . '</i>-->
                         
                     </div>
@@ -282,7 +283,7 @@ function Object_contact($name, $tel, $maker)
                         <i class="d-ltr"></i>
                 </div>
                 <div class="user_info text-white border_none box_shadow_none">
-                    <a href="tel://' . $tel . '" target="_blank" id="t-' . $contact_id . '">' . $tel . '</a>
+                    <a href="tel://' . $tel . '" target="_blank" id="t-' . $contact_tel . '">' . $tel . '</a>
                 </div>
             </div>
         </div>
@@ -372,7 +373,7 @@ function give_contacts_list1($contact_maker, $course_id, $pos)
         $contact_name = $r['contact_name'];
         $contact_tel = $r['contact_tel'];
         $contact_id = $r['contact_id'];
-        $contact_list .= Object_contact1($contact_name, $contact_tel, $course_id, $contact_id, $pos);
+        $contact_list .= Object_contact1($contact_name, $contact_tel, $course_id, $contact_tel, $pos);
     }
     return $contact_list;
 }
@@ -2111,9 +2112,9 @@ function MY_DEBT($tel, $pos)
     }
 
     if ($pos == 'debt') {
-        return $debt - $user_give;
+        return $debt;
     } else if ($pos == 'req') {
-        return $req + $user_pay;
+        return $req;
     }
 }
 

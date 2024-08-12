@@ -1124,6 +1124,17 @@ span.td_title_ {
   margin-top: 0.3rem;
 }
 
+.mt_3_rem {
+  margin-top: 3rem;
+}
+
+.privacy_text span{
+  display: block;
+  margin-bottom: 1rem;
+  text-align: justify;
+  line-height: 2rem;
+}
+
 .bg_purple {
   background-color: var(--purple) !important;
 }
@@ -1398,7 +1409,6 @@ img#ads {
   margin-bottom: 0.6rem;
   margin-top: 1rem;
 }
-
 
 /* ----------------------- Media Queries ----------------------- */
 @media screen and (min-width: 340px) {

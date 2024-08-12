@@ -4,7 +4,19 @@ $page_title = $app_name;
 require_once('header.php');
 require_once('symbol.php');
 ?>
+<style>
+    a:link,
+    a:visited,
+    a:active,
+    a:hover {
+        color: #03A9F4;
+    }
 
+    .privacy {
+        font-size: 0.8rem;
+        margin-top: 2rem !important;
+    }
+</style>
 <div class="container">
     <div class="text-center mt-5 full_width px-2">
         <img src="image/logo_blue.png" alt="logo" class="rounded w-4" />
@@ -14,6 +26,10 @@ require_once('symbol.php');
         <div class="row mt-4"></div>
         <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="09123456789" id="tel" onkeyup="keyPress(event)" />
         <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow" onclick="login()">ورود به برنامه</button>
+    </div>
+
+    <div class="text-center mt-5 full_width px-2 privacy">
+        <a href="privacy.php" target="_self" rel="noopener noreferrer">شرایط استفاده از خدمات </a> و <a href="privacy.php" target="_self" rel="noopener noreferrer">حریم خصوصی</a> را می پذیرم.
     </div>
 
     <!-- <div class="text-center mt-5 full_width px-2">

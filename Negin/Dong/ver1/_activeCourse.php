@@ -15,7 +15,7 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
             <td>
-                <input class="form-control sum font-weight-bold" type="number" id="feeLimit" />
+                <input class="form-control sum font-weight-bold" type="tel" id="feeLimit" onkeyup="separate_id('feeLimit')"/>
                 <input class="form-control sum font-weight-bold" type="hidden" id="fee_code" value="" />
             </td>
         </tr>
