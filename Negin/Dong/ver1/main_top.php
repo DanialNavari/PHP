@@ -59,27 +59,29 @@
                             $name = trim($rs['contact_name'], " ");
                         }
                     }
+
+                    $tel = $_COOKIE['uid'];
+                    $estelam = Query("SELECT * FROM `course` WHERE `course_member` LIKE '%$tel,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL OR `course_member` LIKE '%,$tel,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL ORDER BY `course_id` DESC");
+                    $estelam_count = mysqli_num_rows($estelam);
+                    $estelam_fet = mysqli_fetch_assoc($estelam);
+                    $estelam_course_id = $estelam_fet['course_id'];
+
+                    $settings_ = Query("SELECT * FROM `settings` WHERE `uid` = '$tel'");
+                    $fetc = mysqli_fetch_assoc($settings_);
+                    $settings_default_course = $fetc['course_default'];
+                    $c_default = $settings_default_course;
+
+                    if ($estelam_count == 1 && $settings_default_course == "NULL" || $estelam_count == 1 && strlen($settings_default_course) < 1) {
+                        $c_default = $estelam_course_id;
+                        Query("UPDATE `settings` SET `course_default` = '$c_default' WHERE `uid` = '$tel'");
+                    } elseif ($estelam_count > 1) {
+                        $c_default = $settings_default_course;
+                    }
+                    
                 } else {
                     $name = "خودم";
                 }
 
-                $tel = $_COOKIE['uid'];
-                $estelam = Query("SELECT * FROM `course` WHERE `course_member` LIKE '%$tel,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL OR `course_member` LIKE '%,$tel,%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL ORDER BY `course_id` DESC");
-                $estelam_count = mysqli_num_rows($estelam);
-                $estelam_fet = mysqli_fetch_assoc($estelam);
-                $estelam_course_id = $estelam_fet['course_id'];
-
-                $settings_ = Query("SELECT * FROM `settings` WHERE `uid` = '$tel'");
-                $fetc = mysqli_fetch_assoc($settings_);
-                $settings_default_course = $fetc['course_default'];
-                $c_default = $settings_default_course;
-
-                if ($estelam_count == 1 && $settings_default_course == "NULL" || $estelam_count == 1 && strlen($settings_default_course) < 1) {
-                    $c_default = $estelam_course_id;
-                    Query("UPDATE `settings` SET `course_default` = '$c_default' WHERE `uid` = '$tel'");
-                } elseif ($estelam_count > 1) {
-                    $c_default = $settings_default_course;
-                }
                 ?>
                 <h1 class="pt-3 pb-3 d-inline-block "><?php echo $app_name; ?></h1>
                 <h6 class="force_hide" id="my_local_name"><?php echo $name; ?></h6>
@@ -103,10 +105,10 @@
             ?>
 
             <div class="top_nav">
-                <i id="h_menu" class="pl-3 click1 <?php echo $page_style . " " .  $sp; ?>" onclick="Go_Back()"><?php echo $active_course_btn; ?></i>
-                <i id="h_menu" class="pl-3 click1 <?php echo $page_style . " " .  $sp; ?>" onclick="navigate('./?route=__payments&h=0&id=<?php echo $c_default; ?>')"><?php echo $payment_; ?></i>
-                <i id="h_menu" class="pl-3 click1 <?php echo $page_style . " " .  $sp; ?>" onclick="navigate('./?route=__transactions&h=0&id=<?php echo $c_default; ?>')"><?php echo $buy; ?></i>
-                <i id="h_menu" class="pl-3 click1 <?php echo $page_style . " " .  $sp; ?>" onclick="show_report()"><?php echo $final_report; ?></i>
+                <i id="h_menu" class="click1 <?php echo $page_style . " " .  $sp; ?>" onclick="Go_Back()"><?php echo $active_course_btn; ?></i>
+                <i id="h_menu" class="click1 <?php echo $page_style . " " .  $sp; ?>" onclick="navigate('./?route=__payments&h=0&id=<?php echo $c_default; ?>')"><?php echo $payment_; ?></i>
+                <i id="h_menu" class="click1 <?php echo $page_style . " " .  $sp; ?>" onclick="navigate('./?route=__transactions&h=0&id=<?php echo $c_default; ?>')"><?php echo $buy; ?></i>
+                <i id="h_menu" class="click1 <?php echo $page_style . " " .  $sp; ?>" onclick="show_report()"><?php echo $final_report; ?></i>
             </div>
             <input type="hidden" id="page_" value="<?php echo $page_; ?>">
         </div>
