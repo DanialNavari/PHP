@@ -188,19 +188,24 @@ if ($read_cach_first['cach'] == 'first') {
                     SendMessage("$user_id", "⛔️شما ذخیره تخفیف ندارید⛔️", $key_off_use);
                 }
             } elseif ($text == "💰 ذخیره کردن تخفیف") {
-                $ft = get_user_info($cach);
-                $ft_name = $ft['esm'];
-                $ft_referer = $ft['referer'];
-                $msg = "بابت مراجعه مجدد مشتری: $ft_name با شماره موبایل: $cach";
-                ADD_new_transaction("$ft_referer", "$date_fa", "$other_refer_fee", "$msg", "$user_id");
-                $r = Query("SELECT SUM(off) AS sum FROM `refer` WHERE `mobile` = '$cach'");
-                $rows = mysqli_fetch_assoc($r);
-                $sum = $rows['sum'] + $plus_off;
-                ADD_new_refer("$cach", "$date_fa", date("H:i:s"), "$plus_off", "$user_id");
-                SendMessage("$user_id", "🎉 ذخیره تخفیفات شد : $sum% 🎉", $key_start_manager);
-                UPDATE('users', 'pos', '0', "$user_id");
-                UPDATE('users', 'cach', '', "$user_id");
+                SendMessage($user_id, "درصد تخفیف مشتری را بدون علامت % وارد کنید", $key_return);
+                UPDATE('users', 'pos', '1.51', "$user_id");
             }
+        } elseif ($pos == '1.51') {
+            $ReadCach = ReadCach($user_id);
+            $cach = $ReadCach['cach'];
+            $ft = get_user_info($cach);
+            $ft_name = $ft['esm'];
+            $ft_referer = $ft['referer'];
+            $msg = "بابت مراجعه مجدد مشتری: $ft_name با شماره موبایل: $cach با $text% تخفیف مراجعه بعدی";
+            ADD_new_transaction("$ft_referer", "$date_fa", "$other_refer_fee", "$msg", "$user_id");
+            $r = Query("SELECT SUM(off) AS sum FROM `refer` WHERE `mobile` = '$cach'");
+            $rows = mysqli_fetch_assoc($r);
+            $sum = $rows['sum'] + $text;
+            ADD_new_refer("$cach", "$date_fa", date("H:i:s"), "$text", "$user_id");
+            SendMessage("$user_id", "🎉 ذخیره تخفیفات شما : $sum% 🎉", $key_start_manager);
+            UPDATE('users', 'pos', '0', "$user_id");
+            UPDATE('users', 'cach', '', "$user_id");
         } elseif ($pos == 0 && $text == "👩‍👩‍👧‍👧 عاملین فروش") {
             SendMessage("$user_id", "گزینه مورد نظر را انتخاب کنید", $key_referal_part1, "MarkdownV2");
             update('users', 'pos', '2', "$user_id");
@@ -232,7 +237,7 @@ if ($read_cach_first['cach'] == 'first') {
             $referal_name = $ReadCach_[0];
             $referal_mobile = $ReadCach_[1];
             $referal_card = $text;
-            $referal_code = get_referal_code();
+            $referal_code = get_referal_code(10);
             ADD_new_referal("$referal_code", "$referal_name", "$referal_mobile", "$referal_card", "$date_fa", "$user_id");
             $abstract = "کد عامل فروش: *$referal_code*\nنام: *$referal_name*\nموبایل: *$referal_mobile*\nشماره کارت: *$referal_card*\n";
             SendMessage("$user_id", urlencode("🎉عامل فروش جدید با موفقیت اضافه شد🎉\n$abstract"), $key_referal_part1, "MarkdownV2");

@@ -180,7 +180,7 @@ function ReadCach($uid)
 function referal_list()
 {
     $GLOBALS['key_referal_list']["keyboard"][] = [
-        "0.بدون معرف",
+        "1100.بدون معرف",
     ];
 
     $x = Query("SELECT * FROM `referal` WHERE 1");
@@ -211,16 +211,20 @@ function ADD_new_referal($code, $esm, $mobile, $card, $date, $user_id)
     $query = Query("INSERT INTO `referal`(`id`,`code`,`esm`,`mobile`,`card`,`date`,`hour`,`recorder`) VALUES(NULL,'$code','$esm','$mobile','$card','$date','$hour','$user_id')");
 }
 
-function get_referal_code()
+function get_referal_code($step)
 {
-    $rnd_code = mt_rand(100, 199);
-    $x = Query("SELECT * FROM `referal` WHERE `code` = '$rnd_code'");
-    $n = mysqli_num_rows($x);
-    if ($n > 0) {
-        get_referal_code();
-    } else {
-        return $rnd_code;
-    }
+    // $rnd_code = mt_rand(100, 199);
+    // $x = Query("SELECT * FROM `referal` WHERE `code` = '$rnd_code'");
+    // $n = mysqli_num_rows($x);
+    // if ($n > 0) {
+    //     get_referal_code();
+    // } else {
+    //     return $rnd_code;
+    // }
+
+    $x = Query("SELECT * FROM `referal` WHERE 1 ORDER BY `code` DESC");
+    $fet = mysqli_fetch_assoc($x);
+    return $fet['code'] + $step;
 }
 
 function check_referal($mobile)
@@ -309,4 +313,3 @@ function tasviye($code, $date)
     $card = $f['card'];
     return "نام: *$esm*\nموبایل: *$mobile*\nمبلغ: *$cash*\nتاریخ: *$date($time)*\nکارت: *$card*\n🌹🌹🌹🌹";
 }
-
