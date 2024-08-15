@@ -16,7 +16,13 @@ $day = $year_number . '/' . $month_number . '/' . $day_number . ' - ' . $time;
 
 $key_start_manager = ["keyboard" => [
     ["📜 اطلاعات برنامه", "🙋‍♀️ استعلام مشتری"],
-    ["👩‍👩‍👧‍👧 عاملین فروش", "🎉 کدهای تخفیف"],
+    ["👩‍👩‍👧‍👧 عاملین فروش"],
+], 'resize_keyboard' => true,];
+//"🎉 کدهای تخفیف"
+
+$key_start_referal = ["keyboard" => [
+    ["💰 کیف پول", "🙋‍♀️ ثبت مشتری"],
+    ["☎️ ارتباط با ما"]
 ], 'resize_keyboard' => true,];
 
 $key_off_use = ["keyboard" => [
@@ -58,6 +64,15 @@ $key_sub_collect = ["keyboard" => [
 ], 'resize_keyboard' => true,];
 
 $key_referal_list = ["keyboard" => [], 'resize_keyboard' => true,];
+
+$key_referal_withdraw = ["keyboard" => [
+    ["🧮 درخواست واریز", "🧖‍♀️ درخواست فیشال"],
+    ["❌ بازگشت"],
+], 'resize_keyboard' => true,];
+
+$key_start_customer = ["keyboard" => [
+    ["☎️ ارتباط با ما","💰 تخفیف من"]
+], 'resize_keyboard' => true,];
 // ---------------------------------------------------
 // Functions
 function Query($query)
@@ -76,6 +91,19 @@ function SendMessage($user_id, $text, $reply_markup, $PM = "")
     }
 
     $url = "https://api.telegram.org/bot7378307785:AAEJXMtf1hMR1VcbWYPKTXIqMhWmFxfpJ6Y/sendMessage?chat_id=" . $user_id . "&text=" . $text . "&reply_markup=" . $rp . "&disable_web_page_preview=true" . $parseMode;
+    $x = file_get_contents($url);
+}
+
+function sendLocation($user_id, $latitude, $longitude, $reply_markup, $PM = "")
+{
+    $rp = json_encode($reply_markup);
+    if (isset($PM)) {
+        $parseMode = "&parse_mode=" . $PM;
+    } else {
+        $parseMode = "";
+    }
+
+    $url = "https://api.telegram.org/bot7378307785:AAEJXMtf1hMR1VcbWYPKTXIqMhWmFxfpJ6Y/sendLocation?chat_id=" . $user_id . "&latitude=" . $latitude . "&longitude=" . $longitude . "&reply_markup=" . $rp . "&disable_web_page_preview=true" . $parseMode;
     $x = file_get_contents($url);
 }
 
@@ -128,7 +156,7 @@ function UPDATE_cach($value, $uid)
     $x = Query("UPDATE `users` SET `cach` = '$final_cach' WHERE `uid` = '$uid'");
 }
 
-function SMS($user_name, $percent, $user_tel)
+function SMS($user_name, $percent, $user_tel, $pattern)
 {
     $url = "https://skincarefaezeh.ir/sendSMS.php";
     $ch = curl_init();
@@ -136,6 +164,7 @@ function SMS($user_name, $percent, $user_tel)
         'name' => "$user_name",
         'tel' => "$user_tel",
         'percent' => "$percent",
+        'pattern' => "$pattern",
     );
     $data = http_build_query($postRequest);
     $getUrl = $url . "?" . $data;
@@ -205,10 +234,10 @@ function ADD_new_transaction($referal, $date, $fee, $desc, $recorder)
     $query = Query("INSERT INTO `transaction`(`id`,`referal`,`date`,`hour`,`fee`,`desc`,`recorder`) VALUES(NULL,'$referal','$date','$hour','$fee','$desc','$recorder')");
 }
 
-function ADD_new_referal($code, $esm, $mobile, $card, $date, $user_id)
+function ADD_new_referal($code, $esm, $mobile, $card, $date, $user_id, $shop_name, $shop_loc)
 {
     $hour = date("H:i:s");
-    $query = Query("INSERT INTO `referal`(`id`,`code`,`esm`,`mobile`,`card`,`date`,`hour`,`recorder`) VALUES(NULL,'$code','$esm','$mobile','$card','$date','$hour','$user_id')");
+    $query = Query("INSERT INTO `referal`(`id`,`code`,`esm`,`mobile`,`card`,`date`,`hour`,`recorder`,`shop_name`,`shop_loc`) VALUES(NULL,'$code','$esm','$mobile','$card','$date','$hour','$user_id','$shop_name','$shop_loc')");
 }
 
 function get_referal_code($step)
@@ -223,8 +252,13 @@ function get_referal_code($step)
     // }
 
     $x = Query("SELECT * FROM `referal` WHERE 1 ORDER BY `code` DESC");
-    $fet = mysqli_fetch_assoc($x);
-    return $fet['code'] + $step;
+    $num = mysqli_num_rows($x);
+    if ($num > 0) {
+        $fet = mysqli_fetch_assoc($x);
+        return $fet['code'] + $step;
+    } else {
+        return 1100 + $step;
+    }
 }
 
 function check_referal($mobile)
@@ -243,16 +277,25 @@ function get_referal_info($code, $type = "abstract")
         $referal_name = $r['esm'];
         $referal_mobile  = $r['mobile'];
         $referal_card = $r['card'];
+        $shop_name = $r['shop_name'];
         $xx = Query("SELECT SUM(fee) AS sum FROM `transaction` WHERE `referal` = '$code'");
         $rx = mysqli_fetch_assoc($xx);
         $cash = sep3(intval($rx['sum']));
-        return "کد عامل فروش: *$referal_code*\nنام: *$referal_name*\nموبایل: *$referal_mobile*\nشماره کارت: *$referal_card*\nموجودی کیف پول: *$cash تومان*";
+        return "کد عامل فروش: *$referal_code*\nنام: *$referal_name*\nنام فروشگاه: *$shop_name*\nموبایل: *$referal_mobile*\nشماره کارت: *$referal_card*\nموجودی کیف پول: *$cash تومان*";
     } else {
         $x = Query("SELECT SUM(fee) AS sum FROM `transaction` WHERE `referal` = '$code'");
         $r = mysqli_fetch_assoc($x);
         $cash = sep3(intval($r['sum']));
-        return "موجودی کیف پول: *$cash تومان*";
+        return "موجودی کیف پول: **$cash تومان**";
     }
+}
+
+function get_referal_info1($code)
+{
+    $x = Query("SELECT SUM(fee) AS sum FROM `transaction` WHERE `referal` = '$code'");
+    $r = mysqli_fetch_assoc($x);
+    $cash = sep3(intval($r['sum']));
+    return intval($r['sum']) . "-موجودی کیف پول: **$cash تومان**";
 }
 
 function sep3($number)
@@ -301,6 +344,7 @@ function get_customers_ref($code)
 
 function tasviye($code, $date)
 {
+    db();
     $xx = Query("SELECT SUM(fee) AS sum FROM `transaction` WHERE `referal` = '$code'");
     $r = mysqli_fetch_assoc($xx);
     $cash = intval($r['sum']);
