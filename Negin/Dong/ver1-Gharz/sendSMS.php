@@ -1,0 +1,18 @@
+<?php
+require 'ippanel/vendor/autoload.php';
+$apiKey = "WIsqaEu45JFhybtmDhwJqAlySO2DDanRt7F10rdo_5E=";
+$client = new \IPPanel\Client($apiKey);
+
+$vcode = mt_rand(1000, 9999);
+$patternVariables = [
+    "vcode" => $vcode,
+];
+$rec = $tel;
+
+$messageId = $client->sendPattern(
+    "nx5eglt0qa6352a",    // pattern code
+    "+983000505",      // originator
+    "$rec",  // recipient
+    $patternVariables,  // pattern values
+); 
+

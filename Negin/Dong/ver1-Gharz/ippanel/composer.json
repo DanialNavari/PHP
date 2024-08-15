@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ippanel/php-rest-sdk": "^2.0"
+    }
+}
