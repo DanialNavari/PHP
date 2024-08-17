@@ -15,7 +15,7 @@
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
             <td>
-                <input class="form-control sum font-weight-bold" type="tel" id="feeLimit" onkeyup="separate_id('feeLimit')"/>
+                <input class="form-control sum font-weight-bold" type="tel" id="feeLimit" onkeyup="separate_id('feeLimit')" />
                 <input class="form-control sum font-weight-bold" type="hidden" id="fee_code" value="" />
             </td>
         </tr>
@@ -74,6 +74,12 @@
 </div>
 
 <div class="cat mb-1 h-1"></div>
+
+<!-- <div class="floatingActionButton" onclick="window.location.assign('./?route=_newCourse&h=course&id=null')">
+    <div class="icon">
+        <span>ایجاد دوره</span>
+    </div>
+</div> -->
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="static/js/lib/persian-date.min.js"></script>

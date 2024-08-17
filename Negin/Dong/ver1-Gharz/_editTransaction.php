@@ -21,7 +21,7 @@ $trans_date = $y['trans_date'];
 $trans_desc = $y['trans_desc'];
 $trans_course = $y['trans_course'];
 $trans_person = $y['trans_person'];
-$z = SELECT_user_by_id($trans_buyer);
+$z = SELECT_user_by_tel($trans_buyer);
 $buy_from_user = $z['contact_name'];
 ?>
 <input type="hidden" id="trans_fee" value="<?php echo $trans_fee; ?>">

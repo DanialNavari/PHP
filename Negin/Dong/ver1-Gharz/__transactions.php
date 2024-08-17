@@ -16,5 +16,8 @@ $c_name = $x['course_name'];
 </div>
 
 <div class="floatingActionButton" onclick="window.location.assign('./?route=_newTransaction&h=transaction&id=null')">
-    <div class="icon"><?php echo $GLOBALS['bag_plus']; ?></div>
+    <div class="icon">
+        <?php echo $GLOBALS['bag_plus']; ?>
+        <span>خرید جدید</span>
+    </div>
 </div>

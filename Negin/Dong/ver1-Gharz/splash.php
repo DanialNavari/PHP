@@ -1,8 +1,10 @@
 <?php
+session_start();
 $page_title = 'دنگ و دونگ';
 require_once('header.php');
 require_once('symbol.php');
 require_once('func.php');
+$version = $_SESSION['ver'];
 ?>
 <style>
     .container div {
@@ -27,7 +29,7 @@ require_once('func.php');
 
     <div class="mt-4"></div>
     <div class="mt-4"></div>
-    <div class="mt-4 text-primary text-center full_width" id="version">Ver: 1.1.0</div>
+    <div class="mt-4 text-primary text-center full_width" id="version"><?php echo $version;?></div>
 </div>
 
 <script>

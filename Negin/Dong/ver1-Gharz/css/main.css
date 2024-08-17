@@ -99,10 +99,37 @@ form#sms > input {
   color: #212529 !important;
 }
 
+.btn_tasviye {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.2rem;
+}
+
+.shop_btn {
+  display: flex;
+  gap: 1rem;
+}
+
+.exit_box {
+  background: #ffebeb !important;
+  border-color: #dbb0b0 !important;
+}
+
+.btn_tasviye button {
+  font-size: 0.7rem;
+}
+
 .btn-prime {
   color: #fff;
   background-color: #1473bd;
   border-color: #1473bd;
+}
+.btn-talabkar {
+  background-color: #14bcbd;
+  border-color: #14bcbd;
 }
 
 .bg-prime {
@@ -284,7 +311,7 @@ h6 {
   align-items: center;
   flex-direction: row;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.1rem;
 }
 
 #my_local_name::before {
@@ -325,8 +352,8 @@ h6 {
   background-color: #ebf6ff;
   border: 1px solid rgba(20, 115, 189, 0.31);
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.14);
-  width: 4.6rem;
-  height: 4.6rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 0.62rem;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -402,7 +429,13 @@ h6 {
 .home_icon svg {
   width: 2rem !important;
   height: 2rem !important;
-  color: #075795;
+  color: #05687d;
+}
+
+.btn-firooze {
+  background-color: #05687d;
+  border-color: #05687d;
+  color: #fbfdfc;
 }
 
 .item_icon svg {
@@ -420,7 +453,7 @@ h6 {
   width: 100vw;
   height: 100vh;
   background-color: gray;
-  opacity: 0.4;
+  opacity: 0.5;
   position: fixed;
   z-index: 1;
   right: 0;
@@ -493,6 +526,22 @@ h6 {
 
 .empty_tr {
   padding: 0.1rem !important;
+}
+
+.last_item {
+  margin-bottom: 6rem;
+}
+
+.new_gharz {
+  position: fixed;
+  top: 26vh;
+  right: calc(100vw / 30);
+  left: calc(100vw / 30);
+  z-index: 9;
+}
+
+.new_gharz .card td {
+  padding: 0.3rem;
 }
 
 .pay_btn {
@@ -1130,7 +1179,7 @@ span.td_title_ {
 
 .top_nav i {
   padding: 0.3rem;
-  box-shadow: 0px 0px 3px 1px silver;
+  /* box-shadow: 0px 0px 3px 1px silver; */
   border-radius: 0.3rem;
 }
 
@@ -1264,8 +1313,8 @@ span.td_title_ {
 }
 
 .floatingActionButton .icon svg {
-  width: 1.8rem !important;
-  height: 1.8rem !important;
+  width: 1.3rem !important;
+  height: 1.3rem !important;
   color: #fff !important;
 }
 
@@ -1273,6 +1322,16 @@ span.td_title_ {
   height: 100%;
   text-align: center;
   padding-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.icon span {
+  color: #fff;
+  font-size: 0.5rem;
+  padding-top: 0.3rem;
 }
 
 .add_payments td {

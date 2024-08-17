@@ -16,5 +16,8 @@ $c_name = $x['course_name'];
 </div>
 
 <div class="floatingActionButton" onclick="window.location.assign('./?route=_newPayment&h=payments&id=null')">
-    <div class="icon"><?php echo $GLOBALS['payment']; ?></div>
+    <div class="icon">
+        <?php echo $GLOBALS['payment']; ?>
+        <span>واریز جدید</span>
+    </div>
 </div>

@@ -54,6 +54,7 @@ $(".gray_layer").click(function () {
     $(".add_course").fadeOut();
     $(".add_fee").fadeOut();
     $(".tarikh_table").fadeOut();
+    $(".new_gharz").fadeOut();
     nav_drawer = 0;
   }
 });
@@ -388,7 +389,7 @@ function check_code() {
           type: "POST",
           success: function (response) {
             clearInterval(cd);
-            navigate(".");
+            navigate("./?menu=central");
           },
         });
       } else if (response == 0) {
@@ -2063,11 +2064,12 @@ function buy_for_all() {
     each_shares = separate_(each_share);
     for (i = 0; i < inputs.length; i++) {
       j = i + 1;
-      $("input[data-group='variz_fee']:nth-child(" + j + ")").val(each_shares);
-      $("input[data-group='variz_fee']:nth-child(" + j + ")").attr(
-        "disabled",
-        "disabled"
-      );
+      $(
+        ".popup_group:nth-child(" + j + ") > input[data-group='variz_fee']"
+      ).val(each_shares);
+      $(
+        ".popup_group:nth-child(" + j + ") > input[data-group='variz_fee']"
+      ).attr("disabled", "disabled");
     }
   } else {
     $("input[data-group='variz_fee']").val("");
@@ -2090,4 +2092,11 @@ function updateVariz(id) {
   //   }
   // }
   // $("#sum_variz").val(sum);
+}
+
+
+function add_new_gharz(){
+  $(".gray_layer").fadeIn();
+  $(".new_gharz").removeClass('force_hide');
+  $(".new_gharz").css('display','block');
 }

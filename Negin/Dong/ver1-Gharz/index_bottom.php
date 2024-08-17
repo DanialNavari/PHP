@@ -1,94 +1,9 @@
-<?php
-$xx = default_course($_COOKIE['uid']);
-$menu_contact = "";
-$menu_buy = "";
-$menu_course = "";
-$menu_home = "";
-$menu_pay = "";
-$pattern = "";
-
-if ($xx == 0) {
-    $pos_btn = 'force_hide';
-    $pattern = $menu_contact . $menu_home . $menu_course;
-} else {
-    $pos_btn = '';
-    $pattern = $menu_contact . $menu_course . $menu_home . $menu_pay . $menu_buy;
-}
-?>
 <!-- space from bottom -->
 <div class="cat mb_4">
     <div class="card my_card border_none"></div>
 </div>
 
-<div class="rapid_access">
-    <?php
-    $menu_home = '
-    <div class="item_" onclick="page(\'r\',\'main_body\',\'home\')" id="home">
-        <div class="item_circle">
-            <div class="item_icon home_icon">' . $home . '</div>
-        </div>
-        <div class="item_title">خانه</div>
-    </div>';
-
-    $menu_contact = '
-    <div class="item_" onclick="page(\'r\',\'_contacts\',\'contact\')" id="contact">
-        <div class="item_circle">
-            <div class="item_icon">' . $contacts . '</div>
-        </div>
-        <div class="item_title">مخاطبین</div>
-    </div>';
-
-
-    $menu_course = '
-    <div class="item_" onclick="page(\'r\',\'_newCourse\',\'course\')" id="newCourse">
-        <div class="item_circle">
-            <div class="item_icon">' . $active_course1 . '</div>
-        </div>
-        <div class="item_title">ایجاد دوره</div>
-    </div>';
-
-    $menu_pay = '
-    <div class="item_ ' . $pos_btn . '" onclick="page(\'r\',\'_newPayment\',\'payments\')" id="payments">
-        <div class="item_circle">
-            <div class="item_icon">' . $payment . '</div>
-        </div>
-        <div class="item_title">پرداخت</div>
-    </div>';
-
-    $menu_buy = '
-    <div class="item_ ' . $pos_btn . '" onclick="page(\'r\',\'_newTransaction\',\'transaction\')" id="transaction">
-        <div class="item_circle">
-            <div class="item_icon">' . $bag_plus . '</div>
-        </div>
-        <div class="item_title">خرید</div>
-        </div>';
-
-    if ($xx == 0) {
-        $pattern = $menu_contact . $menu_home . $menu_course;
-    } else {
-        $pattern = $menu_contact . $menu_course . $menu_home . $menu_pay . $menu_buy;
-    }
-
-    echo $pattern;
-    ?>
-
-</div>
-
 <!-- end of container -->
-
-<?php if (isset($_GET['h'])) {
-    $h = $_GET['h'];
-} else {
-    $h = 'home';
-}
-?>
-<input type="hidden" id="path_name" value="<?php echo $h; ?>">
-<input type="hidden" id="prev_page" value="
-<?php if (isset($_SERVER['HTTP_REFERER'])) {
-    echo $_SERVER['HTTP_REFERER'];
-} else {
-    echo '';
-} ?>">
 
 <div class="alertBox">
     <div class="alert alert-danger alert-dismissible fade show sum1" role="alert">

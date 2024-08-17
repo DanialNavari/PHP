@@ -10,6 +10,10 @@
         color: #1d5da9 !important;
         cursor: pointer;
     }
+
+    .my_card {
+        margin-bottom: 0.5rem;
+    }
 </style>
 
 <div class="row empty">
@@ -94,14 +98,18 @@
                     <textarea class="form-control sum" rows="3" id="trans_desc"></textarea>
                 </td>
             </tr>
+            <tr>
+                <td class="va_middle" colspan="3">
+                    <input type="hidden" id="trans_person" value="">
+                    <input type="hidden" id="trans_person_co" value="">
+                    <button class="btn btn-prime w-100 sum" onclick="addNewPayment3()" disabled><span></span> ذخیره</button>
+                </td>
+            </tr>
         </table>
         <input type="hidden" id="buyer" value="<?php echo $_COOKIE['uid']; ?>" />
 
     </div>
-    <input type="hidden" id="trans_person" value="">
-    <input type="hidden" id="trans_person_co" value="">
 
-    <button class="btn btn-prime w-100 sum" onclick="addNewPayment3()" disabled><span></span> ذخیره</button>
 </div>
 
 <div class="cat mb-2">
@@ -111,7 +119,7 @@
 </div>
 
 <!-- selected users -->
-<div class="cat mb-1">
+<div class="cat mb-1 force_hide">
     <div class="card my_card border_none selected_user" id="selected_user_rounded">
 
     </div>

@@ -4,8 +4,8 @@ require_once('db.php');
 require_once('jdf.php');
 $app_name = 'دونگتو';
 $ip_part = [];
-
-
+setcookie("talab", "0", 86400 * 7, "/");
+setcookie("bedehi", "0", 86400 * 7, "/");
 
 function Query($query)
 {
@@ -86,7 +86,7 @@ function SELECT_user($tel)
 function SELECT_user_by_id($uid)
 {
     db();
-    $result = Query("SELECT * FROM `contacts` WHERE `contact_id` = '$uid'");
+    $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$uid'");
     $r = mysqli_fetch_assoc($result);
     return $r;
 }
@@ -472,11 +472,11 @@ function active_transactions($course_id)
 
             if ($trans_acc == null && is_null($trans_del) || $trans_acc == '' && is_null($trans_del)) {
                 $trans_acc_pos = '
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit1 . '" colspan="2">
-                    <button class="btn btn-prime w-100 user_img" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
-                </td>
-                <td class="td_title_ text_blue_very_dark text-center ' . $permit2 . '" colspan="1">
-                    <button class="btn btn-prime-dark w-100 user_img" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+                <td class="td_title_ text_blue_very_dark text-center " colspan="4">
+                    <div class="shop_btn">
+                        <button class="btn btn-prime w-100 user_img ' . $permit1 . '" onclick="navigate(\'./?route=_editTransaction&h=transaction&id=' . $trans_id . '\')">' . $GLOBALS['edit'] . '</button>
+                        <button class="btn btn-prime-dark w-100 user_img ' . $permit2 . '" onclick="del_trans(' . $trans_id . ')">' . $GLOBALS['del'] . '</button>
+                    </div>
                 </td>
                 ';
             } else {
@@ -510,20 +510,19 @@ function active_transactions($course_id)
                 <div class="card my_card" style="' . $st . $bg_del . '" onclick="toggle_shares(' . $trans_id . ')">
                     <table class="table">
                         <tr class="bg_blue_very_dark font-weight-bold">
+                            <td class="text-white text-center">خریدکننده</td>
                             <td class="text-white text-center">توضیحات</td>
                             <td class="text-white text-center">مبلغ(ريال)</td>
                             <td class="text-white text-center">تاریخ</td>
                         </tr>
                         <tr class="bg-white font-weight-bold">
-                            <td class="text-primary text-center">' . $trans_desc . '</td>
+                            <td class="text-primary text-center">' . $buyer_name . '</td>
+                            <td class="text-primary text-center">' . substr($trans_desc, 0, 25) . '</td>
                             <td class="text-primary text-center">' . $trans_fee . '</td>
                             <td class="text-primary text-center">' . $trans_date[0] . '</td>
                         </tr>
-                        <tr class="bg_blue_nice font-weight-bold t' . $trans_id . ' force_hide">
-                            <td class="td_title text_blue_very_dark text-right" colspan="5">خرید کننده : ' . $buyer_name . '</td>
-                        </tr>
                         <tr class="bg_secondary font-weight-bold t' . $trans_id . ' force_hide">
-                            <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="5"> ' . $zinaf . '</td>
+                            <td class="td_title_ text_blue_very_dark text-right d-rtl" colspan="5"><span class="td_title_ text_blue_very_dark text-right d-rtl">مصرف کنندگان:</span>' . $zinaf . '</td>
                         </tr>
                         <tr class="bg_secondary font-weight-bold t' . $trans_id . ' force_hide">
                             <td class="td_title text_blue_very_dark text-right d-ltr" colspan="5"> ثبت کننده : ' . $user_recorder_name . ' (' .  $record_date[1] . '- ' . $record_date_convert . ')</td>
@@ -601,6 +600,7 @@ function active_payments($course_id)
             $recorder_name = find_real_name($pay_maker, $c_manager);
 
             // conditions for show edit and del button
+            $pay_to_bg = 'background-color:#094661 !important;';
             if ($pay_from == $_COOKIE['uid']) {
                 $permit1 = "";
                 $permit2 = "";
@@ -854,7 +854,6 @@ function active_course($tel)
                 $c_defaults = '';
             }
         }
-
 
         $box_course =  '
         <div class="card my_card" style="border: 2px solid #00BCD4;margin-bottom:1rem;">
@@ -1299,7 +1298,7 @@ function final_report1($id)
     $sum_debt_all_users = 0;
     $best = 0;
     for ($j = 0; $j < $c_member_count; $j++) {
-        $person_info = SELECT_user_by_id($c_member[$j]);
+        $person_info = SELECT_user_by_tel($c_member[$j]);
         $person_name = $person_info['contact_name'];
         if (isset($trans_list[$c_member[$j]])) {
             $p_cost = $trans_list[$c_member[$j]];
@@ -1958,14 +1957,14 @@ function SELECT_contact($tel)
 
 function SELECT_malek($tel)
 {
-    $res = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$tel' AND `contact_maker`='$tel' ORDER BY `contact_id` DESC");
+    $query = "SELECT * FROM `contacts` WHERE `contact_tel` = '$tel' AND `contact_maker`='$tel' ORDER BY `contact_id` DESC";
+    $res = Query($query);
     $num = mysqli_num_rows($res);
     if ($num > 0) {
-        $fetch = $res;
+        return $res;
     } else {
-        $fetch = 0;
+        return 0;
     }
-    return $fetch;
 }
 
 function sahm($trans_fee, $trans_person_co)
@@ -2069,6 +2068,13 @@ function contact_list($tel)
     return $cont;
 }
 
+function check_active_course($course_id)
+{
+    $x = Query("SELECT * FROM `course` WHERE `course_id` = '$course_id' AND `course_del_course` IS NULL AND `course_finish` IS NULL AND `course_disabled` IS NULL");
+    $n = mysqli_num_rows($x);
+    return intval($n);
+}
+
 function MY_DEBT($tel, $pos)
 {
     $user_sahm = 0;
@@ -2081,18 +2087,28 @@ function MY_DEBT($tel, $pos)
 
     for ($i = 0; $i < $num; $i++) {
         $fetch = mysqli_fetch_assoc($r);
-        if ($fetch['trans_buyer'] == $tel) {
-            $user_use += $fetch['trans_fee'];
+        $trans_course = $fetch['trans_course'];
+        $check_course = check_active_course($trans_course);
+        if ($check_course > 0) {
+            if ($fetch['trans_buyer'] == $tel) {
+                $user_use += $fetch['trans_fee'];
+            }
+        } else {
+            $user_use = 0;
         }
 
-        $trans_person = explode(',', $fetch['trans_person']);
-
-        for ($j = 0; $j < count($trans_person) - 1; $j++) {
-            $trans_detail = explode(':', $trans_person[$j]);
-            $id = $trans_detail[0];
-            if ($tel == $id) {
-                $user_sahm += $trans_detail[1];
+        $check_course = check_active_course($trans_course);
+        if ($check_course > 0) {
+            $trans_person = explode(',', $fetch['trans_person']);
+            for ($j = 0; $j < count($trans_person) - 1; $j++) {
+                $trans_detail = explode(':', $trans_person[$j]);
+                $id = $trans_detail[0];
+                if ($tel == $id) {
+                    $user_sahm += $trans_detail[1];
+                }
             }
+        } else {
+            $user_sahm = 0;
         }
     }
 
@@ -2100,14 +2116,26 @@ function MY_DEBT($tel, $pos)
     $nums = mysqli_num_rows($p);
     for ($l = 0; $l < $nums; $l++) {
         $fet = mysqli_fetch_assoc($p);
-        $user_pay += $fet['pay_fee'];
+        $pay_course = $fet['pay_course'];
+        $check_course = check_active_course($pay_course);
+        if ($check_course > 0) {
+            $user_pay += $fet['pay_fee'];
+        } else {
+            $user_pay += 0;
+        }
     }
 
     $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL");
     $numsa = mysqli_num_rows($pa);
     for ($la = 0; $la < $numsa; $la++) {
         $feta = mysqli_fetch_assoc($pa);
-        $user_give += $feta['pay_fee'];
+        $pay_course = $fet['pay_course'];
+        $check_course = check_active_course($pay_course);
+        if ($check_course > 0) {
+            $user_give += $feta['pay_fee'];
+        } else {
+            $user_give += 0;
+        }
     }
 
     $jaam = $user_use - $user_sahm + $user_pay - $user_give;
@@ -2122,11 +2150,12 @@ function MY_DEBT($tel, $pos)
         $debt = 0;
     }
 
+
     switch ($pos) {
         case "debt":
-            return $debt;
+            return $user_use - $user_sahm - $user_give;
         case "req":
-            return $req;
+            return $user_use - $user_sahm + $user_pay;
     }
 }
 
@@ -2147,6 +2176,10 @@ function active_courses($maker, $pos)
         return $num;
     } elseif ($pos == 'disabled') {
         $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NOT NULL AND `course_finish` IS NULL OR `course_member` LIKE '$c_id,%' AND `course_disabled` IS NOT NULL AND `course_finish` IS NULL OR `course_member` LIKE '%,$c_id,%' AND `course_disabled` IS NOT NULL AND `course_finish` IS NULL");
+        $num = mysqli_num_rows($rs);
+        return $num;
+    } elseif ($pos == 'deleted') {
+        $rs = Query("SELECT * FROM `course` WHERE `course_maker` = '$maker' AND `course_disabled` IS NOT NULL AND `course_finish` IS NULL OR `course_member` LIKE '$c_id,%' AND `course_del_course` IS NOT NULL");
         $num = mysqli_num_rows($rs);
         return $num;
     }
@@ -2583,4 +2616,116 @@ function toEnNumber($input)
     $output2 = numfmt_parse($ar_fmt, $input);
 
     return $output1;
+}
+
+function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc)
+{
+    $from_info = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$g_from_tel'");
+    $from_count = mysqli_num_rows($from_info);
+    if ($from_count > 0) {
+        $from_fet = mysqli_fetch_assoc($from_info);
+        $from_name = $from_fet['contact_name'];
+    } else {
+        $from_name = "-";
+    }
+
+    $to_info = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$g_to_tel'");
+    $to_count = mysqli_num_rows($to_info);
+    if ($to_count > 0) {
+        $to_fet = mysqli_fetch_assoc($to_info);
+        $to_name = $to_fet['contact_name'];
+    } else {
+        $to_name = "-";
+    }
+
+    if ($type == "talabkar") {
+        $tel = $g_from_tel;
+        $name = $from_name;
+        $user_from_in_app_info = Query("SELECT * FROM `users` WHERE `users_tel` = '$g_from_tel'");
+        $user_from_in_app_info_count = mysqli_num_rows($user_from_in_app_info);
+        if ($user_from_in_app_info_count > 0) {
+            $user_in_app = "background-color:gold";
+        } else {
+            $user_in_app = 0;
+        }
+        $pay = sep3($g_debt);
+        $pos_title = "طلبکار";
+    } elseif ($type == "bedehkar") {
+        $tel = $g_to_tel;
+        $name = $to_name;
+        $user_to_in_app_info = Query("SELECT * FROM `users` WHERE `users_tel` = '$g_to_tel'");
+        $user_to_in_app_info_count = mysqli_num_rows($user_to_in_app_info);
+        if ($user_to_in_app_info_count > 0) {
+            $user_in_app = "background-color:gold";
+        } else {
+            $user_in_app = "";
+        }
+        $pay = sep3($g_req);
+        $pos_title = "بدهکار";
+    }
+
+    return '
+        <div class="cat mb-1 contactBox ' . $type . 'i " data="' . $name . ' ' . $tel . '" id="' . $g_id . '">
+            <div class="card my_card user-' . $tel . '-box">
+                <div class="record user-' . $tel . '-name">
+                    <div class="user_info text-white border_none box_shadow_none">
+                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5" style="' . $user_in_app . '">
+                        <div class="star">
+                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:1rem">' . $name . ' <span id="t-' . $tel . '" style="font-size: 0.6rem;">(' . $tel . ')</span></span>
+                            <span class="karbar_name" style="font-size: 0.7rem;">تاریخ دریافت: ' . $g_date_give . '</span>
+                            <span class="karbar_name" style="font-size: 0.7rem;">موعد پرداخت: ' . $g_date_pay . '</span>
+                        </div>
+                    </div>
+                    <div class="user_info text-white border_none box_shadow_none">
+                       <div class="star2">
+                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:1rem">' . $pay . ' <span style="font-size: 0.6rem;">تومان</span></span>
+                            <span class="karbar_name" style="font-size: 0.7rem;">' . $pos_title . '</span>
+                            <span class="karbar_name" style="font-size: 0.7rem;">بابت: ' . substr($g_desc, 0, 20) . '</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="btn_tasviye">
+                    <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ')">' . $GLOBALS['check'] . ' تسویه</button>
+                    <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ')">' . $GLOBALS['ghest'] . ' پرداخت</button>
+                    <button class="btn btn-danger w-100" onclick="del_gharz(' . $g_id . ')">' . $GLOBALS['del'] . ' حذف</button>
+                </div>
+            </div>
+
+        </div>';
+}
+
+function give_contacts_list_gharz($contact_maker, $type)
+{
+    db();
+    if ($type == "talabkar") {
+        $res = Query("SELECT * FROM `gharz` WHERE `g_to_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL ORDER BY `g_debt` DESC");
+    } elseif ($type == "bedehkar") {
+        $res = Query("SELECT * FROM `gharz` WHERE `g_from_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL ORDER BY `g_req` DESC");
+    }
+
+    $sum_talab = 0;
+    $sum_bedehkar = 0;
+    $result = '';
+
+    $num = mysqli_num_rows($res);
+    for ($i = 0; $i < $num; $i++) {
+        $r = mysqli_fetch_assoc($res);
+        $g_from_tel = $r['g_from_tel'];
+        $g_to_tel = $r['g_to_tel'];
+        $g_debt = $r['g_debt'];
+        $g_req = $r['g_req'];
+        $g_date_give = $r['g_date_give'];
+        $g_date_pay = $r['g_date_pay'];
+        $g_tasviye_date = $r['g_tasviye_date'];
+        $sum_talab += $g_req;
+        $sum_bedehkar += $g_debt;
+        $g_id = $r['g_id'];
+        $g_desc = $r['g_desc'];
+
+        $result .= Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc);
+    }
+
+    $_COOKIE['talab'] = $sum_talab;
+    $_COOKIE['bedehi'] = $sum_bedehkar;
+    return $result;
 }

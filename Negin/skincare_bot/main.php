@@ -279,7 +279,7 @@ if ($read_cach_first['cach'] == 'first') {
 
         ADD_new_referal("$referal_code", "$referal_name", "$referal_mobile", "$referal_card", "$date_fa", "$user_id", "$shop_name", "$lat,$long");
         $abstract = "کد عامل فروش: *$referal_code*\nنام: *$referal_name*\nموبایل: *$referal_mobile*\nشماره کارت: *$referal_card*\nنام فروشگاه: $shop_name\n";
-        SendMessage("$user_id", urlencode("🎉عامل فروش جدید با موفقیت اضافه شد🎉\n$abstract"), $key_referal_part1, "MarkdownV2");
+        SendMessage("$user_id", urlencode("🎉عامل فروش جدید با موفقیت اضافه شد🎉"), $key_referal_part1, "MarkdownV2");
 
         SMS("$referal_name", "0", "$referal_mobile", "vjkuvy2di4tflas");
         update('users', 'pos', '2', "$user_id");
