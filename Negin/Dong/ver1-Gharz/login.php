@@ -3,6 +3,7 @@ require_once('func.php');
 $page_title = $app_name;
 require_once('header.php');
 require_once('symbol.php');
+$version = '1.5.0';
 ?>
 <style>
     a:link,
@@ -13,8 +14,28 @@ require_once('symbol.php');
     }
 
     .privacy {
-        font-size: 0.8rem;
-        margin-top: 2rem !important;
+        font-size: 0.65rem;
+        margin-top: 1rem !important;
+    }
+
+    #tel {
+        text-align: left !important;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .btn {
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #version {
+        font-size: 0.7rem !important;
+        font-weight: bold;
+        position: fixed;
+        bottom: 0;
+        left: 0;
     }
 </style>
 <div class="container">
@@ -22,14 +43,17 @@ require_once('symbol.php');
         <img src="image/logo_blue.png" alt="logo" class="rounded w-4" />
         <h6 class="text-primary mt-2">....::::::::| <?php echo $app_name; ?> |::::::::....</h6>
         <h6 class="text-primary">سامانه آنلاین محاسبه دونگ</h6>
-        <div class="row mt-4"></div>
-        <div class="row mt-4"></div>
-        <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="09123456789" id="tel" onkeyup="keyPress(event)" />
-        <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow" onclick="login()">ورود به برنامه</button>
-    </div>
+        <div class="row empty" style="margin-top: -1rem;"></div>
+        <div class="mt-4"></div>
 
-    <div class="text-center mt-5 full_width px-2 privacy">
+        <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="09_________" id="tel" onkeyup="keyPress(event)" />
+    </div>
+    
+    <div class="text-center full_width px-2 privacy" style="margin-top: -1rem;">
         <a href="privacy.php" target="_self" rel="noopener noreferrer">شرایط استفاده از خدمات </a> و <a href="privacy.php" target="_self" rel="noopener noreferrer">حریم خصوصی</a> را می پذیرم.
+    </div>
+    <div class="text-center full_width px-2 mt-3">
+        <button class="btn btn_grad text-white mt-2 full_width rounded_7 btn_shadow sum" onclick="login()">قبول شرایط و ادامه</button>
     </div>
 
     <!-- <div class="text-center mt-5 full_width px-2">
@@ -52,13 +76,8 @@ require_once('symbol.php');
         </div>
     </div>
 
+    <div class="mt-4 text-primary text-center full_width" id="version"><?php echo $version;?></div>
 
 </div>
-
-<script>
-    let urlToRemove = "https://dongeto.com";
-
-    window.history.urlToRemove(urlToRemove);
-</script>
 
 <?php require_once('footer.php'); ?>

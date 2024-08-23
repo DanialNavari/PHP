@@ -1,14 +1,13 @@
 <?php
-session_start();
 $page_title = 'دنگ و دونگ';
 require_once('header.php');
 require_once('symbol.php');
 require_once('func.php');
-$version = $_SESSION['ver'];
+$version = "1.5.0";
 ?>
 <style>
     .container div {
-        margin-top: 30vh !important;
+        margin-top: 10vh !important;
     }
 
     #version {
@@ -27,8 +26,7 @@ $version = $_SESSION['ver'];
         <h6 class="text-primary">سامانه آنلاین محاسبه دونگ</h6>
     </div>
 
-    <div class="mt-4"></div>
-    <div class="mt-4"></div>
+    <img src="./image/banner.png" alt="banner Dongeto" class="banner">
     <div class="mt-4 text-primary text-center full_width" id="version"><?php echo $version;?></div>
 </div>
 

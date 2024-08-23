@@ -28,6 +28,9 @@
                 <img src="image/logo_white.png" alt="logo" class="rounded w-2" />
                 <h1 class="pt-3 pb-3 d-inline-block "><?php echo $app_name; ?></h1>
             </div>
+            <div class="pl-3" onclick="navigate('logout.php')">
+                <?php echo $GLOBALS['logout']; ?>
+            </div>
 
         </div>
     </div>

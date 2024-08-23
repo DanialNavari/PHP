@@ -9,10 +9,10 @@ if ($security == true) {
         require_once("main_top.php");
         require_once($page . ".php");
         require_once("main_bottom.php");
-    } elseif(isset($_GET['menu'])) {
-        $page = $_GET['menu'];
+    } else{
+        // $page = $_GET['menu'];
         require_once("index_top.php");
-        require_once($page . ".php");
+        require_once("central.php");
         require_once("index_bottom.php");
     }
 } else {

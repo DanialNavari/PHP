@@ -111,7 +111,7 @@
             ?>
 
             <div class="top_nav">
-                <i id="h_menu" class="click1  " onclick="navigate('./?menu=central')">
+                <i id="h_menu" class="click1  " onclick="navigate('./?menu=central&force=ok')">
                     <?php echo $back; ?>
                 </i>
             </div>

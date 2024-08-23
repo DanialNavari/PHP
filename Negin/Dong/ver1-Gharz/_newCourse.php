@@ -11,11 +11,11 @@
                 <td class="font-weight-bold text-center" id="courseName">دوره جدید</td>
                 <td class="font-weight-bold text-center click" onclick="course()"><?php echo $edit; ?></td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td class="td_title">تعداد افراد</td>
                 <td class="font-weight-bold text-center" id="course_count">0</td>
                 <td class="font-weight-bold text-center"></td>
-            </tr>
+            </tr> -->
             <tr>
                 <td class="td_title tarikh">تاریخ شروع</td>
                 <td class="font-weight-bold text-center">
@@ -35,28 +35,33 @@
                     <button class="btn btn-success btn-sm w-100" id="savedate">تغییر تاریخ</button>
                 </td>
             </tr>
-            <tr>
+            <td colspan="3">
+                <div class="btn btn-prime w-100 contact_btn sum" onclick="saveNewCourse()">
+                    <div class="pay_btn_icon">
+                        <?php echo $check; ?>
+                    </div>
+                </div>
+            </td>
+            <!-- <tr>
                 <td class="td_title pl-0">محدودیت مالی</td>
                 <td class="font-weight-bold text-center">
-                    <span id="moneyLimit">0</span> <span class="unit">ريال</span>
+                    <span id="moneyLimit">0</span> <span class="unit">تومان</span>
                     <span id="moneyLimit1" class="hide">0</span>
                 </td>
                 <td class="text-center click" onclick="moneyLimit()"><?php echo $edit; ?></td>
-            </tr>
+            </tr> -->
         </table>
-        <div class="mb-5"></div>
-        <div class="pay_btn pay_btn2" onclick="saveNewCourse()">
+        <!-- <div class="pay_btn pay_btn2" onclick="saveNewCourse()">
             <div class="pay_btn_icon">
                 <?php echo $check; ?>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
 <div class="h-1"></div>
-<div class="h-1"></div>
 
-<!-- <div class="cat mb-1">
+<div class="cat mb-1">
     <div class="group_name">
         <h6 class="font-weight-bold">اضافه کردن مخاطب جدید</h6>
     </div>
@@ -84,11 +89,11 @@
             </tr>
         </table>
     </div>
-</div> -->
+</div>
 
 <div class="cat mb-1">
     <div class="group_name">
-        <h6 class="font-weight-bold">برای انتخاب مخاطبین دوره ، روی نام افراد کلیک کنید</h6>
+        <h6 class="font-weight-bold">برای انتخاب مخاطبین دورهمی ، روی نام افراد کلیک کنید</h6>
     </div>
 </div>
 
@@ -122,9 +127,9 @@
 <div class="add_fee hide">
     <table class="border_none mx-auto">
         <tr class="font-weight-bold">
-            <td class="sum pl-3 w-30">محدودیت مالی(ريال)</td>
+            <td class="sum pl-3 w-30">محدودیت مالی(تومان)</td>
             <td>
-                <input class="form-control sum font-weight-bold" type="tel" pattern="[0-9,]" id="feeLimit" onkeyup="separate_id('feeLimit')"/>
+                <input class="form-control sum font-weight-bold" type="tel" pattern="[0-9,]" id="feeLimit" onkeyup="separate_id('feeLimit')" />
             </td>
         </tr>
         <tr>

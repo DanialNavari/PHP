@@ -1,4 +1,5 @@
 <?php
+$now_course_id = $_GET['id'];
 $x = SELECT_course_id($_GET['id']);
 $c_name = $x['course_name'];
 ?>
@@ -15,7 +16,7 @@ $c_name = $x['course_name'];
     ?>
 </div>
 
-<div class="floatingActionButton" onclick="window.location.assign('./?route=_newTransaction&h=transaction&id=null')">
+<div class="floatingActionButton" onclick="window.location.assign('./?route=_newTransaction&h=transaction&id=<?php echo $now_course_id; ?>')">
     <div class="icon">
         <?php echo $GLOBALS['bag_plus']; ?>
         <span>خرید جدید</span>

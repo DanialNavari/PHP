@@ -381,11 +381,16 @@ function give_contacts_list1($contact_maker, $course_id, $pos)
 function ADD_course($name, $member, $start, $limit, $manager, $maker, $create)
 {
     db();
-    Query("INSERT INTO `course`(`course_id`,`course_name`,`course_member`,`course_start_date`,`course_money_limit`,`course_manager`,`course_maker`,`course_create_date`,`course_money_unit`) VALUES(NULL,'$name','$member','$start','$limit','$manager','$maker','$create','ريال')");
+    Query("INSERT INTO `course`(`course_id`,`course_name`,`course_member`,`course_start_date`,`course_money_limit`,`course_manager`,`course_maker`,`course_create_date`,`course_money_unit`) VALUES(NULL,'$name','$member','$start','$limit','$manager','$maker','$create','تومان')");
     $id = mysqli_insert_id($GLOBALS['conn']);
     ADD_log($id, 'New Course Create');
     $uid = $_COOKIE['uid'];
     UPDATE_settings($uid, "course_default", "$id");
+
+    $num = count(explode(",", $member));
+    for ($i = 0; $i < $num; $i++) {
+    }
+
     return $id;
 }
 
@@ -876,13 +881,6 @@ function active_course($tel)
                     <td class="text-center click ' . $permit . '" onclick="setDates(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
                 </tr>
                 <tr>
-                    <td class="td_title pl-0">محدودیت مالی</td>
-                    <td class="font-weight-bold text-center ">
-                        <span id="moneyLimit' . $c_id . '">' . sep3($c_money_limit) . '</span> <span class="unit">' . $c_money_unit . '</span>
-                    </td>
-                    <td class="text-center click ' . $permit . '" onclick="moneyLimits(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
-                </tr>
-                <tr>
                     <td class="td_title pl-0">مدیر دوره</td>
                     <td class="font-weight-bold text-center">
                         <span id="m.' . $c_id . '">' . $course_manager . '</span>
@@ -937,6 +935,13 @@ function active_course($tel)
 
     echo $first_default_course . $other_course;
     //<button class="btn btn-management w-100 click1 fs-0-75" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'del\')">' . $GLOBALS["end_course"] . ' حذف دوره</button>
+    // <tr>
+    //                 <td class="td_title pl-0">محدودیت مالی</td>
+    //                 <td class="font-weight-bold text-center ">
+    //                     <span id="moneyLimit' . $c_id . '">' . sep3($c_money_limit) . '</span> <span class="unit">' . $c_money_unit . '</span>
+    //                 </td>
+    //                 <td class="text-center click ' . $permit . '" onclick="moneyLimits(' . $c_id . ')">' . $GLOBALS["edit"] . '</td>
+    //            </tr>
 }
 
 function UPDATE_course($field, $value, $course_id)

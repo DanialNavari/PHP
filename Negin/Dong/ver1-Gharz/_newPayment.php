@@ -73,7 +73,7 @@
                                                                         //     $x = SELECT_course_id($_COOKIE['selected_course']);
                                                                         //     echo $x['course_money_unit'];
                                                                         // } 
-                                                                        ?>ريال
+                                                                        ?>تومان
                     </span>
                 </td>
                 <td class="text-center click" onclick="moneyLimit()"><?php echo $GLOBALS['edit']; ?></td>
@@ -87,7 +87,7 @@
                             $x = SELECT_course_id($_COOKIE['selected_course']);
                             echo $x['course_money_unit'];
                         } else {
-                            echo 'ريال';
+                            echo 'تومان';
                         }
                         ?>
                     </span>
@@ -184,7 +184,7 @@
 <div class="add_fee hide">
     <table class="border_none mx-auto">
         <tr class="font-weight-bold">
-            <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
+            <td class="sum pl-3 w-30">مبلغ تراکنش(تومان)</td>
             <td>
                 <input class="form-control sum font-weight-bold" type="text" id="trans_cost" />
             </td>
@@ -223,7 +223,7 @@
             if ($x) {
                 $money_unit = $x['course_money_unit'];
             } else {
-                $money_unit = 'ريال';
+                $money_unit = 'تومان';
             }
             ?>
             <h6>جمع کل: <span id="sum_variz">0</span> <?php echo $money_unit; ?></h6>

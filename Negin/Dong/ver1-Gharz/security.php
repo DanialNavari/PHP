@@ -36,23 +36,23 @@ foreach ($headers as $header => $value) {
     $header_array["$header"] = "$value";
 }
 
-if(isset($header_array['Ver'])){
+if (isset($header_array['Ver'])) {
     $v = $header_array['Ver'];
     $_SESSION['ver'] = "$v";
-}else{
+} else {
     $_SESSION['ver'] = "1.2.0";
 }
 
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'Windows')) {
-    echo '<script>window.location.assign("device.php")</script>';
+    // echo '<script>window.location.assign("device.php")</script>';
     $security = true;
 }
 
-if ($countryCode != "IR") {
-    //echo '<script>window.location.assign("block.php")</script>';
+if (isset($countryCode) && $countryCode != "IR") {
+    // echo '<script>window.location.assign("block.php")</script>';
 }
 
-if (isset($_COOKIE['uid'])) {
+if (isset($_COOKIE['uid']) && isset($countryCode)) {
     $tel = $_COOKIE['uid'];
     $x = Query("UPDATE `users` SET `users_country` = '$countryCode,$city' WHERE `users_tel` = '$tel'");
 
@@ -62,6 +62,8 @@ if (isset($_COOKIE['uid'])) {
     }
     $security = true;
 } else {
-    //echo '<script>window.location.assign("splash.php")</script>';
+    // echo '<script>window.location.assign("splash.php")</script>';
     $security = false;
 }
+
+// $security = true;

@@ -344,6 +344,7 @@ function login() {
       data: "tel=" + tel + "&login=" + zaman.getTime(),
       success: function (response) {
         if (response == true) {
+          $("#tel").val("");
           navigate("sms.php");
         } else if (response == false) {
           Toast(110);
