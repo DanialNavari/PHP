@@ -4,6 +4,7 @@ require_once('header.php');
 require_once('symbol.php');
 require_once('func.php');
 $version = "1.5.0";
+$aks = mt_rand(0, 9);
 ?>
 <style>
     .container div {
@@ -12,22 +13,35 @@ $version = "1.5.0";
 
     #version {
         font-size: 0.7rem !important;
-        font-weight: bold;
         position: fixed;
         bottom: 0;
         left: 0;
     }
+
+    html {
+        background: #1d354e;
+    }
+
+    body {
+        background-color: transparent;
+    }
+
+    h4,
+    h6,
+    #version {
+        color: #bedaf3 !important;
+    }
 </style>
 
-<div class="container">
+<div class="container text-center">
     <div class="text-center full_width px-2">
         <img src="image/logo_blue.png" alt="logo" class="rounded w-4" />
-        <h4 class="mt-2 text-primary">..::| <?php echo $app_name;?> |::..</h4>
-        <h6 class="text-primary">سامانه آنلاین محاسبه دونگ</h6>
+        <h4 class="mt-2">..::| <?php echo $app_name; ?> |::..</h4>
+        <h6 class="">سامانه آنلاین دنگ و دنگ</h6>
     </div>
 
-    <img src="./image/banner.png" alt="banner Dongeto" class="banner">
-    <div class="mt-4 text-primary text-center full_width" id="version"><?php echo $version;?></div>
+    <img src="./image/banner/<?php echo '8'; ?>.jpg" alt="banner Dongeto" class="banner" loading="lazy">
+    <div class="mt-4 text-primary text-center full_width" id="version"><?php echo $version; ?></div>
 </div>
 
 <script>

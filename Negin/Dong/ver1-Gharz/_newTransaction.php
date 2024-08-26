@@ -74,7 +74,7 @@
                             $x = SELECT_course_id($_COOKIE['selected_course']);
                             echo $x['course_money_unit'];
                         } else {
-                            echo 'ريال';
+                            echo 'تومان';
                         }
                         ?>
                     </span>
@@ -87,7 +87,7 @@
                     <span>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="mablagh" value="mablagh">
-                            <label class="form-check-label" for="mablagh"><span>مبلغ (ريال)</span></label>
+                            <label class="form-check-label" for="mablagh"><span>مبلغ (تومان)</span></label>
                         </div>
                     </span>
                 </td>
@@ -182,7 +182,7 @@
 <div class="add_fee hide">
     <table class="border_none mx-auto">
         <tr class="font-weight-bold">
-            <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
+            <td class="sum pl-3 w-30">مبلغ تراکنش(تومان)</td>
             <td>
                 <input class="form-control sum font-weight-bold" type="text" id="trans_cost" />
             </td>
@@ -221,7 +221,7 @@
             if ($x) {
                 $money_unit = $x['course_money_unit'];
             } else {
-                $money_unit = 'ريال';
+                $money_unit = 'تومان';
             }
             ?>
             <div class="div_all">
@@ -446,7 +446,25 @@
         });
     }
 
-    default_course_data("<?php echo $_COOKIE['uid']; ?>");
+    function get_course_data(course_id) {
+        $('#savedate').click();
+        $.ajax({
+            data: "get_course_info=" + course_id,
+            type: "POST",
+            url: "server.php",
+            success: function(response) {
+                if (response == '0') {
+                    //navigate('./?route=main_body&h=home&id=null');
+                } else {
+                    x = response.split(',');
+                    $(".course_id").text(x[0]);
+                    $("#course_name_show").text(x[1]);
+                    $("option[value='" + x[0] + "']").attr('selected', 'selected');
+                    $('#setCourses').click();
+                }
+            },
+        });
+    }
 
     $("#buyforall").click(function() {
         chk = $("#buyforall").prop("checked");
@@ -460,3 +478,21 @@
         }
     });
 </script>
+
+<?php
+if (isset($_GET['id']) && $_GET['id'] > 0) {
+    $id = $_GET['id'];
+    echo '
+        <script>
+            get_course_data(' . $id . ');
+        </script>
+    ';
+} else {
+    $uid = $_COOKIE['uid'];
+    echo '
+        <script>
+            default_course_data("' . $uid . '");
+        </script>
+    ';
+}
+?>

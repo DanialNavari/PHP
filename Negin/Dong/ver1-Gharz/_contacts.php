@@ -33,6 +33,13 @@
                         </div>
                     </div>
                 </td>
+                <td>
+                    <div class="btn btn-prime w-100 contact_btn sum" onclick="openContactPicker()">
+                        <div class="pay_btn_icon">
+                            <?php echo $contacts; ?>
+                        </div>
+                    </div>
+                </td>
             </tr>
         </table>
     </div>

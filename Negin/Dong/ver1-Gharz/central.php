@@ -10,9 +10,9 @@ if (isset($_COOKIE['page'])) {
 <div style="margin-top: 3.6rem;"></div>
 
 <div class="cat">
-    <div class="group_name">
+    <!-- <div class="group_name">
         <h6 class="font-weight-bold">به دونگتو خوش آمدید</h6>
-    </div>
+    </div> -->
     <div class="box_cat_parent">
 
         <div class="box_cat b1" onclick="window.location.assign('./?route=main_body&bm=dongeto')">
@@ -25,11 +25,11 @@ if (isset($_COOKIE['page'])) {
                 </div>
             </div>
             <div class="box_title">دونگ دورهمی</div>
-        </div>
+        </div> 
 
-        <div class="box_cat b1 inactive_option">
+        <div class="box_cat b1" onclick="window.location.assign('./?route=_gharz&bm=gharz')">
             <div class="box_cat">
-                <div class="box d-flex mt-2 none_click_box">
+                <div class="box d-flex mt-2">
                     <div class="box_icon">
                         <?php echo $loan; ?>
                     </div>

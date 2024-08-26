@@ -27,6 +27,7 @@
                 <i id="h_menu" class="force_hide"><?php echo $hamburger_menu; ?></i>
                 <img src="image/logo_white.png" alt="logo" class="rounded w-2" />
                 <h1 class="pt-3 pb-3 d-inline-block "><?php echo $app_name; ?></h1>
+                <h6 class="d-inline-block">(<?php echo $_COOKIE['uid'];?>)</h6>
             </div>
             <div class="pl-3" onclick="navigate('logout.php')">
                 <?php echo $GLOBALS['logout']; ?>

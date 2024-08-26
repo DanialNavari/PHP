@@ -91,9 +91,15 @@ form#sms > input:focus {
   background: #b2dfdb;
 }
 
+.new_color {
+  color: #bedaf3 !important;
+}
+
 .banner {
   width: 18rem;
-  margin: 0 auto;
+  margin: 1rem auto;
+  filter: saturate(1.2) drop-shadow(2px 4px 6px silver);
+  border-radius: 0.5rem;
 }
 
 form#sms > input {
@@ -243,6 +249,7 @@ form#sms > input {
 
 #tel {
   letter-spacing: 0.7rem;
+  direction: ltr;
 }
 
 .alert {
@@ -324,6 +331,9 @@ h6 {
   flex-direction: row;
   justify-content: space-between;
   gap: 0.1rem;
+  width: 100%;
+  /* overflow-x: scroll;
+  overflow-y: hidden; */
 }
 
 #my_local_name::before {
@@ -378,7 +388,7 @@ h6 {
   filter: invert(1);
 }
 
-.inactive_option img{
+.inactive_option img {
   filter: invert(1);
 }
 
@@ -389,9 +399,7 @@ h6 {
   justify-content: center;
   align-items: center;
   gap: 0rem;
-  margin-left: 0.3rem;
-  margin-right: 0.6rem;
-  margin-top: 0.3rem;
+  margin: 0.3rem 0.6rem 0.6rem 0.3rem;
   rotate: 45deg;
 }
 
@@ -427,15 +435,16 @@ h6 {
 }
 
 .cat {
-  margin: 0 0.5rem 0.1rem 0.5rem;
+  margin: 0rem 0.5rem 1rem 0.5rem;
+  overflow: hidden;
 }
 
 .rapid_access {
-  padding: 0.2rem;
+  padding: 0.2rem 0.6rem;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   gap: 0vw;
   position: fixed;
@@ -460,7 +469,6 @@ h6 {
   justify-content: center;
   cursor: pointer;
   border-radius: 0.3rem;
-  width: 3rem;
 }
 
 .item_circle {
@@ -703,6 +711,12 @@ h6 {
 .f-left {
   float: left !important;
 }
+
+.btn_nice {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
 
 .popup_group {
   display: flex;
@@ -1534,15 +1548,6 @@ img#ads {
 }
 
 /* ----------------------- Media Queries ----------------------- */
-@media screen and (min-width: 340px) {
-  .card table td {
-    font-size: 0.8rem;
-  }
-
-  #my_local_name {
-    display: inline;
-  }
-}
 
 @media screen and (max-width: 319px) {
   .add_payments {
@@ -1558,6 +1563,26 @@ img#ads {
 
   #my_local_name {
     display: none;
+  }
+
+  .box_cat_parent {
+    overflow-x: scroll !important;
+  }
+}
+
+@media screen and (min-width: 340px) {
+  .card table td {
+    font-size: 0.8rem;
+  }
+
+  #my_local_name {
+    display: inline;
+  }
+}
+
+@media screen and (max-width: 374px) {
+  .box_cat_parent {
+    overflow-x: scroll !important;
   }
 }
 

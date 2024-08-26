@@ -91,6 +91,7 @@
                 ?>
                 <h1 class="pt-3 pb-3 d-inline-block "><?php echo $app_name; ?></h1>
                 <h6 class="force_hide" id="my_local_name"><?php echo $name; ?></h6>
+                <h6 class="d-inline-block" id="my_local_tel">(<?php echo $_COOKIE['uid']; ?>)</h6>
             </div>
 
             <?php

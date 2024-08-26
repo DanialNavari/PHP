@@ -517,7 +517,7 @@ function active_transactions($course_id)
                         <tr class="bg_blue_very_dark font-weight-bold">
                             <td class="text-white text-center">خریدکننده</td>
                             <td class="text-white text-center">توضیحات</td>
-                            <td class="text-white text-center">مبلغ(ريال)</td>
+                            <td class="text-white text-center">مبلغ(تومان)</td>
                             <td class="text-white text-center">تاریخ</td>
                         </tr>
                         <tr class="bg-white font-weight-bold">
@@ -2099,8 +2099,9 @@ function MY_DEBT($tel, $pos)
                 $user_use += $fetch['trans_fee'];
             }
         } else {
-            $user_use = 0;
+            $user_use += 0;
         }
+
 
         $check_course = check_active_course($trans_course);
         if ($check_course > 0) {
@@ -2113,7 +2114,7 @@ function MY_DEBT($tel, $pos)
                 }
             }
         } else {
-            $user_sahm = 0;
+            $user_sahm += 0;
         }
     }
 
@@ -2133,9 +2134,8 @@ function MY_DEBT($tel, $pos)
     $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL");
     $numsa = mysqli_num_rows($pa);
     for ($la = 0; $la < $numsa; $la++) {
-        $feta = mysqli_fetch_assoc($pa);
-        $pay_course = $fet['pay_course'];
         $check_course = check_active_course($pay_course);
+        $feta = mysqli_fetch_assoc($pa);
         if ($check_course > 0) {
             $user_give += $feta['pay_fee'];
         } else {
@@ -2143,7 +2143,7 @@ function MY_DEBT($tel, $pos)
         }
     }
 
-    $jaam = $user_use - $user_sahm + $user_pay - $user_give;
+    $jaam = $user_use - $user_sahm  - $user_give + $user_pay;
     if ($jaam > 0) {
         $req = $jaam;
         $debt = 0;
@@ -2156,12 +2156,7 @@ function MY_DEBT($tel, $pos)
     }
 
 
-    switch ($pos) {
-        case "debt":
-            return $user_use - $user_sahm - $user_give;
-        case "req":
-            return $user_use - $user_sahm + $user_pay;
-    }
+    return $jaam;
 }
 
 function active_courses($maker, $pos)
@@ -2702,9 +2697,9 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
 function give_contacts_list_gharz($contact_maker, $type)
 {
     db();
-    if ($type == "talabkar") {
+    if ($type == "bedehkar") {
         $res = Query("SELECT * FROM `gharz` WHERE `g_to_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL ORDER BY `g_debt` DESC");
-    } elseif ($type == "bedehkar") {
+    } elseif ($type == "talabkar") {
         $res = Query("SELECT * FROM `gharz` WHERE `g_from_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL ORDER BY `g_req` DESC");
     }
 
@@ -2733,4 +2728,35 @@ function give_contacts_list_gharz($contact_maker, $type)
     $_COOKIE['talab'] = $sum_talab;
     $_COOKIE['bedehi'] = $sum_bedehkar;
     return $result;
+}
+
+function get_course_info($course_id)
+{
+    $x = Query("SELECT * FROM `course` WHERE `course_id` = '$course_id'");
+    $num = mysqli_num_rows($x);
+    if ($num > 0) {
+        $fet = mysqli_fetch_assoc($x);
+        return $fet;
+    } else {
+        return '0';
+    }
+}
+
+
+function SELECT_GHARZ_users()
+{
+    $gharz_users = '';
+    $usr = $_COOKIE['uid'];
+    $query = "SELECT * FROM `contacts` WHERE `contact_maker`='$usr' AND `contact_tel` != '$usr' ORDER BY `contact_name` ASC";
+    $res = Query($query);
+    $num = mysqli_num_rows($res);
+    for ($i = 0; $i < $num; $i++) {
+        $fet = mysqli_fetch_assoc($res);
+        $user_name = $fet['contact_name'];
+        $user_tel = $fet['contact_tel'];
+        $gharz_users .= '
+                <option value="' . $user_tel . '">' . $user_name . '(' . $user_tel . ')</option>
+        ';
+    }
+    return $gharz_users;
 }

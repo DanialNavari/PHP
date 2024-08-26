@@ -1,36 +1,3 @@
-<style>
-    a:link,
-    a:visited,
-    a:active,
-    a:hover {
-        color: #03A9F4;
-    }
-
-    .privacy {
-        font-size: 0.65rem;
-        margin-top: 1rem !important;
-    }
-
-    #tel {
-        text-align: left !important;
-        width: 80%;
-        margin: 0 auto;
-    }
-
-    .btn {
-        text-align: center;
-        width: 80%;
-        margin: 0 auto;
-    }
-
-    #version {
-        font-size: 0.7rem !important;
-        font-weight: bold;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-    }
-</style>
 <?php
 require_once('func.php');
 
@@ -56,14 +23,14 @@ echo $pos;
 <div class="container">
     <div class="text-center mt-5 full_width px-2">
         <img src="image/logo_blue.png" alt="logo" class="rounded w-4" />
-        <h6 class="text-primary mt-2">....::::::::| <?php echo $app_name; ?> |::::::::....</h6>
-        <h6 class="text-primary">سامانه آنلاین محاسبه دونگ</h6>
+        <h6 class="text-primary mt-2 new_color">....::::::::| <?php echo $app_name; ?> |::::::::....</h6>
+        <h6 class="text-primary new_color">سامانه آنلاین دنگ و دونگ</h6>
         <div class="row empty" style="margin-top: -1rem;"></div>
         <div class="mt-4"></div>
-        <div class="row mt-4 text-primary" id="hourGlass">
+        <div class="row mt-4 text-primary new_color" id="hourGlass">
             <?php echo $hourGlass; ?> <span id="remain_time">100</span>
         </div>
-        <div class="row mt-3 mb-3 active_str">
+        <div class="row mt-3 mb-3 active_str new_color">
             کد فعالسازی به شماره <?php echo $_COOKIE['temp_tel']; ?> پیامک شده است.
         </div>
         <form action="#" class="form-inline mx-auto" id="sms">
@@ -100,7 +67,7 @@ echo $pos;
         </div>
     </div>
 
-    <div class="mt-4 text-primary text-center full_width" id="version"><?php echo $version; ?></div>
+    <div class="mt-4 text-primary text-center full_width new_color" id="version"><?php echo $version; ?></div>
 
 </div>
 
@@ -146,3 +113,48 @@ echo $pos;
 <?php
 $vcode = mt_rand(1000, 9999);
 ?>
+
+<style>
+    a:link,
+    a:visited,
+    a:active,
+    a:hover {
+        color: #03A9F4;
+    }
+
+    .privacy {
+        font-size: 0.65rem;
+        margin-top: 1rem !important;
+    }
+
+    #tel {
+        text-align: left !important;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .btn {
+        text-align: center;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .new_color {
+        color: #bedaf3 !important;
+    }
+
+    #version {
+        font-size: 0.7rem !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+
+    html {
+        background: #1d354e;
+    }
+
+    body {
+        background-color: transparent;
+    }
+</style>

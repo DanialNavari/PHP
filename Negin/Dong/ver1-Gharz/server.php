@@ -291,4 +291,9 @@ if (isset($_POST['login'])) {
 } elseif (isset($_POST['reportID'])) {
     $x = get_settings($_COOKIE['uid']);
     echo $x['course_default'];
+} elseif (isset($_POST['get_course_info'])) {
+    if ($_POST['get_course_info'] == 0) {
+        $result = get_course_info($_GET['get_course_info']);
+        echo $result;
+    }
 }

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="static/css/lib/persian-datepicker.min.css" />
+<link rel="stylesheet" href="static/css/main.css" />
 <style>
     .pay_btn {
         width: 87vw;
@@ -46,6 +48,18 @@
         margin-bottom: 0.1rem;
         height: auto;
     }
+
+    #set_tarikh {
+        display: none;
+        position: fixed;
+        top: 25vh;
+        z-index: 9;
+        right: calc(100vw / 4);
+    }
+
+    select {
+        font-size: 0.75rem !important;
+    }
 </style>
 <div class="row empty">قرض</div>
 <?php
@@ -73,41 +87,6 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
     </button>
 
 </div>
-<!-- <div class="cat mb-1">
-    <div class="group_name">
-        <h6 class="font-weight-bold">اضافه کردن مخاطب جدید</h6>
-    </div>
-</div>
-
-<div class="cat">
-    <div class="card my_card border_none">
-        <table class="table">
-            <tr class="white">
-                <td class="td_title_ font-weight-bold text-white">
-                    <div class="form-row">
-                        <div class="col">
-                            <input type="text" id="newContactName" class="input_group_height text-right form-control sum" placeholder="نام مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
-                        </div>
-                        <div class="col">
-                            <input type="tel" id="newContactTel" class="input_group_height text-right form-control sum" placeholder="شماره مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="td_title_ font-weight-bold text-white">
-                    <button class="btn btn-prime w-100 sum" id="btn_add_new_contact" onclick="addNewContact()">اضافه کردن مخاطب</button>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div> -->
-
-<!-- <div class="cat mb-1">
-    <div class="group_name">
-        <h6 class="font-weight-bold">فیلتر</h6>
-    </div>
-</div> -->
 
 <div class="row empty" style="margin-top: -1rem;">فیلتر</div>
 <div class="cat">
@@ -143,7 +122,7 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
     echo give_contacts_list_gharz($contact_maker, "bedehkar");
     ?>
 </div>
-<div class="last_item"></div>
+<!-- <div class="last_item"></div> -->
 
 <div class="add_fee hide">
     <table class="border_none mx-auto">
@@ -164,26 +143,35 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
     <div class="card my_card" style="background-color: rgba(235, 246, 255, 1);">
         <table class="table">
             <tr>
-                <td class="td_title">انتخاب کاربر</td>
-                <td class="font-weight-bold text-center" id="total_req"></td>
+                <td class="td_title va_middle">انتخاب کاربر</td>
+                <td class="font-weight-bold text-center" id="total_req" colspan="2">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="gharz_users">
+                        <?php
+                        echo SELECT_GHARZ_users();
+                        ?>
+                    </select>
+                </td>
             </tr>
             <tr>
-                <td class="td_title">مبلغ</td>
-                <td class="font-weight-bold text-center"><span id="total_req">1,500,000 </span><span>تومان</span></td>
+                <td class="td_title va_middle">مبلغ</td>
+                <td class="font-weight-bold text-center">
+                    <input id="fee" type="text" class="form-control sum" value="0" pattern="[0-9,]" onkeyup="separate_id('fee')" onfocus="clear_content('fee','in')" onfocusout="clear_content('fee','out')" />
+                </td>
+                <td class="font-weight-bold text-center va_middle">تومان</td>
             </tr>
             <tr>
-                <td class="td_title">تاریخ واریز</td>
-                <td class="font-weight-bold text-center" id="total_req">1403/05/26</td>
-                <td class="font-weight-bold text-center"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="td_title va_middle">تاریخ واریز</td>
+                <td class="font-weight-bold text-center va_middle" id="variz_date">****/**/**</td>
+                <td class="font-weight-bold text-center" onclick="setDates_('variz')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
             <tr>
-                <td class="td_title" style="width: 6rem;">تاریخ بازپرداخت</td>
-                <td class="font-weight-bold text-center" id="total_req">1403/05/28</td>
-                <td class="font-weight-bold text-center"><?php echo $GLOBALS['edit']; ?></td>
+                <td class="td_title va_middle" style="width: 6rem;">تاریخ بازپرداخت</td>
+                <td class="font-weight-bold text-center" id="repay_date">****/**/**</td>
+                <td class="font-weight-bold text-center" onclick="setDates_('repay')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
             <tr>
-                <td class="td_title">نوع بدهی</td>
-                <td class="font-weight-bold text-center" id="total_req" colspan="2" style="padding: 0.2rem;">
+                <td class="td_title va_middle">نوع بدهی</td>
+                <td class="font-weight-bold text-center" colspan="2" style="padding: 0.2rem;">
                     <div class="form-check form-switch" onclick="debt_type()">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked name="debt_type">
                         <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size: 0.78rem;">از این فرد طلبکار هستم</label>
@@ -191,9 +179,9 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
                 </td>
             </tr>
             <tr>
-                <td class="td_title">بابت</td>
-                <td class="font-weight-bold text-center" id="total_req" colspan="2">
-                    <input type="text" class="form-control">
+                <td class="td_title va_middle">بابت</td>
+                <td class="font-weight-bold text-center" colspan="2">
+                    <input type="text" class="form-control" id="babat">
                 </td>
             </tr>
             <tr>
@@ -206,6 +194,17 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
     </div>
 </div>
 
+<div id="set_tarikh" class="hide">
+    <span id="start_from_en" class="hide"></span>
+    <span id="start_unix" class="hide"></span>
+    <div class="range-from-example pwt-datepicker-input-element">
+    </div>
+    <div class="save_zaman">
+        <input type="hidden" class="form-control" value="" id="date_type">
+        <button class="btn btn-prime sum w-100 btn_nice" onclick="saveDate_()">ذخیره</button>
+    </div>
+</div>
+
 <div class="cat mb-1 h-1"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
@@ -213,6 +212,19 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
 <script src="static/js/lib/persian-datepicker.min.js"></script>
 
 <script>
+    function setDates_(type) {
+        $("#set_tarikh").show("slow");
+        $(".range-from-example").show("slow");
+        $(".month-grid-box .header").hide();
+        $(".header").css("display", "inline-block");
+        $(".w-100").show();
+        if (type == "variz") {
+            $("#date_type").val("variz");
+        } else {
+            $("#date_type").val("repay");
+        }
+    }
+
     var to, from;
     from = $(".range-from-example").persianDatepicker({
         inline: true,
@@ -251,6 +263,20 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
         }
     }
 
+    function clear_content(id, type) {
+        value = parseInt($("#" + id).val());
+        values = $("#" + id).val();
+        if (type == "in") {
+            if (value == 0) {
+                $("#" + id).val("");
+            }
+        } else {
+            if (values == NaN || values == "") {
+                $("#" + id).val("0");
+            }
+        }
+    }
+
     function debt_type() {
         var value = $("#flexSwitchCheckChecked").prop('checked');
         if (value == true) {
@@ -261,4 +287,51 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
             $("#saveNewGharz").text("ایجاد بدهی جدید");
         }
     }
+
+    function saveDate_() {
+        shamsi = $("td.selected").attr("data-date");
+        if (shamsi.length > 0) {
+            $("#start_from_fa").text(shamsi);
+        } else {
+            shamsi = $("td.today").attr("data-date");
+        }
+
+        shamsi_split = shamsi.split(",");
+        let saal, maah, rooz;
+
+        if (shamsi_split[1] < 10) {
+            maah = "0" + shamsi_split[1];
+        } else {
+            maah = shamsi_split[1];
+        }
+
+        if (shamsi_split[2] < 10) {
+            rooz = "0" + shamsi_split[2];
+        } else {
+            rooz = shamsi_split[2];
+        }
+
+        today = $("td.today").attr("data-date");
+        farsi_date = shamsi_split[0] + "/" + maah + "/" + rooz;
+        $("#start_from_fa").text(farsi_date);
+        date_type = $("#date_type").val();
+
+        if (date_type == "variz") {
+            $("#variz_date").text(farsi_date);
+        } else {
+            $("#repay_date").text(farsi_date);
+        }
+
+        $("#set_tarikh").hide();
+    }
+
+    $("#saveNewGharz").click(function() {
+        var karbar = $("#gharz_users").val();
+        var fee = commafy__($("#fee").val());
+        var variz_date = $("#variz_date").text();
+        var repay_date = $("#repay_date").text();
+        var flexswitch = $("#flexSwitchCheckChecked").prop('checked');
+        var babat = $("#babat").val();
+
+    });
 </script>

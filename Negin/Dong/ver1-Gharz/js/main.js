@@ -55,6 +55,7 @@ $(".gray_layer").click(function () {
     $(".add_fee").fadeOut();
     $(".tarikh_table").fadeOut();
     $(".new_gharz").fadeOut();
+    $("#set_tarikh").hide();
     nav_drawer = 0;
   }
 });

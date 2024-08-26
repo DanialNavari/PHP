@@ -40,11 +40,11 @@ if ($xx == 0) {
 
 
     $menu_course = '
-    <div class="item_" onclick="page(\'r\',\'_newCourse\',\'course\')" id="newCourse">
+    <div class="item_" onclick="page(\'r\',\'_activeCourse\',\'newCourse\')" id="newCourse">
         <div class="item_circle">
             <div class="item_icon">' . $active_course1 . '</div>
         </div>
-        <div class="item_title">ایجاد دوره</div>
+        <div class="item_title">دورهمی ها</div>
     </div>';
 
     $menu_pay = '
@@ -52,7 +52,7 @@ if ($xx == 0) {
         <div class="item_circle">
             <div class="item_icon">' . $payment . '</div>
         </div>
-        <div class="item_title">پرداخت</div>
+        <div class="item_title">پرداخت جدید</div>
     </div>';
 
     $menu_buy = '
@@ -60,7 +60,7 @@ if ($xx == 0) {
         <div class="item_circle">
             <div class="item_icon">' . $bag_plus . '</div>
         </div>
-        <div class="item_title">خرید</div>
+        <div class="item_title">خرید جدید</div>
         </div>';
 
     if ($xx == 0) {

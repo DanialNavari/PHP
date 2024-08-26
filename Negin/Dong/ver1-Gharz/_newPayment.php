@@ -11,7 +11,7 @@
         cursor: pointer;
     }
 
-    .my_card{
+    .my_card {
         margin-bottom: 0.5rem;
     }
 </style>
@@ -402,7 +402,25 @@
         });
     }
 
-    default_course_data("<?php echo $_COOKIE['uid']; ?>");
+    function get_course_data(course_id) {
+        $('#savedate').click();
+        $.ajax({
+            data: "get_course_info=" + course_id,
+            type: "POST",
+            url: "server.php",
+            success: function(response) {
+                if (response == '0') {
+                    //navigate('./?route=main_body&h=home&id=null');
+                } else {
+                    x = response.split(',');
+                    $(".course_id").text(x[0]);
+                    $("#course_name_show").text(x[1]);
+                    $("option[value='" + x[0] + "']").attr('selected', 'selected');
+                    $('#setCourses').click();
+                }
+            },
+        });
+    }
 
     $(document).ready(function() {
         window.setTimeout(function() {
@@ -416,3 +434,21 @@
         }, 500);
     });
 </script>
+
+<?php
+if (isset($_GET['id']) && $_GET['id'] > 0) {
+    $id = $_GET['id'];
+    echo '
+        <script>
+            get_course_data(' . $id . ');
+        </script>
+    ';
+} else {
+    $uid = $_COOKIE['uid'];
+    echo '
+        <script>
+            default_course_data("' . $uid . '");
+        </script>
+    ';
+}
+?>
