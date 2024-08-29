@@ -296,4 +296,33 @@ if (isset($_POST['login'])) {
         $result = get_course_info($_GET['get_course_info']);
         echo $result;
     }
+} elseif (isset($_POST['newgharz'])) {
+    $karbar = $_POST['karbar'];
+    $fee = $_POST['fee'];
+    $variz_date = $_POST['variz_date'];
+    $repay_date = $_POST['repay_date'];
+    $flexswitch = strval($_POST['switch']);
+    $babat = $_POST['babat'];
+    $today = $_POST['today'];
+
+    if ($flexswitch == "true") {
+        $from = $_COOKIE['uid'];
+        $to = $karbar;
+        $debt = 0;
+        $req = $fee;
+    } elseif ($flexswitch == "false") {
+        $from = $karbar;
+        $to = $_COOKIE['uid'];
+        $debt = $fee;
+        $req = 0;
+    }
+
+    $t = explode(",", $today);
+    $todays = $t[0] . "/" . $t[1] . "/" . $t[2] . "/";
+
+    $x = ADD_GHARZ($from, $to, $debt, $req, $variz_date, $repay_date, $todays, $babat);
+    return $x;
+} elseif (isset($_POST['estelam_debt'])) {
+    $x = estelam_debt($_POST['karbar']);
+    echo sep3($x);
 }

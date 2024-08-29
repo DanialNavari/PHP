@@ -2760,3 +2760,32 @@ function SELECT_GHARZ_users()
     }
     return $gharz_users;
 }
+
+function ADD_GHARZ($from, $to, $debt, $req, $give, $repay, $today, $desc)
+{
+    $x = Query("INSERT INTO(`g_from_tel`,`g_to_tel`,`g_debt`,`g_req`,`g_date_give`,`g_date_pay`,`g_date_create`,`g_desc`) VALUES('" . $from . "','" . $to . "','" . $debt . "','" . $req . "','" . $give . "','" . $repay . "','" . $today . "','" . $desc . "')");
+    return mysqli_insert_id($GLOBALS['conn']);
+}
+
+function estelam_debt($uid)
+{
+    $total_debt = 0;
+    $payments = 0;
+
+    $x = Query("SELECT * FROM `gharz` WHERE `g_to_tel` = '$uid' AND `g_tasviye_date` IS NULL");
+    $num = mysqli_num_rows($x);
+    for ($i = 0; $i < $num; $i++) {
+        $fet = mysqli_fetch_assoc($x);
+        $gharz_id = $fet['g_id'];
+        $total_debt += intval($fet['g_debt']);
+
+        $y = Query("SELECT * FROM `gharz_payments` WHERE `gp_maker` = '$uid' AND `gp_row` = '$gharz_id'");
+        $nums = mysqli_num_rows($y);
+        for ($ii = 0; $ii < $nums; $ii++) {
+            $fets = mysqli_fetch_assoc($y);
+            $payments += intval($fets['gp_fee']);
+        }
+    }
+
+    return $total_debt - $payments;
+}

@@ -50,11 +50,13 @@
     }
 
     #set_tarikh {
-        display: none;
         position: fixed;
-        top: 25vh;
+        top: 22vh;
         z-index: 9;
-        right: calc(100vw / 4);
+        padding: 1rem;
+        width: 100%;
+        height: 22rem;
+        background: #ffffff;
     }
 
     select {
@@ -145,7 +147,7 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
             <tr>
                 <td class="td_title va_middle">انتخاب کاربر</td>
                 <td class="font-weight-bold text-center" id="total_req" colspan="2">
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="gharz_users">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="gharz_users" onchange="estelam()">
                         <?php
                         echo SELECT_GHARZ_users();
                         ?>
@@ -153,9 +155,17 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
                 </td>
             </tr>
             <tr>
+                <td class="td_title va_middle">بدهی کاربر</td>
+                <td class="font-weight-bold text-center">
+                    <input id="bedehi_user" disabled type="tel" class="form-control sum form_sm" value="0" pattern="[0-9,]" onchange="separate_id('bedehi_user')" onfocus="clear_content('bedehi_user','in')" onfocusout="clear_content('bedehi_user','out')" />
+                    <span id="plzwait" class="hide">لطفا کمی صبر کنید</span>
+                </td>
+                <td class="font-weight-bold text-center va_middle">تومان</td>
+            </tr>
+            <tr>
                 <td class="td_title va_middle">مبلغ</td>
                 <td class="font-weight-bold text-center">
-                    <input id="fee" type="text" class="form-control sum" value="0" pattern="[0-9,]" onkeyup="separate_id('fee')" onfocus="clear_content('fee','in')" onfocusout="clear_content('fee','out')" />
+                    <input id="fee" type="tel" class="form-control sum form_sm" value="0" pattern="[0-9,]" onkeyup="separate_id('fee')" onfocus="clear_content('fee','in')" onfocusout="clear_content('fee','out')" />
                 </td>
                 <td class="font-weight-bold text-center va_middle">تومان</td>
             </tr>
@@ -181,7 +191,7 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
             <tr>
                 <td class="td_title va_middle">بابت</td>
                 <td class="font-weight-bold text-center" colspan="2">
-                    <input type="text" class="form-control" id="babat">
+                    <input type="text" class="form-control form_sm" id="babat">
                 </td>
             </tr>
             <tr>
@@ -201,7 +211,8 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
     </div>
     <div class="save_zaman">
         <input type="hidden" class="form-control" value="" id="date_type">
-        <button class="btn btn-prime sum w-100 btn_nice" onclick="saveDate_()">ذخیره</button>
+        <input type="hidden" class="form-control" value="" id="today">
+        <button class="btn btn-warning sum w-100 btn_nice" onclick="saveDate_()" id="save_date">ذخیره</button>
     </div>
 </div>
 
@@ -213,16 +224,19 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
 
 <script>
     function setDates_(type) {
-        $("#set_tarikh").show("slow");
-        $(".range-from-example").show("slow");
+        $("#set_tarikh").show();
+        $(".range-from-example").show();
         $(".month-grid-box .header").hide();
         $(".header").css("display", "inline-block");
         $(".w-100").show();
         if (type == "variz") {
             $("#date_type").val("variz");
+            $("#save_date").text("ثبت زمان واریز");
         } else {
             $("#date_type").val("repay");
+            $("#save_date").text("ثبت زمان بازپرداخت");
         }
+        return 1;
     }
 
     var to, from;
@@ -312,6 +326,7 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
         }
 
         today = $("td.today").attr("data-date");
+        $("#today").val(today);
         farsi_date = shamsi_split[0] + "/" + maah + "/" + rooz;
         $("#start_from_fa").text(farsi_date);
         date_type = $("#date_type").val();
@@ -326,12 +341,61 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
     }
 
     $("#saveNewGharz").click(function() {
-        var karbar = $("#gharz_users").val();
         var fee = commafy__($("#fee").val());
-        var variz_date = $("#variz_date").text();
-        var repay_date = $("#repay_date").text();
-        var flexswitch = $("#flexSwitchCheckChecked").prop('checked');
         var babat = $("#babat").val();
 
+        if (fee > 0 && babat.length > 3) {
+            var variz_date = $("#variz_date").text();
+            var repay_date = $("#repay_date").text();
+            var karbar = $("#gharz_users").val();
+            var flexswitch = String($("#flexSwitchCheckChecked").prop('checked'));
+
+            if (variz_date == "****/**/**") {
+                setDates_('variz');
+                saveDate_();
+                variz_date = $("#variz_date").text();
+                $("#set_tarikh").hide();
+            }
+
+            if (repay_date == "****/**/**") {
+                setDates_('repay');
+                saveDate_();
+                repay_date = $("#repay_date").text();
+                $("#set_tarikh").hide();
+            }
+
+            var today = $("#today").val();
+
+            $.ajax({
+                url: "server.php",
+                data: "newgharz=ok&today=" + today + "&karbar=" + karbar + "&fee=" + fee + "&variz_date=" + variz_date + "&repay_date=" + repay_date + "&switch=" + flexswitch + "&babat=" + babat,
+                type: "POST",
+                success: function(response) {
+
+                }
+            });
+        } else {
+            Toast_msg("مبلغ و بابت و زمان واریز را مشخص کنید", "alertBox", 3000);
+        }
+    });
+
+    function estelam() {
+        user_tel = $("#gharz_users").val();
+        $("#bedehi_user").hide();
+        $("#plzwait").show();
+        $.ajax({
+            data: "estelam_debt=ok&karbar=" + user_tel,
+            type: "POST",
+            url: "server.php",
+            success: function(response) {
+                $("#bedehi_user").val(response);
+                $("#plzwait").hide();
+                $("#bedehi_user").show();
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        estelam();
     });
 </script>

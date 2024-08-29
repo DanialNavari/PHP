@@ -7,7 +7,9 @@ if ($security == true) {
     if (isset($_GET['route'])) {
         $page = $_GET['route'];
         require_once("main_top.php");
+        echo "<div class='container'>";
         require_once($page . ".php");
+        echo "</div>";
         require_once("main_bottom.php");
     } else{
         // $page = $_GET['menu'];

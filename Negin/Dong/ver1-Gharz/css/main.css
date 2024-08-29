@@ -329,7 +329,7 @@ h6 {
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 0.1rem;
   width: 100%;
   /* overflow-x: scroll;
@@ -399,7 +399,7 @@ h6 {
   justify-content: center;
   align-items: center;
   gap: 0rem;
-  margin: 0.3rem 0.6rem 0.6rem 0.3rem;
+  margin: 0.3rem;
   rotate: 45deg;
 }
 
@@ -444,7 +444,7 @@ h6 {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   gap: 0vw;
   position: fixed;
@@ -507,7 +507,7 @@ h6 {
 .gray_layer {
   width: 100vw;
   height: 100vh;
-  background-color: gray;
+  background-color: #555555;
   opacity: 0.5;
   position: fixed;
   z-index: 1;
@@ -589,10 +589,10 @@ h6 {
 
 .new_gharz {
   position: fixed;
-  top: 26vh;
-  right: calc(100vw / 30);
-  left: calc(100vw / 30);
+  top: 22vh;
   z-index: 9;
+  width: 95%;
+  right: 3vw;
 }
 
 .new_gharz .card td {
@@ -655,6 +655,7 @@ h6 {
   width: 100%;
   height: 100vh;
   display: none;
+  width: 26.3rem;
 }
 
 .w_fit {
@@ -716,7 +717,6 @@ h6 {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
-
 
 .popup_group {
   display: flex;
@@ -825,7 +825,7 @@ h6 {
 }
 
 .end_course .btn {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   padding: 0.3rem;
 }
 
@@ -868,6 +868,13 @@ h6 {
 
 .sum {
   font-size: 0.8rem !important;
+}
+
+.form_sm {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  border-radius: 0.2rem;
 }
 
 .sum1 {
@@ -1547,6 +1554,10 @@ img#ads {
   margin-top: 1rem;
 }
 
+.form-switch {
+  padding-left: 1.5em;
+}
+
 /* ----------------------- Media Queries ----------------------- */
 
 @media screen and (max-width: 319px) {
@@ -1568,6 +1579,10 @@ img#ads {
   .box_cat_parent {
     overflow-x: scroll !important;
   }
+
+  .container {
+    width: 100% !important;
+  }
 }
 
 @media screen and (min-width: 340px) {
@@ -1578,11 +1593,19 @@ img#ads {
   #my_local_name {
     display: inline;
   }
+
+  .container {
+    width: 100% !important;
+  }
 }
 
 @media screen and (max-width: 374px) {
   .box_cat_parent {
     overflow-x: scroll !important;
+  }
+
+  .container {
+    width: 100% !important;
   }
 }
 
@@ -1601,9 +1624,13 @@ img#ads {
   #my_local_name {
     display: inline;
   }
+
+  .container {
+    width: 100% !important;
+  }
 }
 
-@media screen and (min-width: 426px) {
+@media screen and (min-width: 426px) and (max-width: 500px) {
   .add_payments {
     z-index: 999;
     position: absolute;
@@ -1626,5 +1653,15 @@ img#ads {
 
   #my_local_name {
     display: inline;
+  }
+
+  .container {
+    width: 100% !important;
+  }
+}
+
+@media screen and (min-width: 501px) {
+  .container {
+    width: 26rem !important;
   }
 }

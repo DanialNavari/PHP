@@ -40,7 +40,7 @@ if (isset($header_array['Ver'])) {
     $v = $header_array['Ver'];
     $_SESSION['ver'] = "$v";
 } else {
-    $_SESSION['ver'] = "1.2.0";
+    $_SESSION['ver'] = "1.5.0";
 }
 
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'Windows')) {

@@ -36,9 +36,6 @@ $version = '1.5.0';
 
     #version {
         font-size: 0.7rem !important;
-        position: fixed;
-        bottom: 0;
-        left: 0;
         width: 100%;
     }
 
