@@ -91,7 +91,7 @@ if ($jaam_hesab > 0) {
                 <td class="font-weight-bold text-center">تومان</td>
             </tr>
             <tr>
-                <td class="td_title">جمع کل حساب (<?php echo $jh; ?>)</td>
+                <td class="td_title">جمع کل سررسید شده</td>
                 <td class="font-weight-bold text-center" id="total_debt"><?php echo sep3($jaam_hesab); ?></td>
                 <td class="font-weight-bold text-center">تومان</td>
             </tr>

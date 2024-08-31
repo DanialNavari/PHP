@@ -105,7 +105,7 @@ function SELECT_course($tel)
     // $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` LIKE '%$tel%'");
     // $r = mysqli_fetch_assoc($result);
     // $contact_id = $r['contact_id'];
-    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%" . $tel . ",%' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $tel . ",%' ORDER BY `course_id` DESC;");
+    $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' AND `course_disabled` IS NULL OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%" . $tel . ",%' AND `course_disabled` IS NULL OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $tel . ",%' AND `course_disabled` IS NULL ORDER BY `course_id` DESC;");
     return $result1;
 }
 
@@ -2810,10 +2810,10 @@ function estelam_debt($uid)
 
 function inactive_course($tel, $type_)
 {
-    if($type_ == "inactive"){
-        $w = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' AND `course_disabled` IS NOT NULL OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%" . $tel . ",%' AND `course_disabled` IS NOT NULL OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $tel . ",%' AND `course_disabled` IS NOT NULL ORDER BY `course_id` DESC;");
-    }else{
-
+    if ($type_ == "inactive") {
+        $w = Query("SELECT * FROM `course` WHERE `course_manager` = '$tel' AND `course_disabled` IS NOT NULL OR `course_member` LIKE '%$tel%' AND `course_disabled` IS NOT NULL ORDER BY `course_id` DESC;");
+    } else {
+        $w = Query("SELECT * FROM `course` WHERE `course_finish` IS NOT NULL AND `course_manager` = '" . $tel . "' OR `course_finish` IS NOT NULL AND `course_member` LIKE '%$tel%' ORDER BY `course_id` DESC;");
     }
 
     $num = mysqli_num_rows($w);
@@ -2861,6 +2861,22 @@ function inactive_course($tel, $type_)
             }
         }
 
+        if ($type_ == "inactive") {
+            $show_disabled =
+                '<div class="share_link font-weight-bold ">
+                    <div class="inline_title ' . $permit . '">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" data-type="' . $c_disabled . '" role="switch" id="disabledCourse' . $c_id . '" ' . $c_disabled . ' onchange="chageSwitch(\'disabledCourse\', ' . $c_id . ')">
+                            <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
+                        </div>
+                    </div>
+                </div>';
+            $show_finished = '';
+        } else {
+            $show_disabled = "";
+            $show_finished = '<button class="btn btn-management w-100 click1 little_btn" onclick="restart_course(' . $c_id . ')">' . $GLOBALS["list"] . ' شروع مجدد</button>';
+        }
+
         $box_course =  '
         <div class="card my_card" style="border: 2px solid #00BCD4;margin-bottom:1rem;">
             <table class="table">
@@ -2891,16 +2907,10 @@ function inactive_course($tel, $type_)
                 <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
             </div>
             
-            <div class="share_link font-weight-bold">
-                <div class="inline_title ' . $permit . '">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" data-type="' . $c_disabled . '" role="switch" id="disabledCourse' . $c_id . '" ' . $c_disabled . ' onchange="chageSwitch(\'disabledCourse\', ' . $c_id . ')">
-                        <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
-                    </div>
-                </div>
-            </div>
+            ' . $show_disabled . '
             <div class="end_course transactions font-weight-bold">
                 <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+                ' . $show_finished . '
             </div>
         </div>
         ';
@@ -2917,4 +2927,10 @@ function inactive_course($tel, $type_)
     }
 
     echo $first_default_course . $other_course;
+}
+
+function restart_course($id)
+{
+    $x = Query("UPDATE `course` SET `course_finish` = NULL,`course_finish_date` = NULL,`course_finish_maker` = NULL WHERE `course_id` = '$id'");
+    return 1;
 }

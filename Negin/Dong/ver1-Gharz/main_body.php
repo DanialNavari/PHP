@@ -31,9 +31,11 @@ $settings = get_settings($_COOKIE['uid']);
 $c_default = $settings['course_default'];
 if (intval($c_default) > 0) {
     $c_d = 'display:flex';
+    $c_dd = 'display:block';
     $c_d_id = $c_default;
 } else {
     $c_d = 'display:none';
+    $c_dd = 'display:none';
     $c_d_id = 0;
 }
 
@@ -169,7 +171,7 @@ $req =  MY_DEBT($_COOKIE['uid'], 'req');
                             $uids = $_COOKIE['uid'];
                             echo active_courses("$uids", 'finished');
                             ?>
-                            <div class="box_title">خاتمه</div>
+                            <div class="box_title">خاتمه یافته</div>
                         </div>
                     </div>
                 </div>
@@ -178,7 +180,7 @@ $req =  MY_DEBT($_COOKIE['uid'], 'req');
     </div>
 </div>
 
-<div class="cat">
+<div class="cat" style="<?php echo $c_dd; ?>">
     <div class="group_name">
         <h6 class="font-weight-bold">دورهمی های من (برنامه - سفر - حساب کتاب گروهی)</h6>
     </div>

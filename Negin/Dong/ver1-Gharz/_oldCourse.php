@@ -1,15 +1,17 @@
 <link rel="stylesheet" href="static/css/lib/persian-datepicker.min.css" />
 <link rel="stylesheet" href="static/css/main.css" />
+
 <?php
 if ($_GET['h'] == "inactive") {
     $titles = "دوره های غیر فعال";
+    echo '<div class="row empty">دوره ها > ' . $titles . '</div><div class="cat">';
+    inactive_course($_COOKIE['uid'], "inactive");
 } else {
     $titles = "دوره های خاتمه یافته";
+    echo '<div class="row empty">دوره ها > ' . $titles . '</div><div class="cat">';
+    inactive_course($_COOKIE['uid'], "finished");
 }
 ?>
-<div class="row empty">دوره ها > <?php echo $titles; ?></div>
-<div class="cat">
-    <?php inactive_course($_COOKIE['uid'], "inactive"); ?>
 </div>
 
 <!-- <div class="add_fee hide">

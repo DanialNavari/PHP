@@ -2096,9 +2096,24 @@ function updateVariz(id) {
   // $("#sum_variz").val(sum);
 }
 
-
-function add_new_gharz(){
+function add_new_gharz() {
   $(".gray_layer").fadeIn();
-  $(".new_gharz").removeClass('force_hide');
-  $(".new_gharz").css('display','block');
+  $(".new_gharz").removeClass("force_hide");
+  $(".new_gharz").css("display", "block");
+}
+
+function restart_course(id) {
+  var result = confirm("آیا می خواهید این دوره را مجدداً شروع کنید؟");
+  if (result == true) {
+    $.ajax({
+      data: "restart_course=" + id,
+      type: "POST",
+      url: "server.php",
+      success: function (response) {
+        if (response > 0) {
+          window.location.assign("./?route=_activeCourse&bm=dongeto");
+        }
+      },
+    });
+  }
 }

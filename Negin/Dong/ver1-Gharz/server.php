@@ -82,8 +82,8 @@ if (isset($_POST['login'])) {
     $update_course = $_POST['update_course'];
     $key = $_POST['key'];
     $value = $_POST['value'];
+    $uid = $_COOKIE['uid'];
     if ($_POST['key'] == 'course_default') {
-        $uid = $_COOKIE['uid'];
         if ($value == 'NULL') {
             $v = 'NULL';
         } else {
@@ -333,4 +333,8 @@ if (isset($_POST['login'])) {
     $zaman = gregorian_to_jalali(date("Y"), date("m"), date("d"), "/");
     $g_tasviye_date = $zaman . " " . date("H:i:s");
     Query("UPDATE `gharz` SET `g_tasviye_date` = '$g_tasviye_date' WHERE `g_id` = '$id'");
+}elseif(isset($_POST['restart_course'])){
+    $course_id = $_POST['restart_course'];
+    $x = restart_course($course_id);
+    echo $x;
 }
