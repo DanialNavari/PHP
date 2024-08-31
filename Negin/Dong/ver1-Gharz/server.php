@@ -3,6 +3,7 @@
 use Sabberworm\CSS\Settings;
 
 require_once('func.php');
+require_once('jdf.php');
 
 if (isset($_POST['login'])) {
     $res = check_login($_POST['tel']);
@@ -74,16 +75,6 @@ if (isset($_POST['login'])) {
         $my_id = $_POST['my_id'];
         Query("UPDATE `contacts` SET `contact_name` = '$my_name' WHERE `contact_id` = '$my_id'");
     }
-    // if ($res > 0) {
-    //     $mem = explode(",", $members);
-    //     for ($i = 0; $i < count($mem) - 1; $i++) {
-    //         $find_user_tel = SELECT_user_by_id($mem[$i]);
-    //         $found_user_tel = $find_user_tel['contact_tel'];
-    //         $find_manager_name = SELECT_user($maker);
-    //         $found_manager_name = $find_manager_name['users_name'];
-    //         //sendSMSInviteCourse("$found_user_tel", "$course_name", "$found_manager_name", "$res");
-    //     }
-    // }
     echo $res;
 } elseif (isset($_POST['sep'])) {
     echo sep3($_POST['sep']);
@@ -318,11 +309,28 @@ if (isset($_POST['login'])) {
     }
 
     $t = explode(",", $today);
-    $todays = $t[0] . "/" . $t[1] . "/" . $t[2] . "/";
+    if ($t[1] < 10) {
+        $maah = "0" . $t[1];
+    } else {
+        $maah = $t[1];
+    }
+
+    if ($t[2] < 10) {
+        $rooz = "0" . $t[2];
+    } else {
+        $rooz = $t[2];
+    }
+
+    $todays = $t[0] . "/" . $maah . "/" . $rooz;
 
     $x = ADD_GHARZ($from, $to, $debt, $req, $variz_date, $repay_date, $todays, $babat);
-    return $x;
+    echo $x;
 } elseif (isset($_POST['estelam_debt'])) {
     $x = estelam_debt($_POST['karbar']);
     echo sep3($x);
+} elseif (isset($_POST['gharz_tasviye'])) {
+    $id = $_POST['gharz_tasviye'];
+    $zaman = gregorian_to_jalali(date("Y"), date("m"), date("d"), "/");
+    $g_tasviye_date = $zaman . " " . date("H:i:s");
+    Query("UPDATE `gharz` SET `g_tasviye_date` = '$g_tasviye_date' WHERE `g_id` = '$id'");
 }

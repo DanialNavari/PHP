@@ -38,7 +38,7 @@
             <td colspan="3">
                 <div class="btn btn-prime w-100 contact_btn sum" onclick="saveNewCourse()">
                     <div class="pay_btn_icon">
-                        <?php echo $check; ?>
+                        ایجاد دورهمی
                     </div>
                 </div>
             </td>

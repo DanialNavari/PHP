@@ -102,10 +102,9 @@ function SELECT_user_by_tel($uid)
 function SELECT_course($tel)
 {
     db();
-    $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` LIKE '%$tel%'");
-    $r = mysqli_fetch_assoc($result);
-    $contact_id = $r['contact_id'];
-
+    // $result = Query("SELECT * FROM `contacts` WHERE `contact_tel` LIKE '%$tel%'");
+    // $r = mysqli_fetch_assoc($result);
+    // $contact_id = $r['contact_id'];
     $result1 = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%" . $tel . ",%' OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $tel . ",%' ORDER BY `course_id` DESC;");
     return $result1;
 }
@@ -657,7 +656,7 @@ function active_payments($course_id)
                             <tr class="bg_blue_very_dark font-weight-bold" style="' . $pay_to_bg . '">
                                 <td class="text-white text-center">پرداخت کننده</td>
                                 <td class="text-white text-center">توضیحات</td>
-                                <td class="text-white text-center">مبلغ(ريال)</td>
+                                <td class="text-white text-center">مبلغ(تومان)</td>
                                 <td class="text-white text-center">تاریخ</td>
                             </tr>
                             <tr class="bg-white font-weight-bold">
@@ -766,7 +765,7 @@ function transaction_detail($trans_id)
                 </td>
             </tr>
             <tr class="font-weight-bold">
-                <td class="sum pl-3">مبلغ(ريال)</td>
+                <td class="sum pl-3">مبلغ(تومان)</td>
                 <td>
                     <input type="number" class="form-control">
                 </td>
@@ -817,7 +816,6 @@ function active_course($tel)
         if ($c_disabled == null) {
             $tpr = '
                 <div class="end_course transactions font-weight-bold">
-                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
                     <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__payments\',0,' . $c_id . ')">' . $GLOBALS["payment"] . ' پرداخت ها</button>
                     <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'__transactions\',0,' . $c_id . ')">' . $GLOBALS["bag_plus"] . ' خریدها</button>
                 </div>
@@ -825,7 +823,6 @@ function active_course($tel)
         } elseif ($c_disabled != null && $c_manager != $tel) {
             $tpr = '
                 <div class="end_course transactions font-weight-bold force_hide">
-                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
                     <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
                     <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
                 </div>
@@ -833,7 +830,6 @@ function active_course($tel)
         } else {
             $tpr = '
                 <div class="end_course transactions font-weight-bold">
-                    <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
                     <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' پرداخت ها</button>
                     <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' خریدها</button>
                 </div>
@@ -918,6 +914,9 @@ function active_course($tel)
                         <button class="btn btn-management w-100 click1" onclick="finishCourse(' . $c_id . ', ' . $tel . ', \'finish\')">' . $GLOBALS["end_of_course"] . ' اتمام دوره</button>
                     </div>
                 </div>
+            </div>
+            <div class="end_course transactions font-weight-bold">
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
             </div>
         </div>
         ';
@@ -1596,7 +1595,7 @@ function trans_edit($trans_id)
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" ' . $check2 . '>
-                            <label class="form-check-label" for="inlineRadio2"><span>مبلغ (ريال)</span></label>
+                            <label class="form-check-label" for="inlineRadio2"><span>مبلغ (تومان)</span></label>
                         </div>
                     </span>
                 </td>
@@ -1679,7 +1678,7 @@ function payment_edit($trans_id)
                     <span>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" checked>
-                            <label class="form-check-label" for="inlineRadio2"><span>مبلغ (ريال)</span></label>
+                            <label class="form-check-label" for="inlineRadio2"><span>مبلغ (تومان)</span></label>
                         </div>
                     </span>
                 </td>
@@ -2094,17 +2093,12 @@ function MY_DEBT($tel, $pos)
         $fetch = mysqli_fetch_assoc($r);
         $trans_course = $fetch['trans_course'];
         $check_course = check_active_course($trans_course);
+
         if ($check_course > 0) {
             if ($fetch['trans_buyer'] == $tel) {
                 $user_use += $fetch['trans_fee'];
             }
-        } else {
-            $user_use += 0;
-        }
 
-
-        $check_course = check_active_course($trans_course);
-        if ($check_course > 0) {
             $trans_person = explode(',', $fetch['trans_person']);
             for ($j = 0; $j < count($trans_person) - 1; $j++) {
                 $trans_detail = explode(':', $trans_person[$j]);
@@ -2114,6 +2108,7 @@ function MY_DEBT($tel, $pos)
                 }
             }
         } else {
+            $user_use += 0;
             $user_sahm += 0;
         }
     }
@@ -2134,8 +2129,8 @@ function MY_DEBT($tel, $pos)
     $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL");
     $numsa = mysqli_num_rows($pa);
     for ($la = 0; $la < $numsa; $la++) {
-        $check_course = check_active_course($pay_course);
         $feta = mysqli_fetch_assoc($pa);
+        $check_course = check_active_course($feta['pay_course']);
         if ($check_course > 0) {
             $user_give += $feta['pay_fee'];
         } else {
@@ -2155,8 +2150,20 @@ function MY_DEBT($tel, $pos)
         $debt = 0;
     }
 
-
-    return $jaam;
+    switch ($pos) {
+        case "debt":
+            if ($jaam < 0) {
+                return $jaam;
+            } else {
+                return 0;
+            }
+        case "req":
+            if ($jaam > 0) {
+                return $jaam;
+            } else {
+                return 0;
+            }
+    }
 }
 
 function active_courses($maker, $pos)
@@ -2563,7 +2570,7 @@ function get_ip_location($ip)
     $q = explode(";", $z[0]);
     for ($i = 0; $i < count($q); $i++) {
         $p = explode(":", $q[$i]);
-        //$GLOBALS['ip_part'][$p[1]] = $p[2];
+        $GLOBALS['ip_part'][$p[1]] = $p[2];
     }
 }
 
@@ -2618,7 +2625,7 @@ function toEnNumber($input)
     return $output1;
 }
 
-function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc)
+function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc, $g_create_date)
 {
     $from_info = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$g_from_tel'");
     $from_count = mysqli_num_rows($from_info);
@@ -2639,8 +2646,9 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
     }
 
     if ($type == "talabkar") {
-        $tel = $g_from_tel;
-        $name = $from_name;
+        $types = 0;
+        $tel = $g_to_tel;
+        $name = $to_name;
         $user_from_in_app_info = Query("SELECT * FROM `users` WHERE `users_tel` = '$g_from_tel'");
         $user_from_in_app_info_count = mysqli_num_rows($user_from_in_app_info);
         if ($user_from_in_app_info_count > 0) {
@@ -2648,20 +2656,23 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
         } else {
             $user_in_app = 0;
         }
-        $pay = sep3($g_debt);
-        $pos_title = "طلبکار";
+        $pay = sep3($g_req);
+        $pos_title = "قرض دادم";
+        $bg_colors = "#1473bd";
     } elseif ($type == "bedehkar") {
-        $tel = $g_to_tel;
-        $name = $to_name;
-        $user_to_in_app_info = Query("SELECT * FROM `users` WHERE `users_tel` = '$g_to_tel'");
+        $types = 1;
+        $tel = $g_from_tel;
+        $name = $from_name;
+        $user_to_in_app_info = Query("SELECT * FROM `users` WHERE `users_tel` = '$g_from_tel'");
         $user_to_in_app_info_count = mysqli_num_rows($user_to_in_app_info);
         if ($user_to_in_app_info_count > 0) {
             $user_in_app = "background-color:gold";
         } else {
             $user_in_app = "";
         }
-        $pay = sep3($g_req);
-        $pos_title = "بدهکار";
+        $pay = sep3($g_debt);
+        $pos_title = "قرض گرفتم";
+        $bg_colors = "#E91E63";
     }
 
     return '
@@ -2671,7 +2682,7 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
                     <div class="user_info text-white border_none box_shadow_none">
                         <img src="image/user.png" alt="user" class="rounded-circle w-1-5" style="' . $user_in_app . '">
                         <div class="star">
-                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:1rem">' . $name . ' <span id="t-' . $tel . '" style="font-size: 0.6rem;">(' . $tel . ')</span></span>
+                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:0.8rem">' . $name . ' <span id="t-' . $tel . '" style="font-size: 0.6rem;">(' . $tel . ')</span></span>
                             <span class="karbar_name" style="font-size: 0.7rem;">تاریخ دریافت: ' . $g_date_give . '</span>
                             <span class="karbar_name" style="font-size: 0.7rem;">موعد پرداخت: ' . $g_date_pay . '</span>
                         </div>
@@ -2679,13 +2690,15 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
                     <div class="user_info text-white border_none box_shadow_none">
                        <div class="star2">
                             <span class="karbar_name" id="c-' . $tel . '" style="font-size:1rem">' . $pay . ' <span style="font-size: 0.6rem;">تومان</span></span>
-                            <span class="karbar_name" style="font-size: 0.7rem;">' . $pos_title . '</span>
-                            <span class="karbar_name" style="font-size: 0.7rem;">بابت: ' . substr($g_desc, 0, 20) . '</span>
+                            <span class="karbar_name" style="font-size: 0.65rem; width: 100%; padding: 0.1rem; background: ' . $bg_colors . '; color: #fff; border-radius: 1rem;">' . $pos_title . '</span>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <span class="karbar_name" style="font-size: 0.7rem; display: block; text-align: right; padding: 0.2rem 1rem; background: #f5faff; color: #373739;">بابت: ' . $g_desc . '<span style="font-size:0.6rem"> (تاریخ ثبت: ' . $g_create_date . ')</span></span>
+                </div>
                 <div class="btn_tasviye">
-                    <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ')">' . $GLOBALS['check'] . ' تسویه</button>
+                    <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ', ' . $types . ')">' . $GLOBALS['check'] . ' تسویه</button>
                     <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ')">' . $GLOBALS['ghest'] . ' پرداخت</button>
                     <button class="btn btn-danger w-100" onclick="del_gharz(' . $g_id . ')">' . $GLOBALS['del'] . ' حذف</button>
                 </div>
@@ -2717,16 +2730,20 @@ function give_contacts_list_gharz($contact_maker, $type)
         $g_date_give = $r['g_date_give'];
         $g_date_pay = $r['g_date_pay'];
         $g_tasviye_date = $r['g_tasviye_date'];
-        $sum_talab += $g_req;
-        $sum_bedehkar += $g_debt;
+        $g_create_date = $r['g_date_create'];
         $g_id = $r['g_id'];
         $g_desc = $r['g_desc'];
+        $sum_bedehkar += $g_debt;
+        $sum_talab += $g_req;
 
-        $result .= Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc);
+        $result .= Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc, $g_create_date);
     }
 
-    $_COOKIE['talab'] = $sum_talab;
-    $_COOKIE['bedehi'] = $sum_bedehkar;
+    if ($type == "bedehkar") {
+        $_COOKIE['bedehi'] = $sum_bedehkar;
+    } elseif ($type == "talabkar") {
+        $_COOKIE['talab'] = $sum_talab;
+    }
     return $result;
 }
 
@@ -2763,7 +2780,7 @@ function SELECT_GHARZ_users()
 
 function ADD_GHARZ($from, $to, $debt, $req, $give, $repay, $today, $desc)
 {
-    $x = Query("INSERT INTO(`g_from_tel`,`g_to_tel`,`g_debt`,`g_req`,`g_date_give`,`g_date_pay`,`g_date_create`,`g_desc`) VALUES('" . $from . "','" . $to . "','" . $debt . "','" . $req . "','" . $give . "','" . $repay . "','" . $today . "','" . $desc . "')");
+    $x = Query("INSERT INTO `gharz`(`g_from_tel`,`g_to_tel`,`g_debt`,`g_req`,`g_date_give`,`g_date_pay`,`g_date_create`,`g_desc`) VALUES('" . $from . "','" . $to . "','" . $debt . "','" . $req . "','" . $give . "','" . $repay . "','" . $today . "','" . $desc . "')");
     return mysqli_insert_id($GLOBALS['conn']);
 }
 
@@ -2788,4 +2805,116 @@ function estelam_debt($uid)
     }
 
     return $total_debt - $payments;
+}
+
+
+function inactive_course($tel, $type_)
+{
+    if($type_ == "inactive"){
+        $w = Query("SELECT * FROM `course` WHERE `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_manager` = '" . $tel . "' AND `course_disabled` IS NOT NULL OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%" . $tel . ",%' AND `course_disabled` IS NOT NULL OR `course_finish` IS NULL AND `course_del_course` IS NULL AND `course_member` LIKE '%," . $tel . ",%' AND `course_disabled` IS NOT NULL ORDER BY `course_id` DESC;");
+    }else{
+
+    }
+
+    $num = mysqli_num_rows($w);
+    $GLOBALS['course_count'] = $num;
+
+    $first_default_course = '';
+    $other_course = '';
+    $c_defaults = '';
+
+    for ($k = 0; $k < $num; $k++) {
+        $r = mysqli_fetch_assoc($w);
+        $c_id = $r['course_id'];
+        $c_name = $r['course_name'];
+        $c_member = count(explode(',', $r['course_member'])) - 1;
+        $c_start_date = $r['course_start_date'];
+        $c_money_limit = $r['course_money_limit'];
+        $c_disabled = $r['course_disabled'];
+        $c_manager = $r['course_manager'];
+
+        $course_manager = find_real_name($c_manager, $c_manager);
+
+        if ($c_manager != $tel) {
+            $permit = 'force_hide';
+        } else {
+            $permit = '';
+        }
+
+        $c_money_unit = $r['course_money_unit'];
+
+        $z = SELECT_trans($c_id);
+        $x = mysqli_num_rows($z);
+        $sum_all_trans = 0;
+        for ($i = 0; $i < $x; $i++) {
+            $v = mysqli_fetch_assoc($z);
+            $sum_all_trans += $v['trans_fee'];
+        }
+
+        $settings = get_settings($tel);
+        $c_default = $settings['course_default'];
+        if (intval($c_default) > 0) {
+            if (intval($c_default) == intval($c_id)) {
+                $c_defaults = 'checked';
+            } else {
+                $c_defaults = '';
+            }
+        }
+
+        $box_course =  '
+        <div class="card my_card" style="border: 2px solid #00BCD4;margin-bottom:1rem;">
+            <table class="table">
+                <tr class="">
+                    <td class="td_title va_middle w-6">نام دوره</td>
+                    <td class="font-weight-bold text-center" id="courseName' . $c_id . '">' . $c_name . '</td>
+                </tr>
+                <tr>
+                    <td class="td_title">تعداد افراد</td>
+                    <td class="font-weight-bold text-center" id="course_count' . $c_id . '">' . $c_member . '</td>
+                </tr>
+                <tr>
+                    <td class="td_title tarikh">تاریخ شروع</td>
+                    <td class="font-weight-bold text-center">
+                        <span id="start_from_fa' . $c_id . '">' . $c_start_date . '</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_title pl-0">مدیر دوره</td>
+                    <td class="font-weight-bold text-center">
+                        <span id="m.' . $c_id . '">' . $course_manager . '</span>
+                    </td>
+                </tr>
+    
+            </table>
+            <div class="share_link font-weight-bold g_20">
+                <div class="inline_title td_title_ text-primary d-rtl">کل هزینه :</div>
+                <div class="inline_title hazine text-primary"><span id="sum_of_all_cost' . $c_id . '">' . sep3($sum_all_trans) . '</span> <span class="unit">' . $c_money_unit . '</span></div>
+            </div>
+            
+            <div class="share_link font-weight-bold">
+                <div class="inline_title ' . $permit . '">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" data-type="' . $c_disabled . '" role="switch" id="disabledCourse' . $c_id . '" ' . $c_disabled . ' onchange="chageSwitch(\'disabledCourse\', ' . $c_id . ')">
+                        <label class="form-check-label" for="disabledCourse">غیرفعالسازی</label>
+                    </div>
+                </div>
+            </div>
+            <div class="end_course transactions font-weight-bold">
+                <button class="btn btn-management w-100 click1 little_btn" onclick="page(\'r\',\'___report\',0,' . $c_id . ')">' . $GLOBALS["list"] . ' گزارش</button>
+            </div>
+        </div>
+        ';
+
+        if (intval($c_default) > 0) {
+            if (intval($c_default) == intval($c_id)) {
+                $first_default_course = $box_course;
+            } else {
+                $other_course .= $box_course;
+            }
+        } else {
+            $other_course .= $box_course;
+        }
+    }
+
+    echo $first_default_course . $other_course;
 }

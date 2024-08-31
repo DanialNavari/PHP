@@ -7,6 +7,12 @@ if (isset($_COOKIE['page'])) {
 }
 ?>
 
+<style>
+    .box_title {
+        margin-top: 0.3rem;
+    }
+</style>
+
 <div class="container">
     <div style="margin-top: 3.6rem;"></div>
 

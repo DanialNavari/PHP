@@ -31,11 +31,11 @@ if ($xx == 0) {
     </div>';
 
     $menu_contact = '
-    <div class="item_" onclick="page(\'r\',\'_contacts\',\'contact\')" id="contact">
+    <div class="item_" onclick="page(\'r\',\'_gharz\',\'gharz\')" id="contact">
         <div class="item_circle">
-            <div class="item_icon">' . $contacts . '</div>
+            <div class="item_icon">' . $loan . '</div>
         </div>
-        <div class="item_title">مخاطبین</div>
+        <div class="item_title">قرض</div>
     </div>';
 
 

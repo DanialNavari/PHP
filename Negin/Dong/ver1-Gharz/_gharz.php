@@ -65,8 +65,17 @@
 </style>
 <div class="row empty">قرض</div>
 <?php
-give_contacts_list_gharz($_COOKIE['uid'], "bedehkar");
 give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
+give_contacts_list_gharz($_COOKIE['uid'], "bedehkar");
+$bedehi = $_COOKIE['bedehi'];
+$talab = $_COOKIE['talab'];
+$jaam_hesab = abs(intval($talab) - intval($bedehi));
+
+if ($jaam_hesab > 0) {
+    $jh = "طلبکار";
+} else {
+    $jh = "بدهکار";
+}
 ?>
 <div class="cat">
     <div class="card my_card">
@@ -79,6 +88,11 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
             <tr>
                 <td class="td_title">جمع کل بدهی ها</td>
                 <td class="font-weight-bold text-center" id="total_debt"><?php echo sep3($_COOKIE['bedehi']); ?></td>
+                <td class="font-weight-bold text-center">تومان</td>
+            </tr>
+            <tr>
+                <td class="td_title">جمع کل حساب (<?php echo $jh; ?>)</td>
+                <td class="font-weight-bold text-center" id="total_debt"><?php echo sep3($jaam_hesab); ?></td>
                 <td class="font-weight-bold text-center">تومان</td>
             </tr>
         </table>
@@ -96,10 +110,10 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
         <table class="table">
             <tr class="white">
                 <td>
-                    <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('talabkari')">طلب</a>
+                    <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('talabkari')">قرض دادم</a>
                 </td>
                 <td>
-                    <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('bedehkari')">بدهی</a>
+                    <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('bedehkari')">قرض گرفتم</a>
                 </td>
                 <td>
                     <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('all')">همه</a>
@@ -170,7 +184,7 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
                 <td class="font-weight-bold text-center va_middle">تومان</td>
             </tr>
             <tr>
-                <td class="td_title va_middle">تاریخ واریز</td>
+                <td class="td_title va_middle">تاریخ دریافت</td>
                 <td class="font-weight-bold text-center va_middle" id="variz_date">****/**/**</td>
                 <td class="font-weight-bold text-center" onclick="setDates_('variz')"><?php echo $GLOBALS['edit']; ?></td>
             </tr>
@@ -304,11 +318,14 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
 
     function saveDate_() {
         shamsi = $("td.selected").attr("data-date");
+        today = $("td.today").attr("data-date");
+        $("#today").val(today);
         if (shamsi.length > 0) {
             $("#start_from_fa").text(shamsi);
         } else {
             shamsi = $("td.today").attr("data-date");
         }
+
 
         shamsi_split = shamsi.split(",");
         let saal, maah, rooz;
@@ -371,7 +388,7 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
                 data: "newgharz=ok&today=" + today + "&karbar=" + karbar + "&fee=" + fee + "&variz_date=" + variz_date + "&repay_date=" + repay_date + "&switch=" + flexswitch + "&babat=" + babat,
                 type: "POST",
                 success: function(response) {
-
+                    window.location.reload();
                 }
             });
         } else {
@@ -398,4 +415,24 @@ give_contacts_list_gharz($_COOKIE['uid'], "talabkar");
     $(document).ready(function() {
         estelam();
     });
+
+    function ok_gharz(id, type) {
+        if (type == 0) {
+            title = "طلب";
+        } else {
+            title = "بدهی";
+        }
+
+        var result = confirm("آیا این " + title + " تسویه شده است؟");
+        if (result == true) {
+            $.ajax({
+                url: "server.php",
+                data: "gharz_tasviye=" + id,
+                type: "POST",
+                success: function(response) {
+                    // window.location.reload();
+                }
+            });
+        }
+    }
 </script>

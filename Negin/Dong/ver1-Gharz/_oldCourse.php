@@ -1,16 +1,18 @@
 <link rel="stylesheet" href="static/css/lib/persian-datepicker.min.css" />
 <link rel="stylesheet" href="static/css/main.css" />
-
-<div class="row empty">دوره ها > دوره های فعال</div>
+<?php
+if ($_GET['h'] == "inactive") {
+    $titles = "دوره های غیر فعال";
+} else {
+    $titles = "دوره های خاتمه یافته";
+}
+?>
+<div class="row empty">دوره ها > <?php echo $titles; ?></div>
 <div class="cat">
-    <?php active_course($_COOKIE['uid']);
-    if ($GLOBALS['course_count'] == 0) {
-        echo '<h5 class="pt-2 text-secondary">ابتدا یک دوره جدید ایجاد کنید</h5>';
-    }
-    ?>
+    <?php inactive_course($_COOKIE['uid'], "inactive"); ?>
 </div>
 
-<div class="add_fee hide">
+<!-- <div class="add_fee hide">
     <table class="border_none mx-auto">
         <tr class="font-weight-bold">
             <td class="sum pl-3 w-30">مبلغ تراکنش(ريال)</td>
@@ -78,7 +80,7 @@
         <?php echo $GLOBALS['active_course1']; ?>
         <span>دوره جدید</span>
     </div>
-</div>
+</div> -->
 
 <div class="cat mb-1 h-1"></div>
 

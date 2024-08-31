@@ -1,4 +1,5 @@
-<?php require_once('func.php'); ?>
+<?php require_once('func.php');
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="fa">
 
@@ -16,9 +17,7 @@
     <link rel="manifest" href="image/site.webmanifest" crossorigin="use-credentials">
 
     <title><?php echo $app_name; ?></title>
-    <!-- <script src="./js/telegram-web-app.js"></script> -->
     <script>
-        //alert(window.Telegram.WebApp.BiometricManager);
         function Go_Back() {
             var page_ = document.getElementById('page_').value;
             if (page_ != 'main page') {
@@ -27,7 +26,25 @@
                 window.location.assign('./?route=_activeCourse&h=null&id=null');
             }
         }
+
+        function BackPage() {
+            ref_page = $("#ref_page").val();
+            if (ref_page == "") {
+                window.location.assign("./?route=main_body&h=home&id=null");
+            } else {
+                window.location.assign(ref_page);
+            }
+        }
     </script>
+    <?php
+    $_SESSION['page'][] = $_SERVER['HTTP_REFERER'];
+    $session_len = count($_SESSION['page']);
+    if ($session_len < 1) {
+        $path = "./?route=main_body&h=home&id=null";
+    } else {
+        $path = $_SESSION['page'][$session_len - 1];
+    }
+    ?>
 </head>
 
 <body id="app_body">
@@ -39,9 +56,9 @@
                 <i id="h_menu" class="force_hide"><?php echo $hamburger_menu; ?></i>
                 <img src="image/logo_white.png" alt="logo" class="rounded w-2" />
                 <?php require_once('func.php');
-                // if (isset($_SERVER['REMOTE_ADDR'])) {
-                //     get_ip_location($_SERVER['REMOTE_ADDR']);
-                // }
+                if (isset($_SERVER['REMOTE_ADDR'])) {
+                    get_ip_location($_SERVER['REMOTE_ADDR']);
+                }
                 if (isset($_COOKIE['uid'])) {
                     $malek = $_COOKIE['uid'];
                     $rs = SELECT_malek("$malek");
@@ -112,12 +129,22 @@
             ?>
 
             <div class="top_nav">
-                <i id="h_menu" class="click1  " onclick="navigate('./?menu=central&force=ok')">
-                    <?php echo $back; ?>
-                </i>
+                <div>
+                    <i id="h_menu" class="click1  " onclick="window.history.back()">
+                        <?php echo $forward; ?>
+                    </i>
+                    <span>بازگشت</span>
+                </div>
+                <div>
+                    <i id="h_menu" class="click1  " onclick="navigate('./?menu=central&force=ok')">
+                        <?php echo $logout; ?>
+                    </i>
+                    <span>خروج</span>
+                </div>
             </div>
-            
+
             <input type="hidden" id="page_" value="<?php echo $page_; ?>">
         </div>
     </div>
     <input type="hidden" id="ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
+    <input type="hidden" id="ref_page" value="<?php echo $path; ?>">

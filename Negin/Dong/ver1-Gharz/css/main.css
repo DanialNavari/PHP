@@ -137,7 +137,7 @@ form#sms > input {
 }
 
 .btn_tasviye button {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 
 .btn-prime {
@@ -242,7 +242,7 @@ form#sms > input {
   box-shadow: 0px 2px 3px 0px silver;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: stretch;
   flex-direction: row;
   flex-wrap: nowrap;
 }
@@ -431,7 +431,6 @@ h6 {
 .box_title {
   font-size: 0.7rem;
   color: #1d5da9;
-  margin-top: 1rem;
 }
 
 .cat {
@@ -555,7 +554,7 @@ h6 {
   border-top: none;
   text-align: right;
   padding: 0.2rem;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #1d5da9;
 }
 
@@ -589,7 +588,7 @@ h6 {
 
 .new_gharz {
   position: fixed;
-  top: 22vh;
+  top: 14vh;
   z-index: 9;
   width: 95%;
   right: 3vw;
@@ -655,7 +654,7 @@ h6 {
   width: 100%;
   height: 100vh;
   display: none;
-  width: 26.3rem;
+  width: fit-content;
 }
 
 .w_fit {
@@ -827,6 +826,17 @@ h6 {
 .end_course .btn {
   font-size: 0.7rem;
   padding: 0.3rem;
+}
+
+.svg_title {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  align-content: space-around;
+  gap: 0.2rem;
+  font-size: 0.7rem;
 }
 
 .g_20 {
@@ -1253,13 +1263,21 @@ span.td_title_ {
 
 .top_nav {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   padding-left: 1rem;
   cursor: pointer;
+}
+
+.top_nav div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.5rem;
 }
 
 .privacy_text span {
@@ -1576,10 +1594,6 @@ img#ads {
     display: none;
   }
 
-  .box_cat_parent {
-    overflow-x: scroll !important;
-  }
-
   .container {
     width: 100% !important;
   }
@@ -1600,10 +1614,6 @@ img#ads {
 }
 
 @media screen and (max-width: 374px) {
-  .box_cat_parent {
-    overflow-x: scroll !important;
-  }
-
   .container {
     width: 100% !important;
   }
