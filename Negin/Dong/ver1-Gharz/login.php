@@ -55,7 +55,7 @@ $version = '1.5.0';
         <div class="row empty" style="margin-top: -1rem;"></div>
         <div class="mt-4"></div>
 
-        <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="09_________" id="tel" onkeyup="keyPress(event)" />
+        <input type="tel" class="form-control text-center border_info rounded-lg" placeholder="09_________" id="tel" onkeyup="keyPress(event)" value="09"/>
     </div>
 
     <div class="text-center full_width px-2 privacy new_color" style="margin-top: -1rem;">

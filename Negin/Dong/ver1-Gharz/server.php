@@ -295,14 +295,26 @@ if (isset($_POST['login'])) {
     $flexswitch = strval($_POST['switch']);
     $babat = $_POST['babat'];
     $today = $_POST['today'];
+    $desc = $_POST['desc'];
+    $c_maker = $_COOKIE['uid'];
+    $c_date = date("Y-m-d H:i:s");
+
+    $xx = explode(",", $karbar);
+    if (count($xx) > 0) {
+        $new_user_name = $xx[0];
+        $karbars = $xx[1];
+        ADD_contact($karbars, $new_user_name, $c_maker, $c_date);
+    } else {
+        $karbars = $karbar;
+    }
 
     if ($flexswitch == "true") {
         $from = $_COOKIE['uid'];
-        $to = $karbar;
+        $to = $karbars;
         $debt = 0;
         $req = $fee;
     } elseif ($flexswitch == "false") {
-        $from = $karbar;
+        $from = $karbars;
         $to = $_COOKIE['uid'];
         $debt = $fee;
         $req = 0;
@@ -323,7 +335,7 @@ if (isset($_POST['login'])) {
 
     $todays = $t[0] . "/" . $maah . "/" . $rooz;
 
-    $x = ADD_GHARZ($from, $to, $debt, $req, $variz_date, $repay_date, $todays, $babat);
+    $x = ADD_GHARZ($from, $to, $fee, $variz_date, $repay_date, $todays, $babat, $desc);
     echo $x;
 } elseif (isset($_POST['estelam_debt'])) {
     $x = estelam_debt($_POST['karbar']);
@@ -333,8 +345,13 @@ if (isset($_POST['login'])) {
     $zaman = gregorian_to_jalali(date("Y"), date("m"), date("d"), "/");
     $g_tasviye_date = $zaman . " " . date("H:i:s");
     Query("UPDATE `gharz` SET `g_tasviye_date` = '$g_tasviye_date' WHERE `g_id` = '$id'");
-}elseif(isset($_POST['restart_course'])){
+} elseif (isset($_POST['restart_course'])) {
     $course_id = $_POST['restart_course'];
     $x = restart_course($course_id);
     echo $x;
+} elseif (isset($_POST['gharz_del'])) {
+    $id = $_POST['gharz_del'];
+    $zaman = gregorian_to_jalali(date("Y"), date("m"), date("d"), "/");
+    $g_tasviye_date = $zaman . " " . date("H:i:s");
+    Query("UPDATE `gharz` SET `g_del` = '$g_tasviye_date' WHERE `g_id` = '$id'");
 }

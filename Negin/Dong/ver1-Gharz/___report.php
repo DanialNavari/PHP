@@ -18,3 +18,9 @@ $c_name = $x['course_name'];
     <h6>لطفا کمی صبر کنید</h6>
     <a id="download_link" onclick="download_btn()" class="btn btn-dark w-100" href="" download="report.jpg">دانلود فایل گزارش</a>
 </div>
+
+<style>
+    .details td {
+        border-left: 1px solid silver;
+    }
+</style>

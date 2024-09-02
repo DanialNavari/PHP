@@ -62,6 +62,10 @@
     select {
         font-size: 0.75rem !important;
     }
+
+    #new_contact {
+        display: none;
+    }
 </style>
 <div class="row empty">قرض</div>
 <?php
@@ -90,11 +94,6 @@ if ($jaam_hesab > 0) {
                 <td class="font-weight-bold text-center" id="total_debt"><?php echo sep3($_COOKIE['bedehi']); ?></td>
                 <td class="font-weight-bold text-center">تومان</td>
             </tr>
-            <tr>
-                <td class="td_title">جمع کل سررسید شده</td>
-                <td class="font-weight-bold text-center" id="total_debt"><?php echo sep3($jaam_hesab); ?></td>
-                <td class="font-weight-bold text-center">تومان</td>
-            </tr>
         </table>
         <div class="mb-2"></div>
     </div>
@@ -104,19 +103,22 @@ if ($jaam_hesab > 0) {
 
 </div>
 
-<div class="row empty" style="margin-top: -1rem;">فیلتر</div>
+<div class="row empty" style="margin-top: -1rem;">فیلترها</div>
 <div class="cat">
     <div class="card my_card border_none">
         <table class="table">
             <tr class="white">
                 <td>
-                    <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('talabkari')">قرض دادم</a>
+                    <a class="btn btn-prime w-100 fs-0-75 TalabK" style="padding:0.4rem" onclick="show_gharz('talabkari','TalabK')">طلب دارم</a>
                 </td>
                 <td>
-                    <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('bedehkari')">قرض گرفتم</a>
+                    <a class="btn btn-prime w-100 fs-0-75 BedehK" style="padding:0.4rem" onclick="show_gharz('bedehkari','BedehK')">بدهی دارم</a>
                 </td>
                 <td>
-                    <a class="btn btn-prime w-100 fs-0-75" style="padding:0.4rem" onclick="show_gharz('all')">همه</a>
+                    <a class="btn btn-prime w-100 fs-0-75 TasvI" style="padding:0.4rem" onclick="show_gharz('tasviyei','TasvI')">تسویه شده</a>
+                </td>
+                <td>
+                    <a class="btn btn-warning w-100 fs-0-75 alLI" style="padding:0.4rem" onclick="show_gharz('all','alLI')">همه</a>
                 </td>
             </tr>
         </table>
@@ -134,8 +136,13 @@ if ($jaam_hesab > 0) {
 <!-- users box -->
 <div class="users_box">
     <?php
-    $contact_maker = $_COOKIE['uid'];
     echo give_contacts_list_gharz($contact_maker, "bedehkar");
+    ?>
+</div>
+
+<div class="users_box">
+    <?php
+    echo give_contacts_list_gharz($contact_maker, "tasviye");
     ?>
 </div>
 <!-- <div class="last_item"></div> -->
@@ -161,21 +168,35 @@ if ($jaam_hesab > 0) {
             <tr>
                 <td class="td_title va_middle">انتخاب کاربر</td>
                 <td class="font-weight-bold text-center" id="total_req" colspan="2">
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="gharz_users" onchange="estelam()">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="myContacts" checked onclick="change_karbar_pos()">
+                        <label class="form-check-label" for="myContacts" id="karbar_pos">مخاطبین من</label>
+                    </div>
+                </td>
+            </tr>
+            <tr id="old_contact">
+                <td colspan="3">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="gharz_users">
                         <?php
                         echo SELECT_GHARZ_users();
                         ?>
                     </select>
                 </td>
             </tr>
-            <tr>
+            <tr id="new_contact">
+                <td colspan="3">
+                    <input type="text" id="newContactName" class="input_group_height text-right form-control sum" placeholder="نام مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
+                    <input type="tel" id="newContactTel" class="mt-1 input_group_height text-right form-control sum" placeholder="شماره مخاطب" aria-label="Username" aria-describedby="addon-wrapping">
+                </td>
+            </tr>
+            <!-- <tr>
                 <td class="td_title va_middle">بدهی کاربر</td>
                 <td class="font-weight-bold text-center">
                     <input id="bedehi_user" disabled type="tel" class="form-control sum form_sm" value="0" pattern="[0-9,]" onchange="separate_id('bedehi_user')" onfocus="clear_content('bedehi_user','in')" onfocusout="clear_content('bedehi_user','out')" />
                     <span id="plzwait" class="hide">لطفا کمی صبر کنید</span>
                 </td>
                 <td class="font-weight-bold text-center va_middle">تومان</td>
-            </tr>
+            </tr> -->
             <tr>
                 <td class="td_title va_middle">مبلغ</td>
                 <td class="font-weight-bold text-center">
@@ -198,7 +219,7 @@ if ($jaam_hesab > 0) {
                 <td class="font-weight-bold text-center" colspan="2" style="padding: 0.2rem;">
                     <div class="form-check form-switch" onclick="debt_type()">
                         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked name="debt_type">
-                        <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size: 0.78rem;">از این فرد طلبکار هستم</label>
+                        <label class="form-check-label" for="flexSwitchCheckChecked" style="font-size: 0.78rem;" id="user_debt_desc">از این فرد طلبکار هستم</label>
                     </div>
                 </td>
             </tr>
@@ -279,13 +300,22 @@ if ($jaam_hesab > 0) {
         }
     });
 
-    function show_gharz(class_name) {
+    function show_gharz(class_name, this_class) {
+        $("a").removeClass("btn-warning");
+        $("a").addClass("btn-prime");
+        $("a").css("color", "#fff");
+        $("." + this_class).removeClass("btn-prime");
+        $("." + this_class).addClass("btn-warning");
+        $("." + this_class).css("color", "#000");
+
         if (class_name == 'all') {
             $(".talabkari").show();
             $(".bedehkari").show();
+            $(".tasviyei").show();
         } else {
             $(".talabkari").hide();
             $(".bedehkari").hide();
+            $(".tasviyei").hide();
             $("." + class_name).show()
 
         }
@@ -308,10 +338,10 @@ if ($jaam_hesab > 0) {
     function debt_type() {
         var value = $("#flexSwitchCheckChecked").prop('checked');
         if (value == true) {
-            $(".form-check-label").text("از این فرد طلبکار هستم");
+            $("#user_debt_desc").text("از این فرد طلبکار هستم");
             $("#saveNewGharz").text("ایجاد طلب جدید");
         } else {
-            $(".form-check-label").text("به این  فرد بدهکار هستم");
+            $("#user_debt_desc").text("به این  فرد بدهکار هستم");
             $("#saveNewGharz").text("ایجاد بدهی جدید");
         }
     }
@@ -358,13 +388,22 @@ if ($jaam_hesab > 0) {
     }
 
     $("#saveNewGharz").click(function() {
+        var karbar_type_pos = $("#myContacts").prop('checked');
         var fee = commafy__($("#fee").val());
         var babat = $("#babat").val();
+        var newContactName = $("#newContactName").val();
+        var newContactTel = $("#newContactTel").val();
 
-        if (fee > 0 && babat.length > 3) {
+        if (fee > 0 && babat.length >= 2) {
             var variz_date = $("#variz_date").text();
             var repay_date = $("#repay_date").text();
-            var karbar = $("#gharz_users").val();
+
+            if (karbar_type_pos == true) {
+                karbar = $("#gharz_users").val();
+            } else {
+                karbar = newContactName + "," + newContactTel;
+            }
+
             var flexswitch = String($("#flexSwitchCheckChecked").prop('checked'));
 
             if (variz_date == "****/**/**") {
@@ -430,9 +469,36 @@ if ($jaam_hesab > 0) {
                 data: "gharz_tasviye=" + id,
                 type: "POST",
                 success: function(response) {
-                    // window.location.reload();
+                    window.location.reload();
                 }
             });
+        }
+    }
+
+    function del_gharz(id) {
+        var result = confirm("آیا از حذف این تراکنش مطمئن هستید؟");
+        if (result == true) {
+            $.ajax({
+                url: "server.php",
+                data: "gharz_del=" + id,
+                type: "POST",
+                success: function(response) {
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+    function change_karbar_pos() {
+        var change_karbar_pos = $("#myContacts").prop('checked');
+        if (change_karbar_pos == true) {
+            $("#karbar_pos").text("مخاطبین من");
+            $("#old_contact").show();
+            $("#new_contact").hide();
+        } else {
+            $("#karbar_pos").text("مخاطب جدید");
+            $("#old_contact").hide();
+            $("#new_contact").show();
         }
     }
 </script>

@@ -1151,37 +1151,34 @@ function final_report($id)
         $remain_ = $buyer_cost - $p_cost + $varizi;
         $final_number = $buyer_cost - $p_cost + $varizi - $daryafti;
         if ($final_number > 0) {
-            $debt_pos = '(بستانکار)';
+            $debt_pos = 'طلبکار: ';
             $debt_pos_en = 'talabkar';
+            $debt_color = "color: #007b6f !important;";
             $best += $final_number;
         } else if ($final_number < 0) {
-            $debt_pos = '(بدهکار)';
+            $debt_pos = 'بدهکار: ';
             $debt_pos_en = 'bedehkar';
             $sum_debt_all_users += $final_number;
+            $debt_color = "color: #F44336 !important;";
         } else if ($final_number == 0) {
             $debt_pos = '';
             $debt_pos_en = '';
+            $debt_color = "color: #280d0d !important;";
         }
 
         $report .=  '
         <tr class="' . $debt_pos_en . '">
-            <td class="td_title_ font-weight-bold text-center d-rtl va_middle d-ltr report_td_header" colspan="6">' . $person_name . ' ' . $debt_pos . '</td>
-        </tr>
-        <tr class="' . $debt_pos_en . '">
-        <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">خرج کرد</td>
-            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">سهم</td>
-            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">دریافتی</td>
-            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">واریزی</td>
-            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle ' . $debt_pos_en . '">مانده</td>
-        </tr>
-        <tr class="' . $debt_pos_en . '">
+        <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . $person_name . '</td>
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($buyer_cost) . '</td>
-                <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($p_cost) . '</td>
-                <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($daryafti) . '</td>
-                <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($varizi) . '</td>
-                <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3(abs($buyer_cost - $p_cost + $varizi - $daryafti))  . '</td>
+        <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($p_cost) . '</td>
+        <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($daryafti) . '</td>
+        <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($varizi) . '</td>                
         </tr>
-        <tr><td colspan="6" class="empty_tr"></td></tr>';
+        <tr class="' . $debt_pos_en . '">
+            <td colspan="5" class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl" style="' . $debt_color . '">' . $debt_pos  . sep3(abs($buyer_cost - $p_cost + $varizi - $daryafti))  . ' تومان</td>
+        </tr>
+        <tr class="empty_tr" style="background: #404040;"><td colspan="5" style="padding:0.1rem"></td></tr>
+        ';
     }
 
     if ($c_member_count > 0) {
@@ -1227,14 +1224,23 @@ function final_report($id)
     </div>
     
     <div class="card my_card">
-        <table class="table">
+        <table class="table details">
         <tr class="">
             <td colspan="6" class="text-center">کلیه مبالغ به ' . $course_money_unit . ' می باشد</td>
         </tr>
             ';
 
     $download = $GLOBALS['download'];
-    echo $report . '</table>
+    $re_report = '
+        <tr class="' . $debt_pos_en . '">
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">نام</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">خرج</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">سهم</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">گرفته</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">داده</td>
+        </tr>
+    ';
+    echo $re_report . $report . '</table>
     <input type="text" id="users_sum_debt" value="' . sep3(abs($sum_debt_all_users)) . '" class="hide"/>
     </div>
         <table class="table ' . $jaaam_pos . '">
@@ -2625,7 +2631,7 @@ function toEnNumber($input)
     return $output1;
 }
 
-function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc, $g_create_date)
+function Object_contact_gharz($g_from_tel, $g_to_tel, $g_fee, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc, $g_create_date, $g_creator)
 {
     $from_info = Query("SELECT * FROM `contacts` WHERE `contact_tel` = '$g_from_tel'");
     $from_count = mysqli_num_rows($from_info);
@@ -2656,9 +2662,10 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
         } else {
             $user_in_app = 0;
         }
-        $pay = sep3($g_req);
-        $pos_title = "قرض دادم";
+
+        $pos_title = "طلب دارم";
         $bg_colors = "#1473bd";
+        $tasviye_pos = "";
     } elseif ($type == "bedehkar") {
         $types = 1;
         $tel = $g_from_tel;
@@ -2670,9 +2677,46 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
         } else {
             $user_in_app = "";
         }
-        $pay = sep3($g_debt);
-        $pos_title = "قرض گرفتم";
+
+        $pos_title = "بدهی دارم";
         $bg_colors = "#E91E63";
+        $tasviye_pos = "";
+    } elseif ($type == "tasviye") {
+        $types = 2;
+
+        if ($g_from_tel == $_COOKIE['uid']) {
+            $tel = $g_to_tel;
+            $name = $to_name;
+            $old_tasviye_pos = "طلب داشتم";
+            $old_bg = "#1473bd";
+        } else {
+            $tel = $g_from_tel;
+            $name = $from_name;
+            $old_tasviye_pos = "بدهی داشتم";
+            $old_bg = "#E91E63";
+        }
+
+        $user_to_in_app_info = Query("SELECT * FROM `users` WHERE `users_tel` = '$g_from_tel'");
+        $user_to_in_app_info_count = mysqli_num_rows($user_to_in_app_info);
+        if ($user_to_in_app_info_count > 0) {
+            $user_in_app = "background-color:gold";
+        } else {
+            $user_in_app = "";
+        }
+
+        $pos_title = "تسویه شده";
+        $bg_colors = "#689F38";
+        $tasviye_pos = '<span class="karbar_name" style="margin-bottom: 0.1rem;font-size: 0.65rem; width: 100%; padding: 0.1rem; background: ' . $old_bg . '; color: #fff; border-radius: 1rem;">' . $old_tasviye_pos . '</span>';
+    }
+    $pay = sep3($g_fee);
+
+    if ($_COOKIE['uid'] == $g_creator) {
+        $manage_tools = '<div class="btn_tasviye">
+                    <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ', ' . $types . ')">' . $GLOBALS['check'] . ' تسویه</button>
+                    <button class="btn btn-danger w-100" onclick="del_gharz(' . $g_id . ')">' . $GLOBALS['del'] . ' حذف</button>
+                </div>';
+    } else {
+        $manage_tools = '';
     }
 
     return '
@@ -2685,11 +2729,13 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
                             <span class="karbar_name" id="c-' . $tel . '" style="font-size:0.8rem">' . $name . ' <span id="t-' . $tel . '" style="font-size: 0.6rem;">(' . $tel . ')</span></span>
                             <span class="karbar_name" style="font-size: 0.7rem;">تاریخ دریافت: ' . $g_date_give . '</span>
                             <span class="karbar_name" style="font-size: 0.7rem;">موعد پرداخت: ' . $g_date_pay . '</span>
+                            <span class="karbar_name" style="font-size: 0.7rem;">تاریخ تسویه: ' . $g_tasviye_date . '</span>
                         </div>
                     </div>
                     <div class="user_info text-white border_none box_shadow_none">
                        <div class="star2">
-                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:1rem">' . $pay . ' <span style="font-size: 0.6rem;">تومان</span></span>
+                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:0.9rem">' . $pay . ' <span style="font-size: 0.6rem;">تومان</span></span>
+                            ' . $tasviye_pos . '
                             <span class="karbar_name" style="font-size: 0.65rem; width: 100%; padding: 0.1rem; background: ' . $bg_colors . '; color: #fff; border-radius: 1rem;">' . $pos_title . '</span>
                         </div>
                     </div>
@@ -2697,11 +2743,7 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_g
                 <div>
                     <span class="karbar_name" style="font-size: 0.7rem; display: block; text-align: right; padding: 0.2rem 1rem; background: #f5faff; color: #373739;">بابت: ' . $g_desc . '<span style="font-size:0.6rem"> (تاریخ ثبت: ' . $g_create_date . ')</span></span>
                 </div>
-                <div class="btn_tasviye">
-                    <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ', ' . $types . ')">' . $GLOBALS['check'] . ' تسویه</button>
-                    <button class="btn btn-firooze w-100" onclick="ok_gharz(' . $g_id . ')">' . $GLOBALS['ghest'] . ' پرداخت</button>
-                    <button class="btn btn-danger w-100" onclick="del_gharz(' . $g_id . ')">' . $GLOBALS['del'] . ' حذف</button>
-                </div>
+                ' . $manage_tools . '
             </div>
 
         </div>';
@@ -2711,13 +2753,13 @@ function give_contacts_list_gharz($contact_maker, $type)
 {
     db();
     if ($type == "bedehkar") {
-        $res = Query("SELECT * FROM `gharz` WHERE `g_to_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL ORDER BY `g_debt` DESC");
+        $res = Query("SELECT * FROM `gharz` WHERE `g_to_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL AND `g_del` IS NULL ORDER BY `g_id` DESC");
     } elseif ($type == "talabkar") {
-        $res = Query("SELECT * FROM `gharz` WHERE `g_from_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL ORDER BY `g_req` DESC");
+        $res = Query("SELECT * FROM `gharz` WHERE `g_from_tel` = '$contact_maker' AND `g_tasviye_date` IS NULL AND `g_del` IS NULL ORDER BY `g_id` DESC");
+    } elseif ($type == "tasviye") {
+        $res = Query("SELECT * FROM `gharz` WHERE `g_from_tel` = '$contact_maker' AND `g_tasviye_date` IS NOT NULL AND `g_del` IS NULL OR `g_to_tel` = '$contact_maker' AND `g_tasviye_date` IS NOT NULL AND `g_del` IS NULL ORDER BY `g_id` DESC");
     }
 
-    $sum_talab = 0;
-    $sum_bedehkar = 0;
     $result = '';
 
     $num = mysqli_num_rows($res);
@@ -2725,24 +2767,30 @@ function give_contacts_list_gharz($contact_maker, $type)
         $r = mysqli_fetch_assoc($res);
         $g_from_tel = $r['g_from_tel'];
         $g_to_tel = $r['g_to_tel'];
-        $g_debt = $r['g_debt'];
-        $g_req = $r['g_req'];
+        $g_fee = $r['g_fee'];
         $g_date_give = $r['g_date_give'];
         $g_date_pay = $r['g_date_pay'];
-        $g_tasviye_date = $r['g_tasviye_date'];
+
+        if (is_null($r['g_tasviye_date'])) {
+            $g_tasviye_date = "-";
+        } else {
+            $g_tasviye_date_ = explode(" ", $r['g_tasviye_date']);
+            $g_tasviye_date = $g_tasviye_date_[0];
+        }
+
         $g_create_date = $r['g_date_create'];
         $g_id = $r['g_id'];
+        $g_creator = $r['g_creator'];
         $g_desc = $r['g_desc'];
-        $sum_bedehkar += $g_debt;
-        $sum_talab += $g_req;
+        if ($type == "bedehkar") {
+            $_COOKIE['bedehi'] += $g_fee;
+        } elseif ($type == "talabkar") {
+            $_COOKIE['talab'] += $g_fee;
+        } elseif ($type == "tasviye") {
+            $_COOKIE['tasviye'] += $g_fee;
+        }
 
-        $result .= Object_contact_gharz($g_from_tel, $g_to_tel, $g_debt, $g_req, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc, $g_create_date);
-    }
-
-    if ($type == "bedehkar") {
-        $_COOKIE['bedehi'] = $sum_bedehkar;
-    } elseif ($type == "talabkar") {
-        $_COOKIE['talab'] = $sum_talab;
+        $result .= Object_contact_gharz($g_from_tel, $g_to_tel, $g_fee, $g_date_give, $g_date_pay, $g_tasviye_date, $type, $g_id, $g_desc, $g_create_date, $g_creator);
     }
     return $result;
 }
@@ -2778,9 +2826,10 @@ function SELECT_GHARZ_users()
     return $gharz_users;
 }
 
-function ADD_GHARZ($from, $to, $debt, $req, $give, $repay, $today, $desc)
+function ADD_GHARZ($from, $to, $fee, $give, $repay, $today, $desc)
 {
-    $x = Query("INSERT INTO `gharz`(`g_from_tel`,`g_to_tel`,`g_debt`,`g_req`,`g_date_give`,`g_date_pay`,`g_date_create`,`g_desc`) VALUES('" . $from . "','" . $to . "','" . $debt . "','" . $req . "','" . $give . "','" . $repay . "','" . $today . "','" . $desc . "')");
+    $creator = $_COOKIE['uid'];
+    $x = Query("INSERT INTO `gharz`(`g_from_tel`,`g_to_tel`,`g_fee`,`g_date_give`,`g_date_pay`,`g_date_create`,`g_desc`,`g_creator`) VALUES('" . $from . "','" . $to . "','" . $fee . "','" . $give . "','" . $repay . "','" . $today . "','" . $desc . "','" . $creator . "')");
     return mysqli_insert_id($GLOBALS['conn']);
 }
 
