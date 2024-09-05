@@ -21,6 +21,8 @@
 
     .my_card {
         margin: 0 auto 0.5rem auto;
+        height: 4.9rem;
+        overflow: hidden;
     }
 
     .star2 {
@@ -163,7 +165,7 @@ if ($jaam_hesab > 0) {
 </div> -->
 
 <div class="new_gharz force_hide">
-    <div class="card my_card" style="background-color: rgba(235, 246, 255, 1);">
+    <div class="card my_card" style="background-color: rgba(235, 246, 255, 1);height:max-content;">
         <table class="table">
             <tr>
                 <td class="td_title va_middle">انتخاب کاربر</td>
@@ -404,6 +406,8 @@ if ($jaam_hesab > 0) {
                 karbar = newContactName + "," + newContactTel;
             }
 
+            alert(karbar);
+
             var flexswitch = String($("#flexSwitchCheckChecked").prop('checked'));
 
             if (variz_date == "****/**/**") {
@@ -501,4 +505,9 @@ if ($jaam_hesab > 0) {
             $("#new_contact").show();
         }
     }
+
+    $(".my_card").click(function() {
+        $(".my_card").css("height", "4.9rem");
+        $(this).css("height", "max-content");
+    });
 </script>

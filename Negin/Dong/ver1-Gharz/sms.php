@@ -17,7 +17,7 @@ if (isset($_COOKIE['temp_tel'])) {
 }
 
 require_once('header.php');
-// echo $pos;
+echo $pos;
 ?>
 
 <div class="container">

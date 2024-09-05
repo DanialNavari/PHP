@@ -1061,6 +1061,7 @@ function final_report($id)
     $trans_list_buyer = [];
     $pay_all = [];
     $report = '';
+    $player_pos = [];
 
     $r = SELECT_course_id($id);
     $c_name = $r['course_name'];
@@ -1162,22 +1163,24 @@ function final_report($id)
             $debt_color = "color: #F44336 !important;";
         } else if ($final_number == 0) {
             $debt_pos = '';
-            $debt_pos_en = '';
+            $debt_pos_en = 'tasviye_';
             $debt_color = "color: #280d0d !important;";
         }
 
+        $pne = explode(" ", $person_name);
+        $person_name_exploded = $pne[0];
+        $player_pos[$c_member] = $debt_pos;
+
         $report .=  '
         <tr class="' . $debt_pos_en . '">
-        <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . $person_name . '</td>
+        <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . $person_name_exploded . '</td>
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($buyer_cost) . '</td>
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($p_cost) . '</td>
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($daryafti) . '</td>
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($varizi) . '</td>                
+        <td colspan="5" class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl" style="' . $debt_color . '">' . sep3($buyer_cost - $p_cost + $varizi - $daryafti)  . '</td>
         </tr>
-        <tr class="' . $debt_pos_en . '">
-            <td colspan="5" class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl" style="' . $debt_color . '">' . $debt_pos  . sep3(abs($buyer_cost - $p_cost + $varizi - $daryafti))  . ' تومان</td>
-        </tr>
-        <tr class="empty_tr" style="background: #404040;"><td colspan="5" style="padding:0.1rem"></td></tr>
+        <!--<tr class="empty_tr" style="background: #404040;"><td colspan="5" style="padding:0.1rem"></td></tr>-->
         ';
     }
 
@@ -1216,9 +1219,9 @@ function final_report($id)
                 <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle " colspan="2">جمع کل هزینه دوره</td>
                 <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($sum_all_trans) . ' <span class="unit">' . $course_money_unit . '</span></td>
             </tr>
-            <tr class="bg_grey">
-                <td class="td_title font-weight-bold text-right text-primary d-ltr va_middle" colspan="2">میانگین هزینه هر نفر</td>
-                <td class="td_title_ text-primary text-center d-rtl" colspan="3">' . sep3($jaaam) . ' <span class="unit">' . $course_money_unit . '</span></td>
+            <tr class="bg-dark">
+                <td class="td_title font-weight-bold text-right text-white d-ltr va_middle" colspan="2">میانگین هزینه هر نفر</td>
+                <td class="td_title_ text-white text-center d-rtl" colspan="3">' . sep3($jaaam) . ' <span class="unit">' . $course_money_unit . '</span></td>
             </tr>
         </table>
     </div>
@@ -1231,13 +1234,15 @@ function final_report($id)
             ';
 
     $download = $GLOBALS['download'];
+
     $re_report = '
-        <tr class="' . $debt_pos_en . '">
+        <tr style="background-color:aliceblue !important">
             <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">نام</td>
             <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">خرج</td>
             <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">سهم</td>
             <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">گرفته</td>
             <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">داده</td>
+            <td class="td_title_ font-weight-bold text-center text-primary d-rtl va_middle">وضعیت</td>
         </tr>
     ';
     echo $re_report . $report . '</table>
@@ -2085,91 +2090,68 @@ function check_active_course($course_id)
     return intval($n);
 }
 
-function MY_DEBT($tel, $pos)
+function MY_DEBT($tel, $pos, $course_idd)
 {
     $user_sahm = 0;
     $user_pay = 0;
     $user_use = 0;
     $user_give = 0;
 
-    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' AND `trans_del` IS NULL OR `trans_person` LIKE '%," . $tel . ":%' AND `trans_del` IS NULL");
+    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd . " OR `trans_person` LIKE '%," . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd);
     $num = mysqli_num_rows($r);
 
     for ($i = 0; $i < $num; $i++) {
         $fetch = mysqli_fetch_assoc($r);
-        $trans_course = $fetch['trans_course'];
-        $check_course = check_active_course($trans_course);
 
-        if ($check_course > 0) {
-            if ($fetch['trans_buyer'] == $tel) {
-                $user_use += $fetch['trans_fee'];
-            }
+        if ($fetch['trans_buyer'] == $tel) {
+            $user_use += $fetch['trans_fee'];
+        }
 
-            $trans_person = explode(',', $fetch['trans_person']);
-            for ($j = 0; $j < count($trans_person) - 1; $j++) {
-                $trans_detail = explode(':', $trans_person[$j]);
-                $id = $trans_detail[0];
-                if ($tel == $id) {
-                    $user_sahm += $trans_detail[1];
-                }
+        $trans_person = explode(',', $fetch['trans_person']);
+        for ($j = 0; $j < count($trans_person) - 1; $j++) {
+            $trans_detail = explode(':', $trans_person[$j]);
+            $id = $trans_detail[0];
+            if ($tel == $id) {
+                $user_sahm += $trans_detail[1];
             }
-        } else {
-            $user_use += 0;
-            $user_sahm += 0;
         }
     }
 
-    $p = Query("SELECT * FROM `payments` WHERE `pay_from` = '" . $tel . "' AND `pay_del` IS NULL");
+    $p = Query("SELECT * FROM `payments` WHERE `pay_from` = '" . $tel . "' AND `pay_del` IS NULL AND `pay_course` = '$course_idd'");
     $nums = mysqli_num_rows($p);
     for ($l = 0; $l < $nums; $l++) {
         $fet = mysqli_fetch_assoc($p);
         $pay_course = $fet['pay_course'];
-        $check_course = check_active_course($pay_course);
-        if ($check_course > 0) {
-            $user_pay += $fet['pay_fee'];
-        } else {
-            $user_pay += 0;
-        }
+        $user_pay += $fet['pay_fee'];
     }
 
-    $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL");
+    $pa = Query("SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL AND `pay_course` = '$course_idd'");
     $numsa = mysqli_num_rows($pa);
     for ($la = 0; $la < $numsa; $la++) {
         $feta = mysqli_fetch_assoc($pa);
-        $check_course = check_active_course($feta['pay_course']);
-        if ($check_course > 0) {
-            $user_give += $feta['pay_fee'];
-        } else {
-            $user_give += 0;
-        }
+        $user_give += $feta['pay_fee'];
     }
 
     $jaam = $user_use - $user_sahm  - $user_give + $user_pay;
-    if ($jaam > 0) {
-        $req = $jaam;
-        $debt = 0;
-    } elseif ($jaam < 0) {
-        $req = 0;
-        $debt = $jaam;
-    } else {
-        $req  = 0;
-        $debt = 0;
-    }
 
-    switch ($pos) {
-        case "debt":
-            if ($jaam < 0) {
-                return $jaam;
-            } else {
-                return 0;
-            }
-        case "req":
-            if ($jaam > 0) {
-                return $jaam;
-            } else {
-                return 0;
-            }
-    }
+    // switch ($pos) {
+    //     case "debt":
+    //         if ($jaam < 0) {
+    //             return $jaam;
+    //         } else {
+    //             return 0;
+    //         }
+    //     case "req":
+    //         if ($jaam > 0) {
+    //             return $jaam;
+    //         } else {
+    //             return 0;
+    //         }
+    // }
+
+    echo "SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd . " OR `trans_person` LIKE '%," . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd . "<br/>";
+    echo "SELECT * FROM `payments` WHERE `pay_from` = '" . $tel . "' AND `pay_del` IS NULL AND `pay_course` = '$course_idd'<br/>";
+    echo "SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL AND `pay_course` = '$course_idd'";
 }
 
 function active_courses($maker, $pos)
@@ -2724,9 +2706,10 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_fee, $g_date_give, $g_d
             <div class="card my_card user-' . $tel . '-box">
                 <div class="record user-' . $tel . '-name">
                     <div class="user_info text-white border_none box_shadow_none">
-                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5" style="' . $user_in_app . '">
+                        <img src="image/user.png" alt="user" class="rounded-circle w-1-5 force_hide" style="' . $user_in_app . '">
                         <div class="star">
-                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:0.8rem">' . $name . ' <span id="t-' . $tel . '" style="font-size: 0.6rem;">(' . $tel . ')</span></span>
+                            <span class="karbar_name" id="c-' . $tel . '" style="font-size:0.8rem">' . $name . ' </span>
+                            <span class="karbar_name" id="t-' . $tel . '" style="font-size: 0.6rem;">موبایل: ' . $tel . '</span>
                             <span class="karbar_name" style="font-size: 0.7rem;">تاریخ دریافت: ' . $g_date_give . '</span>
                             <span class="karbar_name" style="font-size: 0.7rem;">موعد پرداخت: ' . $g_date_pay . '</span>
                             <span class="karbar_name" style="font-size: 0.7rem;">تاریخ تسویه: ' . $g_tasviye_date . '</span>
@@ -2737,6 +2720,10 @@ function Object_contact_gharz($g_from_tel, $g_to_tel, $g_fee, $g_date_give, $g_d
                             <span class="karbar_name" id="c-' . $tel . '" style="font-size:0.9rem">' . $pay . ' <span style="font-size: 0.6rem;">تومان</span></span>
                             ' . $tasviye_pos . '
                             <span class="karbar_name" style="font-size: 0.65rem; width: 100%; padding: 0.1rem; background: ' . $bg_colors . '; color: #fff; border-radius: 1rem;">' . $pos_title . '</span>
+                            <span class="karbar_name" style="font-size: 0.65rem; width: 100%; padding: 0.1rem; color: #fff; border-radius: 1rem;"></span>
+                            <span class="karbar_name" style="font-size: 0.65rem; width: 100%; padding: 0.1rem; color: #fff; border-radius: 1rem;"></span>
+                            <span class="karbar_name" style="font-size: 0.65rem; width: 100%; padding: 0.1rem; color: #fff; border-radius: 1rem;"></span>
+                            <span class="karbar_name" style="font-size: 0.65rem; width: 100%; padding: 0.1rem; color: #fff; border-radius: 1rem;"></span>
                         </div>
                     </div>
                 </div>

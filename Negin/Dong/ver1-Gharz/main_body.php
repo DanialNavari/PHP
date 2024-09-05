@@ -39,8 +39,20 @@ if (intval($c_default) > 0) {
     $c_d_id = 0;
 }
 
-$debt =  MY_DEBT($_COOKIE['uid'], 'debt');
-$req =  MY_DEBT($_COOKIE['uid'], 'req');
+$my_tel = $_COOKIE['uid'];
+$debt = 0;
+$req = 0;
+
+$x = Query("SELECT * FROM `course` WHERE `course_member` LIKE '%$my_tel%' AND `course_disabled` IS NULL AND `course_finish` IS NULL `course_del_course` IS NULL");
+$n = mysqli_num_rows($x);
+for ($ii = 0; $ii < $n; $ii++) {
+    $f = mysqli_fetch_assoc($x);
+    $course_id = $f['course_id'];
+    $debt += 0;
+    MY_DEBT($_COOKIE['uid'], 'debt', $course_id);
+    $req += 0;
+    MY_DEBT($_COOKIE['uid'], 'req', $course_id);
+}
 ?>
 
 <div class="row empty border_none" style="min-height: 0;"></div>

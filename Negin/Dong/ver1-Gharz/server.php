@@ -300,7 +300,7 @@ if (isset($_POST['login'])) {
     $c_date = date("Y-m-d H:i:s");
 
     $xx = explode(",", $karbar);
-    if (count($xx) > 0) {
+    if (count($xx) > 1) {
         $new_user_name = $xx[0];
         $karbars = $xx[1];
         ADD_contact($karbars, $new_user_name, $c_maker, $c_date);

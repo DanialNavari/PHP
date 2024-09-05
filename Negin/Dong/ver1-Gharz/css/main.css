@@ -647,14 +647,17 @@ h6 {
   /* gap: 0.1rem; */
 }
 
+.tasviye_ {
+  background-color: #fff !important;
+}
+
 .add_manager {
   position: fixed;
   top: 3rem;
   background: #fff;
-  width: 100%;
+  width: 94%;
   height: 100vh;
   display: none;
-  width: fit-content;
 }
 
 .w_fit {
@@ -910,11 +913,11 @@ h6 {
 }
 
 .d-rtl {
-  direction: rtl;
+  direction: rtl !important;
 }
 
 .d-ltr {
-  direction: ltr;
+  direction: ltr !important;
 }
 
 .click {

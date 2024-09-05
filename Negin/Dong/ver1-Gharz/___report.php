@@ -23,4 +23,10 @@ $c_name = $x['course_name'];
     .details td {
         border-left: 1px solid silver;
     }
+
+    .card table td {
+        padding: 1px;
+        font-size: 0.7rem !important;
+        direction: ltr;
+    }
 </style>
