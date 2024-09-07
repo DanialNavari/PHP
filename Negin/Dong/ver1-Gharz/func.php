@@ -4,6 +4,7 @@ require_once('db.php');
 require_once('jdf.php');
 $app_name = 'دونگتو';
 $ip_part = [];
+$version_code = "1.7.0";
 setcookie("talab", "0", 86400 * 7, "/");
 setcookie("bedehi", "0", 86400 * 7, "/");
 
