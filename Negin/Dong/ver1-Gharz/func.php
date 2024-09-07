@@ -1178,7 +1178,7 @@ function final_report($id)
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($p_cost) . '</td>
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl">' . sep3($daryafti) . '</td>
         <td class="td_title_ text-primary text-center ' . $debt_pos_en . '">' . sep3($varizi) . '</td>                
-        <td colspan="5" class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-rtl" style="' . $debt_color . '">' . sep3($buyer_cost - $p_cost + $varizi - $daryafti)  . '</td>
+        <td colspan="5" class="td_title_ text-primary text-center ' . $debt_pos_en . ' d-ltr" style="' . $debt_color . '">' . sep3($buyer_cost - $p_cost + $varizi - $daryafti)  . '</td>
         </tr>
         <!--<tr class="empty_tr" style="background: #404040;"><td colspan="5" style="padding:0.1rem"></td></tr>-->
         ';
@@ -2096,8 +2096,9 @@ function MY_DEBT($tel, $pos, $course_idd)
     $user_pay = 0;
     $user_use = 0;
     $user_give = 0;
+    $jaam = 0;
 
-    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd . " OR `trans_person` LIKE '%," . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd);
+    $r = Query("SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd . " OR `trans_person` LIKE '%," . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = '$course_idd'");
     $num = mysqli_num_rows($r);
 
     for ($i = 0; $i < $num; $i++) {
@@ -2134,24 +2135,21 @@ function MY_DEBT($tel, $pos, $course_idd)
 
     $jaam = $user_use - $user_sahm  - $user_give + $user_pay;
 
-    // switch ($pos) {
-    //     case "debt":
-    //         if ($jaam < 0) {
-    //             return $jaam;
-    //         } else {
-    //             return 0;
-    //         }
-    //     case "req":
-    //         if ($jaam > 0) {
-    //             return $jaam;
-    //         } else {
-    //             return 0;
-    //         }
-    // }
+    switch ($pos) {
+        case "debt":
+            if ($jaam < 0) {
+                return $jaam;
+            } else {
+                return 0;
+            }
+        case "req":
+            if ($jaam > 0) {
+                return $jaam;
+            } else {
+                return 0;
+            }
+    }
 
-    echo "SELECT * FROM `transactions` WHERE `trans_person` LIKE '" . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd . " OR `trans_person` LIKE '%," . $tel . ":%' AND `trans_del` IS NULL AND `trans_course` = " . $course_idd . "<br/>";
-    echo "SELECT * FROM `payments` WHERE `pay_from` = '" . $tel . "' AND `pay_del` IS NULL AND `pay_course` = '$course_idd'<br/>";
-    echo "SELECT * FROM `payments` WHERE `pay_to` = '" . $tel . "' AND `pay_del` IS NULL AND `pay_course` = '$course_idd'";
 }
 
 function active_courses($maker, $pos)

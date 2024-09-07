@@ -615,6 +615,7 @@ function addNewContact() {
 
 function saveNewCourse() {
   $("#savedate").click();
+  var lastContactBox = $(".contactBox:last-child .star span").text();
   var course_name = $("#courseName").text();
   var course_start = $("#start_from_fa").text();
   var money_limit = $("#moneyLimit1").text();
@@ -622,9 +623,24 @@ function saveNewCourse() {
   var members = $(".selected_user div").length / 2;
   for (i = 0; i < members; i++) {
     j = i + 1;
-    member_list +=
-      $(".selected_user div:nth-child(" + j + ")").attr("data") + ",";
+    member_tel = $(".selected_user div:nth-child(" + j + ")").attr("data");
+    member_list += member_tel + ",";
     esm_karbar = $(".selected_user div:nth-child(" + j + ") .user_name").text();
+
+    $.ajax({
+      data:
+        "customer_name=" +
+        esm_karbar +
+        "&course_name=" +
+        course_name +
+        "&manager_name=" +
+        lastContactBox +
+        "&tel=" +
+        member_tel,
+      url: "sendSmsApi.php",
+      type: "POST",
+      success: function (response) {},
+    });
   }
 
   $.ajax({
@@ -641,7 +657,7 @@ function saveNewCourse() {
     url: "server.php",
     success: function (response) {
       if (response > 0) {
-        //window.location.assign("./?route=_activeCourse&h=null");
+        // window.location.assign("./?route=_activeCourse&h=null");
         Go_Back();
       }
     },

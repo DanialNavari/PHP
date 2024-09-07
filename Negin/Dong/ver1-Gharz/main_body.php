@@ -43,26 +43,27 @@ $my_tel = $_COOKIE['uid'];
 $debt = 0;
 $req = 0;
 
-$x = Query("SELECT * FROM `course` WHERE `course_member` LIKE '%$my_tel%' AND `course_disabled` IS NULL AND `course_finish` IS NULL `course_del_course` IS NULL");
-$n = mysqli_num_rows($x);
-for ($ii = 0; $ii < $n; $ii++) {
-    $f = mysqli_fetch_assoc($x);
-    $course_id = $f['course_id'];
-    $debt += 0;
-    MY_DEBT($_COOKIE['uid'], 'debt', $course_id);
-    $req += 0;
-    MY_DEBT($_COOKIE['uid'], 'req', $course_id);
-}
+
+
 ?>
 
 <div class="row empty border_none" style="min-height: 0;"></div>
-
 <div class="cat">
     <div class="group_name">
-        <h6 class="font-weight-bold">وضعیت من</h6>
+        <h6 class="font-weight-bold">وضعیت من (تومان)</h6>
     </div>
     <div class="box_cat_parent">
-
+        <?php
+        $xx = "SELECT * FROM `course` WHERE `course_member` LIKE '%$my_tel%' AND `course_disabled` IS NULL AND `course_finish` IS NULL AND `course_del_course` IS NULL";
+        $x = Query($xx);
+        $n = mysqli_num_rows($x);
+        for ($ii = 0; $ii < $n; $ii++) {
+            $f = mysqli_fetch_assoc($x);
+            $course_id = $f['course_id'];
+            $debt += MY_DEBT($_COOKIE['uid'], 'debt', $course_id);
+            $req += MY_DEBT($_COOKIE['uid'], 'req', $course_id);
+        }
+        ?>
         <div class="box_cat b1">
             <div class="box_cat inactive_option">
                 <div class="box d-flex mt-2 none_click_box" style="width: 4rem; height: 4rem;">
