@@ -11,8 +11,15 @@ if ($security == true) {
         require_once($page . ".php");
         echo "</div>";
         require_once("main_bottom.php");
-    } else{
-        // $page = $_GET['menu'];
+    } elseif (isset($_GET['app'])) {
+        $app = $_GET['app'];
+        $app_name = $_GET['app_name'];
+        require_once("main_top.php");
+        echo "<div class='container'>";
+        require_once($app . ".php");
+        echo "</div>";
+        require_once("app_bottom.php");
+    } else {
         require_once("index_top.php");
         require_once("central.php");
         require_once("index_bottom.php");

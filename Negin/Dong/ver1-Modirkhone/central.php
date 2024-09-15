@@ -34,7 +34,7 @@ if (isset($_COOKIE['page'])) {
                 <div class="box_title">دونگ دورهمی</div>
             </div>
 
-            <div class="box_cat b1" onclick="window.location.assign('./?route=_gharz&bm=gharz')">
+            <div class="box_cat b1" onclick="window.location.assign('./?app=_gharz&app_name=قرض و طلب')">
                 <div class="box_cat">
                     <div class="box d-flex mt-2">
                         <div class="box_icon">
@@ -76,7 +76,7 @@ if (isset($_COOKIE['page'])) {
                 <div class="box_title">مدیر تور</div>
             </div>
 
-            <div class="box_cat b1">
+            <div class="box_cat b1" onclick="navigate('./?app=_modirkhone&app_name=مدیرخونه')">
                 <div class="box_cat">
                     <div class="box d-flex mt-2">
                         <div class="box_icon">
@@ -85,7 +85,7 @@ if (isset($_COOKIE['page'])) {
                         <div class="box_num text-danger"></div>
                     </div>
                 </div>
-                <div class="box_title">مدیر ساختمان</div>
+                <div class="box_title">مدیر خونه</div>
             </div>
 
             <div class="box_cat b1 inactive_option">
@@ -126,9 +126,9 @@ if (isset($_COOKIE['page'])) {
                 <div class="box_title">ربات تلگرام</div>
             </div>
 
-            <div class="box_cat b1 inactive_option">
+            <div class="box_cat b1" onclick="navigate('https://cafebazaar.ir/app/co.median.android.qmqddn')">
                 <div class="box_cat">
-                    <div class="box d-flex mt-2 none_click_box">
+                    <div class="box d-flex mt-2">
                         <div class="box_icon"><?php echo $GLOBALS['update']; ?></div>
                         <div class="box_num text-danger"></div>
                     </div>

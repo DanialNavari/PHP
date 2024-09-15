@@ -456,10 +456,7 @@ if ($jaam_hesab > 0) {
         });
     }
 
-    $(document).ready(function() {
-        estelam();
-    });
-
+    
     function ok_gharz(id, type) {
         if (type == 0) {
             title = "طلب";
@@ -493,7 +490,7 @@ if ($jaam_hesab > 0) {
             });
         }
     }
-
+    
     function change_karbar_pos() {
         var change_karbar_pos = $("#myContacts").prop('checked');
         if (change_karbar_pos == true) {
@@ -506,9 +503,14 @@ if ($jaam_hesab > 0) {
             $("#new_contact").show();
         }
     }
-
+    
     $(".my_card").click(function() {
         $(".my_card").css("height", "4.9rem");
         $(this).css("height", "max-content");
+    });
+
+    $(document).ready(function() {
+        estelam();
+        show_gharz('talabkari','TalabK');
     });
 </script>

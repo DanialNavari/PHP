@@ -3,6 +3,16 @@
   src: url("../font/iransans.ttf");
 }
 
+@font-face {
+  font-family: "yekanBold";
+  src: url("../font/yekan-bold.TTF");
+}
+
+@font-face {
+  font-family: "yekanLight";
+  src: url("../font/yekan-light.TTF");
+}
+
 *,
 html,
 body,
@@ -14,7 +24,6 @@ ol,
   padding: 0;
   box-sizing: border-box;
   outline: none;
-  font-family: "iransans";
   user-select: none;
 }
 
@@ -232,7 +241,7 @@ form#sms > input {
 .headers {
   height: 3rem;
   background-color: #1473bd;
-  font-family: "iransans";
+  font-family: "yekanBold";
   color: #fff;
   position: fixed;
   width: 100vw;
@@ -260,7 +269,7 @@ form#sms > input {
 }
 
 h1 {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 h6 {
@@ -284,7 +293,7 @@ h6 {
 }
 
 .group_name {
-  font-family: "iransans";
+  font-family: "yekanBold";
   color: #1d5da9;
   border: 2px solid #1473bd;
   border-top: none;
@@ -563,7 +572,7 @@ h6 {
 }
 
 .td_title::after {
-  content: " « ";
+  content: "";
 }
 
 .td_title_::after {
