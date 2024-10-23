@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="static/css/lib/persian-datepicker.min.css" />
-<link rel="stylesheet" href="static/css/main.css" />
+<link rel="stylesheet" href="static/css/main.cssadd_new_gharz()" />
 <style>
     .pay_btn {
         width: 87vw;
@@ -406,7 +406,6 @@ if ($jaam_hesab > 0) {
                 karbar = newContactName + "," + newContactTel;
             }
 
-            alert(karbar);
 
             var flexswitch = String($("#flexSwitchCheckChecked").prop('checked'));
 

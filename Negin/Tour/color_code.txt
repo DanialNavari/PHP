@@ -1,0 +1,2 @@
+background #292C33
+logo type #FCAD1D

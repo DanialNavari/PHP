@@ -1,0 +1,153 @@
+[06-Apr-2023 09:49:50 Asia/Tehran] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/wukxwqmk/baharara/emp/functions.php on line 10
+[06-Apr-2023 09:49:50 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, boolean given in /home/wukxwqmk/baharara/emp/functions.php on line 22
+[06-Apr-2023 09:55:32 Asia/Tehran] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/wukxwqmk/baharara/emp/functions.php on line 10
+[06-Apr-2023 09:55:32 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, boolean given in /home/wukxwqmk/baharara/emp/functions.php on line 22
+[12-Apr-2023 13:45:35 Asia/Tehran] PHP Warning:  mysqli_connect(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: NO) in /home/wukxwqmk/baharara/emp/tracking.php on line 14
+[12-Apr-2023 13:45:35 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 21
+[12-Apr-2023 13:45:35 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 22
+[12-Apr-2023 13:46:54 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 33
+[12-Apr-2023 13:46:54 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 13:46:54 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 33
+[12-Apr-2023 13:46:57 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 33
+[12-Apr-2023 13:46:57 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 13:46:57 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 33
+[12-Apr-2023 14:11:09 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:11:09 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:11:09 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:11:09 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 14:11:09 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:11:09 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:11:09 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:15:51 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:15:51 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:15:51 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:15:51 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 14:15:51 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:15:51 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:15:51 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:16:18 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 33
+[12-Apr-2023 14:16:18 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 38
+[12-Apr-2023 14:16:18 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 43
+[12-Apr-2023 14:16:18 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 14:16:18 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 33
+[12-Apr-2023 14:16:18 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 38
+[12-Apr-2023 14:16:18 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 43
+[12-Apr-2023 14:19:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:19:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:19:10 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:19:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 14:19:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:19:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:19:10 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:19:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:19:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:19:33 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:19:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 14:19:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:19:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:19:33 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:23:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:23:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:23:10 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:23:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 27
+[12-Apr-2023 14:23:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:23:10 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:23:10 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:25:39 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 50
+[12-Apr-2023 14:26:41 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 50
+[12-Apr-2023 14:27:29 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 50
+[12-Apr-2023 14:27:30 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 50
+[12-Apr-2023 14:28:08 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 51
+[12-Apr-2023 14:28:50 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 51
+[12-Apr-2023 14:29:24 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 51
+[12-Apr-2023 14:29:27 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 51
+[12-Apr-2023 14:29:58 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 51
+[12-Apr-2023 14:31:32 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:31:32 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:31:32 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:31:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:31:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:31:33 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:31:59 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:31:59 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:31:59 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:33:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:33:33 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:33:33 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:34:04 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:34:04 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:34:04 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:34:54 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 50
+[12-Apr-2023 14:34:54 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:34:54 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:34:54 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:35:16 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:35:16 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:35:16 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:35:17 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 32
+[12-Apr-2023 14:35:17 Asia/Tehran] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 37
+[12-Apr-2023 14:35:17 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/tracking.php on line 42
+[12-Apr-2023 14:46:19 Asia/Tehran] PHP Warning:  Missing argument 2 for post_id(), called in /home/wukxwqmk/baharara/emp/tracking.php on line 42 and defined in /home/wukxwqmk/baharara/emp/tracking.php on line 18
+[12-Apr-2023 14:46:19 Asia/Tehran] PHP Warning:  Missing argument 3 for post_id(), called in /home/wukxwqmk/baharara/emp/tracking.php on line 42 and defined in /home/wukxwqmk/baharara/emp/tracking.php on line 18
+[12-Apr-2023 14:46:19 Asia/Tehran] PHP Warning:  Missing argument 2 for post_id(), called in /home/wukxwqmk/baharara/emp/tracking.php on line 42 and defined in /home/wukxwqmk/baharara/emp/tracking.php on line 18
+[12-Apr-2023 14:46:19 Asia/Tehran] PHP Warning:  Missing argument 3 for post_id(), called in /home/wukxwqmk/baharara/emp/tracking.php on line 42 and defined in /home/wukxwqmk/baharara/emp/tracking.php on line 18
+[13-Apr-2023 09:39:29 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/dailyorder.php on line 18
+[13-Apr-2023 09:39:29 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/dailyorder.php on line 18
+[13-Apr-2023 09:40:14 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/label.php on line 2
+[13-Apr-2023 09:40:14 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/label.php on line 2
+[13-Apr-2023 10:02:46 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/dailyorder.php on line 19
+[13-Apr-2023 10:02:46 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/dailyorder.php on line 19
+[13-Apr-2023 10:02:47 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/dailyorder.php on line 19
+[13-Apr-2023 10:02:47 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/dailyorder.php on line 19
+[13-Apr-2023 13:03:23 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 21
+[13-Apr-2023 13:03:24 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 22
+[13-Apr-2023 13:03:25 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 21
+[13-Apr-2023 13:03:25 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 22
+[13-Apr-2023 13:03:47 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 21
+[13-Apr-2023 13:03:47 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 23
+[13-Apr-2023 13:43:20 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 21
+[13-Apr-2023 13:43:20 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 23
+[13-Apr-2023 13:45:42 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 22
+[13-Apr-2023 13:45:42 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 23
+[13-Apr-2023 13:45:45 Asia/Tehran] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 22
+[13-Apr-2023 13:45:45 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, null given in /home/wukxwqmk/baharara/emp/tracking.php on line 23
+[12-Jun-2023 10:31:38 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:31:38 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:31:53 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:31:53 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:31:54 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:31:54 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:32:27 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:32:27 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:32:28 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:32:28 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:32:29 Asia/Tehran] PHP Warning:  require_once(db_result.php): failed to open stream: No such file or directory in /home/wukxwqmk/baharara/emp/label.php on line 2
+[12-Jun-2023 10:32:29 Asia/Tehran] PHP Fatal error:  require_once(): Failed opening required 'db_result.php' (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/wukxwqmk/baharara/emp/label.php on line 2
+[14-Jun-2023 09:54:42 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 26
+[14-Jun-2023 09:55:23 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 26
+[14-Jun-2023 09:55:23 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 26
+[14-Jun-2023 09:56:32 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 26
+[14-Jun-2023 10:00:54 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 25
+[14-Jun-2023 10:22:30 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 25
+[14-Jun-2023 10:22:33 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 25
+[14-Jun-2023 10:24:08 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 25
+[14-Jun-2023 10:24:09 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 25
+[14-Jun-2023 10:24:10 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 25
+[14-Jun-2023 10:25:03 Asia/Tehran] PHP Fatal error:  Call to undefined function db() in /home/wukxwqmk/baharara/emp/income.php on line 20
+[14-Jun-2023 10:32:24 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:34:09 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 23
+[14-Jun-2023 10:34:36 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 23
+[14-Jun-2023 10:34:37 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 23
+[14-Jun-2023 10:34:38 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 23
+[14-Jun-2023 10:34:39 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 23
+[14-Jun-2023 10:37:57 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 23
+[14-Jun-2023 10:38:16 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:38:17 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:38:17 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:38:18 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:38:18 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:38:18 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:38:50 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, boolean given in /home/wukxwqmk/baharara/emp/income.php on line 22
+[14-Jun-2023 10:57:24 Asia/Tehran] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/wukxwqmk/baharara/emp/income.php on line 54
+[14-Jun-2023 11:32:13 Asia/Tehran] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/wukxwqmk/baharara/emp/income.php on line 37
+[14-Jun-2023 11:38:12 Asia/Tehran] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /home/wukxwqmk/baharara/emp/income.php on line 31

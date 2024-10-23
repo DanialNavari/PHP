@@ -1,0 +1,12 @@
+[04-Apr-2023 14:52:32 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1603
+[04-Apr-2023 14:52:32 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1672
+[04-Apr-2023 14:52:46 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1603
+[04-Apr-2023 14:52:46 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1672
+[04-Apr-2023 14:53:43 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1737
+[04-Apr-2023 14:53:43 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1806
+[04-Apr-2023 15:07:47 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1737
+[04-Apr-2023 15:07:47 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1806
+[04-Apr-2023 15:07:53 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1737
+[04-Apr-2023 15:07:53 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1806
+[04-Apr-2023 15:09:59 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1763
+[04-Apr-2023 15:09:59 Asia/Tehran] PHP Warning:  mysqli_num_rows() expects parameter 1 to be mysqli_result, bool given in /home/wukxwqmk/baharara/product.php on line 1832
